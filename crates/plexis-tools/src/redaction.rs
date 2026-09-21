@@ -70,6 +70,10 @@ impl SecretRedactor {
     }
 
     /// Recursively redacts sensitive secrets in-place within a JSON value using explicit list.
+    /// Object keys are redacted along with values: a credential that ends up in a key
+    /// position (e.g. `{"<token>": "revoked"}` in tool output) must not survive into
+    /// persisted events or model-visible payloads. When two distinct raw keys redact to
+    /// the same placeholder, the entries merge and the first processed value wins.
     pub fn redact_value(value: &mut Value, secrets: &[String]) {
         if secrets.is_empty() {
             return;
@@ -85,15 +89,23 @@ impl SecretRedactor {
                 }
             }
             Value::Object(map) => {
-                for (_key, val) in map.iter_mut() {
-                    Self::redact_value(val, secrets);
+                let mut redacted = serde_json::Map::with_capacity(map.len());
+                for (key, mut val) in std::mem::take(map) {
+                    let new_key = Self::redact_text(&key, secrets);
+                    Self::redact_value(&mut val, secrets);
+                    redacted.entry(new_key).or_insert(val);
                 }
+                *value = Value::Object(redacted);
             }
             _ => {}
         }
     }
 
     /// Recursively redacts sensitive secrets and patterns in-place within a JSON value.
+    /// Object keys are redacted along with values, including through the automatic
+    /// pattern fallback that runs when the explicit secret list is empty. When two
+    /// distinct raw keys redact to the same placeholder, the entries merge and the
+    /// first processed value wins.
     pub fn redact_value_all(value: &mut Value, secrets: &[String]) {
         match value {
             Value::String(s) => {
@@ -105,9 +117,13 @@ impl SecretRedactor {
                 }
             }
             Value::Object(map) => {
-                for (_key, val) in map.iter_mut() {
-                    Self::redact_value_all(val, secrets);
+                let mut redacted = serde_json::Map::with_capacity(map.len());
+                for (key, mut val) in std::mem::take(map) {
+                    let new_key = Self::redact_all(&key, secrets);
+                    Self::redact_value_all(&mut val, secrets);
+                    redacted.entry(new_key).or_insert(val);
                 }
+                *value = Value::Object(redacted);
             }
             _ => {}
         }
@@ -169,5 +185,62 @@ mod tests {
         assert!(!redacted.contains("sk-proj"));
         assert!(!redacted.contains("ghp_"));
         assert!(!redacted.contains("AKIAIOSFODNN7EXAMPLE"));
+    }
+
+    #[test]
+    fn test_value_redaction_covers_object_keys_explicit() {
+        let secrets = vec!["super_secret_db_password".to_string()];
+
+        let mut payload = json!({
+            "super_secret_db_password": "rotation notes",
+            "metadata": { "safe_key": "untouched" }
+        });
+
+        SecretRedactor::redact_value(&mut payload, &secrets);
+
+        assert_eq!(payload["[REDACTED]"], "rotation notes");
+        assert_eq!(payload["metadata"]["safe_key"], "untouched");
+        assert!(payload.get("super_secret_db_password").is_none());
+    }
+
+    #[test]
+    fn test_value_redaction_covers_object_keys_pattern_fallback() {
+        // Production shape: runtime tool outputs and mission events call
+        // redact_value_all with an empty explicit list and rely on the
+        // pattern fallback. Keys carrying credential-shaped values must be
+        // redacted through that path as well.
+        let mut payload = json!({
+            "sk-ant-api03-abcdef123456": "revoked",
+            "nested": { "ghp_123456789012345678901234567890": "leaked" },
+            "safe_key": "untouched"
+        });
+
+        SecretRedactor::redact_value_all(&mut payload, &[]);
+
+        assert_eq!(payload["[REDACTED_API_KEY]"], "revoked");
+        assert_eq!(payload["nested"]["[REDACTED_GH_TOKEN]"], "leaked");
+        assert_eq!(payload["safe_key"], "untouched");
+        assert!(payload.get("sk-ant-api03-abcdef123456").is_none());
+        assert!(payload["nested"]
+            .get("ghp_123456789012345678901234567890")
+            .is_none());
+    }
+
+    #[test]
+    fn test_redacted_key_collision_merges_first_wins() {
+        let secrets = vec!["alpha_secret".to_string(), "beta_secret".to_string()];
+
+        let mut payload = json!({
+            "alpha_secret": "first",
+            "beta_secret": "second",
+            "safe_key": "untouched"
+        });
+
+        SecretRedactor::redact_value(&mut payload, &secrets);
+
+        let obj = payload.as_object().unwrap();
+        assert_eq!(obj.len(), 2);
+        assert_eq!(obj["[REDACTED]"], "first");
+        assert_eq!(obj["safe_key"], "untouched");
     }
 }
