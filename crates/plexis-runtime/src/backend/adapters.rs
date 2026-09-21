@@ -1,7 +1,9 @@
 //! Future External Coding CLI Backend Adapter Stubs & Specifications
 //!
 //! Provides concrete adapter specifications and runtime stubs for commercial and
-//! open-source external coding CLI agents (Claude Code, OpenAI Codex CLI, Gemini CLI, OpenCode).
+//! open-source external coding CLI agents (OpenAI Codex CLI, OpenCode).
+//! Fully implemented CLI backends live in dedicated modules (see `gemini/`,
+//! `claude/`).
 //!
 //! These adapters demonstrate how future CLI agents plug into the Plexis AgentBackend
 //! architecture without modifying the core runtime.
@@ -24,49 +26,6 @@ fn check_binary_on_path(binary_name: &str) -> bool {
         }
     }
     false
-}
-
-/// Adapter specification and stub for Anthropic's Claude Code CLI (`claude`).
-///
-/// Execution protocol:
-/// - Command: `claude --print --output-format json` or MCP stream over stdin/stdout
-/// - Workspace: Passed via `--cd <WORKSPACE>` or process working directory
-/// - Prompt: Passed via standard input or `--prompt <OBJECTIVE>`
-pub struct ClaudeCodeBackend;
-
-#[async_trait]
-impl AgentBackend for ClaudeCodeBackend {
-    fn id(&self) -> &str {
-        "claude_code"
-    }
-
-    fn display_name(&self) -> &str {
-        "Anthropic Claude Code CLI"
-    }
-
-    fn is_available(&self) -> bool {
-        check_binary_on_path("claude")
-    }
-
-    async fn execute(
-        &self,
-        _request: &ExecutionRequest,
-        _event_sender: Option<mpsc::Sender<ExecutionEvent>>,
-    ) -> Result<ExecutionResult, RuntimeError> {
-        if !self.is_available() {
-            return Err(RuntimeError::InvalidCommand(
-                "Claude Code CLI (`claude`) is not installed on PATH. Please install Claude Code or use the fake agent adapter.".to_string(),
-            ));
-        }
-        Err(RuntimeError::InvalidCommand(
-            "Claude Code CLI adapter is installed on PATH but credential-gated for live execution."
-                .to_string(),
-        ))
-    }
-
-    async fn cancel(&self, _execution_id: &ExecutionId) -> Result<(), RuntimeError> {
-        Ok(())
-    }
 }
 
 /// Adapter specification and stub for OpenAI Codex CLI (`codex`).

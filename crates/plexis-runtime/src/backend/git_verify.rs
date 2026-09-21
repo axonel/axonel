@@ -1,7 +1,8 @@
 //! Independent Git Provenance Verifier
 //!
-//! Independently verifies Git repository status, changed files, and commits
-//! on disk before and after external agent execution, rather than trusting
+//! Shared, backend-agnostic Git verification used by every external coding
+//! agent backend. Verifies repository status, changed files, and commits on
+//! disk before and after external agent execution, rather than trusting
 //! model text output.
 
 use std::path::Path;

@@ -10,7 +10,7 @@ This document provides a transparent accounting of Axonel's operational assumpti
 | :--- | :--- | :--- | :--- |
 | **Google Gemini CLI** (`gemini_cli`) | **Tier 1 (Production)** | **Production-Verified** | Full lifecycle verified: worktree isolation, headless execution, out-of-band test verification, review package, human acceptance, and Git integration. Requires `gemini` CLI installed with valid credentials (`gemini auth login` or `GEMINI_API_KEY`). |
 | **Fake Agent** (`fake_agent`) | **Tier 1 (Test / CI)** | **Fully Verified** | Deterministic local test double for offline regression testing, demonstration, and CI/CD pipelines. |
-| **Anthropic Claude Code** (`claude_code`) | Tier 3 (Experimental) | Scaffold Stub | Interface stub registered in registry; live execution under development. |
+| **Anthropic Claude Code** (`claude_code`) | Tier 2 (Implemented, Certification Pending) | Worktree + POSIX PGID | Full adapter implemented: stream-json stream translation, capability probing, permission-mode translation from requested capabilities, shared Git verification. Pending live Linux validation of the real `claude` binary path before Tier 1 certification. |
 | **OpenAI Codex / Aider** (`codex`) | Tier 3 (Experimental) | Scaffold Stub | Interface stub registered; not certified for live production execution. |
 | **Local OpenCode** (`opencode`) | Tier 3 (Experimental) | Scaffold Stub | Interface stub registered; requires local Ollama server tooling. |
 
