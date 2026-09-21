@@ -69,11 +69,41 @@ impl SecretRedactor {
         Self::redact_patterns(&text_redacted)
     }
 
+    /// Inserts `value` under a redacted placeholder key, disambiguating with a
+    /// deterministic `#N` suffix (inserted before the closing bracket:
+    /// `[REDACTED]`, `[REDACTED#2]`, …) when the placeholder is already
+    /// occupied, so redaction never silently drops structured data.
+    /// Slot-finding also walks past pre-existing literal `<placeholder>#N`
+    /// keys in the payload.
+    fn insert_placeholder_preserving(
+        map: &mut serde_json::Map<String, Value>,
+        placeholder: String,
+        value: Value,
+    ) {
+        if !map.contains_key(placeholder.as_str()) {
+            map.insert(placeholder, value);
+            return;
+        }
+        let mut n = 2;
+        loop {
+            let candidate = match placeholder.strip_suffix(']') {
+                Some(base) => format!("{}#{}]", base, n),
+                None => format!("{}#{}", placeholder, n),
+            };
+            if !map.contains_key(candidate.as_str()) {
+                map.insert(candidate, value);
+                return;
+            }
+            n += 1;
+        }
+    }
+
     /// Recursively redacts sensitive secrets in-place within a JSON value using explicit list.
     /// Object keys are redacted along with values: a credential that ends up in a key
     /// position (e.g. `{"<token>": "revoked"}` in tool output) must not survive into
-    /// persisted events or model-visible payloads. When two distinct raw keys redact to
-    /// the same placeholder, the entries merge and the first processed value wins.
+    /// persisted events or model-visible payloads. When distinct raw keys redact to the
+    /// same placeholder, they are disambiguated with a deterministic `#N` suffix so no
+    /// entry is dropped.
     pub fn redact_value(value: &mut Value, secrets: &[String]) {
         if secrets.is_empty() {
             return;
@@ -93,7 +123,7 @@ impl SecretRedactor {
                 for (key, mut val) in std::mem::take(map) {
                     let new_key = Self::redact_text(&key, secrets);
                     Self::redact_value(&mut val, secrets);
-                    redacted.entry(new_key).or_insert(val);
+                    Self::insert_placeholder_preserving(&mut redacted, new_key, val);
                 }
                 *value = Value::Object(redacted);
             }
@@ -103,9 +133,9 @@ impl SecretRedactor {
 
     /// Recursively redacts sensitive secrets and patterns in-place within a JSON value.
     /// Object keys are redacted along with values, including through the automatic
-    /// pattern fallback that runs when the explicit secret list is empty. When two
-    /// distinct raw keys redact to the same placeholder, the entries merge and the
-    /// first processed value wins.
+    /// pattern fallback that runs when the explicit secret list is empty. When distinct
+    /// raw keys redact to the same placeholder, they are disambiguated with a
+    /// deterministic `#N` suffix so no entry is dropped.
     pub fn redact_value_all(value: &mut Value, secrets: &[String]) {
         match value {
             Value::String(s) => {
@@ -121,7 +151,7 @@ impl SecretRedactor {
                 for (key, mut val) in std::mem::take(map) {
                     let new_key = Self::redact_all(&key, secrets);
                     Self::redact_value_all(&mut val, secrets);
-                    redacted.entry(new_key).or_insert(val);
+                    Self::insert_placeholder_preserving(&mut redacted, new_key, val);
                 }
                 *value = Value::Object(redacted);
             }
@@ -227,20 +257,66 @@ mod tests {
     }
 
     #[test]
-    fn test_redacted_key_collision_merges_first_wins() {
-        let secrets = vec!["alpha_secret".to_string(), "beta_secret".to_string()];
+    fn test_redacted_key_collision_preserves_all_entries() {
+        let secrets = vec![
+            "alpha_secret".to_string(),
+            "beta_secret".to_string(),
+            "gamma_secret".to_string(),
+        ];
 
         let mut payload = json!({
             "alpha_secret": "first",
             "beta_secret": "second",
+            "gamma_secret": "third",
             "safe_key": "untouched"
         });
 
         SecretRedactor::redact_value(&mut payload, &secrets);
 
         let obj = payload.as_object().unwrap();
-        assert_eq!(obj.len(), 2);
+        assert_eq!(obj.len(), 4);
         assert_eq!(obj["[REDACTED]"], "first");
+        assert_eq!(obj["[REDACTED#2]"], "second");
+        assert_eq!(obj["[REDACTED#3]"], "third");
         assert_eq!(obj["safe_key"], "untouched");
+    }
+
+    #[test]
+    fn test_redacted_key_collision_preserved_on_pattern_fallback_path() {
+        // Production shape: redact_value_all with an empty explicit list. Two
+        // distinct credential-shaped keys collapse onto the same pattern
+        // placeholder and must both survive.
+        let mut payload = json!({
+            "sk-ant-api03-abcdef123456": "first",
+            "sk-ant-api03-uvwxyz789012": "second"
+        });
+
+        SecretRedactor::redact_value_all(&mut payload, &[]);
+
+        let obj = payload.as_object().unwrap();
+        assert_eq!(obj.len(), 2);
+        assert_eq!(obj["[REDACTED_API_KEY]"], "first");
+        assert_eq!(obj["[REDACTED_API_KEY#2]"], "second");
+    }
+
+    #[test]
+    fn test_redacted_key_slot_finding_walks_preexisting_literals() {
+        // A payload that already carries literal placeholder-shaped keys must
+        // not cause the redacted entry to overwrite or drop anything.
+        let secrets = vec!["alpha_secret".to_string()];
+
+        let mut payload = json!({
+            "[REDACTED]": "legitimate literal",
+            "[REDACTED#2]": "another literal",
+            "alpha_secret": "secret entry"
+        });
+
+        SecretRedactor::redact_value(&mut payload, &secrets);
+
+        let obj = payload.as_object().unwrap();
+        assert_eq!(obj.len(), 3);
+        assert_eq!(obj["[REDACTED]"], "legitimate literal");
+        assert_eq!(obj["[REDACTED#2]"], "another literal");
+        assert_eq!(obj["[REDACTED#3]"], "secret entry");
     }
 }
