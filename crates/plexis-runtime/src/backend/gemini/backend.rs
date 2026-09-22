@@ -10,10 +10,10 @@ use plexis_core::ids::ExecutionId;
 use plexis_core::protocol::{ExecutionEvent, ExecutionRequest, ExecutionResult};
 use tokio::sync::mpsc;
 
-use super::git::GitVerifier;
 use super::probe::{GeminiAuthStatus, GeminiCapabilityProbe};
 use super::stream::GeminiStreamParser;
 use crate::agent_host::LocalAgentHost;
+use crate::backend::git_verify::GitVerifier;
 use crate::backend::AgentBackend;
 use crate::error::RuntimeError;
 

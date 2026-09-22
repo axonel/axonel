@@ -9,19 +9,22 @@
 //! - `Tool`: Individual capability exposed to an agent (filesystem, shell, git)
 
 pub mod adapters;
+pub mod claude;
 pub mod fake;
 pub mod gemini;
+pub mod git_verify;
 
 use std::collections::HashMap;
 use std::sync::Arc;
 
 use async_trait::async_trait;
+pub use claude::{ClaudeAuthStatus, ClaudeCapabilities, ClaudeCapabilityProbe, ClaudeCodeBackend};
 pub use gemini::{GeminiAuthStatus, GeminiCapabilities, GeminiCapabilityProbe, GeminiCliBackend};
 use plexis_core::ids::ExecutionId;
 use plexis_core::protocol::{ExecutionEvent, ExecutionRequest, ExecutionResult};
 use tokio::sync::mpsc;
 
-pub use adapters::{ClaudeCodeBackend, CodexBackend, OpenCodeBackend};
+pub use adapters::{CodexBackend, OpenCodeBackend};
 pub use fake::FakeAgentBackend;
 
 use crate::error::RuntimeError;
@@ -62,11 +65,11 @@ impl BackendRegistry {
         }
     }
 
-    /// Creates a registry initialized with all known standard backends (fake + CLI stubs).
+    /// Creates a registry initialized with all known standard backends (fake + CLI agents).
     pub fn with_defaults() -> Self {
         let mut reg = Self::new();
         reg.register(Arc::new(FakeAgentBackend::with_default_host()));
-        reg.register(Arc::new(ClaudeCodeBackend));
+        reg.register(Arc::new(ClaudeCodeBackend::new()));
         reg.register(Arc::new(CodexBackend));
         reg.register(Arc::new(GeminiCliBackend::default()));
         reg.register(Arc::new(OpenCodeBackend));
@@ -108,7 +111,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_cli_adapter_stubs_report_unavailability_when_missing() {
-        let claude = ClaudeCodeBackend;
+        let claude = ClaudeCodeBackend::new();
         assert_eq!(claude.id(), "claude_code");
         assert_eq!(claude.display_name(), "Anthropic Claude Code CLI");
 
