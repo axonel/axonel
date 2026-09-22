@@ -13,7 +13,7 @@
   <a href="https://github.com/axonel/axonel/actions/workflows/ci.yml"><img src="https://github.com/axonel/axonel/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
   <a href="https://github.com/axonel/axonel/releases/tag/v0.1.1"><img src="https://img.shields.io/badge/release-v0.1.1-brightgreen.svg" alt="Release"></a>
   <a href="https://www.rust-lang.org"><img src="https://img.shields.io/badge/rust-1.88%2B-orange.svg" alt="Rust"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT%2FApache--2.0-blue.svg" alt="License"></a>
+  <a href="#license"><img src="https://img.shields.io/badge/license-MIT%2FApache--2.0-blue.svg" alt="License"></a>
   <a href="docs/limitations.md"><img src="https://img.shields.io/badge/platform-Linux%20x86__64-blue.svg" alt="Platform"></a>
 </p>
 
@@ -218,6 +218,10 @@ Axonel is designed as an API-first local supervisor daemon backed by SQLite (WAL
 - **Platform Certification:** Certified strictly for **Linux x86_64** (`x86_64-unknown-linux-gnu`).
 
 ---
+
+## License
+
+Axonel is dual-licensed under the [MIT License](LICENSE-MIT) and [Apache License, Version 2.0](LICENSE-APACHE), at your option.
 
 ## Contributing
 
