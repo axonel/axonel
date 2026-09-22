@@ -192,6 +192,8 @@ async fn test_stagnation_detection_and_human_escalation() {
         .unwrap();
     assert_eq!(resolved.state, MissionState::Replanning);
     assert!(resolved.escalation_reason.is_none());
+    // Mission should be running after replan resolution
+    assert!(engine.is_running(&mission.id).await);
 }
 
 #[tokio::test]
@@ -237,4 +239,177 @@ async fn test_reconciler_discovers_active_missions_on_startup() {
         .filter(|e| e.event_type == "mission.reconciled_resumable")
         .collect();
     assert_eq!(reconciled_events.len(), 1);
+}
+
+#[tokio::test]
+async fn test_escalation_resolution_restores_running_missions() {
+    let store = Arc::new(SqliteStore::open_in_memory().unwrap());
+    let engine = MissionEngine::new(store.clone());
+
+    // Create and start a mission
+    let mission = engine
+        .create_mission(
+            "Test Mission",
+            "Objective",
+            None,
+            Some(MissionBudget::default()),
+            None,
+        )
+        .await
+        .unwrap();
+
+    // Start mission - should be in running_missions
+    let started = engine.start_mission(mission.id).await.unwrap();
+    assert_eq!(started.state, MissionState::Planning);
+    assert!(engine.is_running(&mission.id).await);
+
+    // Escalate to human - should remove from running_missions
+    let escalated = engine
+        .escalate_human(&mission.id, "Test escalation")
+        .await
+        .unwrap();
+    assert_eq!(escalated.state, MissionState::NeedsHuman);
+    assert!(!engine.is_running(&mission.id).await);
+
+    // Resolve with resume - should reinsert into running_missions
+    let resumed = engine
+        .resolve_escalation(&mission.id, "resume")
+        .await
+        .unwrap();
+    assert_eq!(resumed.state, MissionState::Running);
+    assert!(
+        engine.is_running(&mission.id).await,
+        "Mission should be running after resume resolution"
+    );
+}
+
+#[tokio::test]
+async fn test_escalation_resolution_replan_restores_running_missions() {
+    let store = Arc::new(SqliteStore::open_in_memory().unwrap());
+    let engine = MissionEngine::new(store.clone());
+
+    // Create and start a mission
+    let mission = engine
+        .create_mission(
+            "Test Mission",
+            "Objective",
+            None,
+            Some(MissionBudget::default()),
+            None,
+        )
+        .await
+        .unwrap();
+
+    // Start mission - should be in running_missions
+    let started = engine.start_mission(mission.id).await.unwrap();
+    assert_eq!(started.state, MissionState::Planning);
+    assert!(engine.is_running(&mission.id).await);
+
+    // Escalate to human - should remove from running_missions
+    let escalated = engine
+        .escalate_human(&mission.id, "Test escalation")
+        .await
+        .unwrap();
+    assert_eq!(escalated.state, MissionState::NeedsHuman);
+    assert!(!engine.is_running(&mission.id).await);
+
+    // Resolve with replan - should reinsert into running_missions
+    let replanned = engine
+        .resolve_escalation(&mission.id, "replan")
+        .await
+        .unwrap();
+    assert_eq!(replanned.state, MissionState::Replanning);
+    assert!(
+        engine.is_running(&mission.id).await,
+        "Mission should be running after replan resolution"
+    );
+}
+
+#[tokio::test]
+async fn test_escalation_resolution_cancel_does_not_restore_running_missions() {
+    let store = Arc::new(SqliteStore::open_in_memory().unwrap());
+    let engine = MissionEngine::new(store.clone());
+
+    // Create and start a mission
+    let mission = engine
+        .create_mission(
+            "Test Mission",
+            "Objective",
+            None,
+            Some(MissionBudget::default()),
+            None,
+        )
+        .await
+        .unwrap();
+
+    // Start mission - should be in running_missions
+    let started = engine.start_mission(mission.id).await.unwrap();
+    assert_eq!(started.state, MissionState::Planning);
+    assert!(engine.is_running(&mission.id).await);
+
+    // Escalate to human - should remove from running_missions
+    let escalated = engine
+        .escalate_human(&mission.id, "Test escalation")
+        .await
+        .unwrap();
+    assert_eq!(escalated.state, MissionState::NeedsHuman);
+    assert!(!engine.is_running(&mission.id).await);
+
+    // Resolve with cancel - should NOT reinsert into running_missions
+    let cancelled = engine
+        .resolve_escalation(&mission.id, "cancel")
+        .await
+        .unwrap();
+    assert_eq!(cancelled.state, MissionState::Cancelled);
+    assert!(
+        !engine.is_running(&mission.id).await,
+        "Mission should NOT be running after cancel"
+    );
+}
+
+#[tokio::test]
+async fn test_escalation_resolution_allows_subsequent_step_execution() {
+    let store = Arc::new(SqliteStore::open_in_memory().unwrap());
+    let engine = MissionEngine::new(store.clone());
+
+    // Create and start a mission
+    let mission = engine
+        .create_mission(
+            "Test Mission",
+            "Objective",
+            None,
+            Some(MissionBudget::default()),
+            None,
+        )
+        .await
+        .unwrap();
+
+    // Start mission
+    let started = engine.start_mission(mission.id).await.unwrap();
+    assert_eq!(started.state, MissionState::Planning);
+    assert!(engine.is_running(&mission.id).await);
+
+    // Escalate to human
+    let escalated = engine
+        .escalate_human(&mission.id, "Test escalation")
+        .await
+        .unwrap();
+    assert_eq!(escalated.state, MissionState::NeedsHuman);
+    assert!(!engine.is_running(&mission.id).await);
+
+    // Resolve with resume
+    let resumed = engine
+        .resolve_escalation(&mission.id, "resume")
+        .await
+        .unwrap();
+    assert_eq!(resumed.state, MissionState::Running);
+    assert!(engine.is_running(&mission.id).await);
+
+    // Verify that a subsequent step can be executed (background loop would call this)
+    let stepped = engine.step_mission(mission.id).await.unwrap();
+    // The step should not exit early because the mission is running
+    assert!(stepped.state != MissionState::NeedsHuman);
+    
+    // Verify the mission is still marked as running after the step
+    assert!(engine.is_running(&mission.id).await);
 }

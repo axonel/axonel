@@ -269,9 +269,11 @@ where
             }
             "replan" => {
                 let _ = mission.state.transition_to(MissionState::Replanning);
+                self.running_missions.lock().await.insert(*mission_id);
             }
             _ => {
                 let _ = mission.state.transition_to(MissionState::Running);
+                self.running_missions.lock().await.insert(*mission_id);
             }
         }
 

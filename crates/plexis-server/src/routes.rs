@@ -3713,6 +3713,41 @@ async fn resolve_mission(
             other => ApiError::new(StatusCode::INTERNAL_SERVER_ERROR, other.to_string()),
         })?;
 
+    // Spawn background loop for continuing decisions (resume/replan)
+    // Only spawn if the mission is now running to avoid duplicate loops on repeated resolution
+    if req.decision.to_lowercase() != "cancel" && state.mission_engine.is_running(&mission.id).await {
+        let engine = state.mission_engine.clone();
+        let m_id = mission.id;
+        tokio::spawn(async move {
+            tracing::info!(
+                "[BackgroundMission] Auto-stepping resolved mission {}",
+                m_id
+            );
+            loop {
+                if !engine.is_running(&m_id).await {
+                    break;
+                }
+                match engine.step_mission(m_id).await {
+                    Ok(m) => {
+                        if m.state.is_terminal()
+                            || m.state == MissionState::AwaitingAcceptance
+                            || m.state == MissionState::Accepted
+                            || m.state == MissionState::NeedsHuman
+                            || m.state == MissionState::Waiting
+                        {
+                            break;
+                        }
+                    }
+                    Err(e) => {
+                        tracing::warn!("[BackgroundMission] Step error for {}: {}", m_id, e);
+                        break;
+                    }
+                }
+                tokio::time::sleep(tokio::time::Duration::from_millis(300)).await;
+            }
+        });
+    }
+
     Ok(Json(mission))
 }
 
