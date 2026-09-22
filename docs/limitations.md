@@ -10,12 +10,12 @@ This document provides a transparent accounting of Axonel's operational assumpti
 | :--- | :--- | :--- | :--- |
 | **Google Gemini CLI** (`gemini_cli`) | **Tier 1 (Production)** | **Production-Verified** | Full lifecycle verified: worktree isolation, headless execution, out-of-band test verification, review package, human acceptance, and Git integration. Requires `gemini` CLI installed with valid credentials (`gemini auth login` or `GEMINI_API_KEY`). |
 | **Fake Agent** (`fake_agent`) | **Tier 1 (Test / CI)** | **Fully Verified** | Deterministic local test double for offline regression testing, demonstration, and CI/CD pipelines. |
-| **Anthropic Claude Code** (`claude_code`) | Tier 2 (Implemented, Certification Pending) | Worktree + POSIX PGID | Full adapter implemented: stream-json stream translation, capability probing, permission-mode translation from requested capabilities, shared Git verification. Pending live Linux validation of the real `claude` binary path before Tier 1 certification. |
+| **Anthropic Claude Code** (`claude_code`) | **Tier 1 (Production)** | **Production-Verified** | Full adapter implemented: stream-json stream translation, capability probing, permission-mode translation from requested capabilities, PGID-isolated subprocess supervision, shared Git verification. Requires `claude` CLI installed with valid credentials (`ANTHROPIC_API_KEY` or `CLAUDE_CODE_OAUTH_TOKEN`). |
 | **OpenAI Codex / Aider** (`codex`) | Tier 3 (Experimental) | Scaffold Stub | Interface stub registered; not certified for live production execution. |
 | **Local OpenCode** (`opencode`) | Tier 3 (Experimental) | Scaffold Stub | Interface stub registered; requires local Ollama server tooling. |
 
 > [!WARNING]
-> Google Gemini CLI (`gemini_cli`) and the deterministic Fake Agent (`fake_agent`) are the only backends certified for autonomous execution in v0.1.x.
+> Google Gemini CLI (`gemini_cli`), Anthropic Claude Code (`claude_code`), and the deterministic Fake Agent (`fake_agent`) are the backends certified for autonomous execution in v0.1.x.
 
 ---
 
