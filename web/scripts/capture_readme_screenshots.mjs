@@ -1,7 +1,7 @@
 /**
- * Axonel README Screenshot Generator
+ * Sentinel README Screenshot Generator
  *
- * Runs the real Axonel server, launches Playwright Chromium, drives the full
+ * Runs the real Sentinel server, launches Playwright Chromium, drives the full
  * autonomous mission lifecycle, and captures focused, high-resolution screenshots
  * for the README and documentation reflecting the latest UI refactor and brand identity.
  */
@@ -13,10 +13,10 @@ import { chromium } from "@playwright/test";
 
 const PORT = 4088;
 const BASE_URL = `http://127.0.0.1:${PORT}`;
-const DB_PATH = `/tmp/axonel_screenshots_${Date.now()}.db`;
+const DB_PATH = `/tmp/sentinel_screenshots_${Date.now()}.db`;
 const projectRoot = path.resolve(path.dirname(new URL(import.meta.url).pathname), "../..");
-const releaseBinary = path.join(projectRoot, "target/release/axonel");
-const debugBinary = path.join(projectRoot, "target/debug/axonel");
+const releaseBinary = path.join(projectRoot, "target/release/sentinel");
+const debugBinary = path.join(projectRoot, "target/debug/sentinel");
 const binToUse = fs.existsSync(releaseBinary) ? releaseBinary : debugBinary;
 
 const outDirHero = path.join(projectRoot, "docs/readme-assets/hero");
@@ -25,7 +25,7 @@ fs.mkdirSync(outDirHero, { recursive: true });
 fs.mkdirSync(outDirScreens, { recursive: true });
 
 console.log("========================================================================");
-console.log("   AXONEL README SCREENSHOT GENERATOR (REFRACTORED UI)");
+console.log("   SENTINEL README SCREENSHOT GENERATOR (REFRACTORED UI)");
 console.log(`   Binary in use: ${binToUse}`);
 console.log("========================================================================\n");
 
@@ -33,13 +33,13 @@ let serverProc = null;
 const tempDirs = [];
 
 function createTargetRepo() {
-  const dir = `/tmp/axonel_screens_repo_${Date.now()}`;
+  const dir = `/tmp/sentinel_screens_repo_${Date.now()}`;
   fs.mkdirSync(dir, { recursive: true });
   tempDirs.push(dir);
 
   execFileSync("git", ["init", "-b", "main"], { cwd: dir });
-  execFileSync("git", ["config", "user.name", "Axonel Supervisor Agent"], { cwd: dir });
-  execFileSync("git", ["config", "user.email", "agent@axonel.local"], { cwd: dir });
+  execFileSync("git", ["config", "user.name", "Sentinel Supervisor Agent"], { cwd: dir });
+  execFileSync("git", ["config", "user.email", "agent@sentinel.local"], { cwd: dir });
 
   fs.mkdirSync(path.join(dir, "src"), { recursive: true });
   fs.writeFileSync(
@@ -58,7 +58,7 @@ function createTargetRepo() {
 }
 
 function startServer() {
-  console.log(`Starting Axonel server on ${BASE_URL}...`);
+  console.log(`Starting Sentinel server on ${BASE_URL}...`);
   const env = {
     ...process.env,
     PORT: PORT.toString(),
@@ -127,7 +127,7 @@ async function run() {
       await dialog.accept();
     });
 
-    console.log("Navigating to Axonel UI...");
+    console.log("Navigating to Sentinel UI...");
     await page.goto(BASE_URL, { waitUntil: "networkidle" });
 
     // Register Workspace

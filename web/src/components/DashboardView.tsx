@@ -35,7 +35,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
     return (
       <div className="flex items-center justify-center min-h-[50vh]">
         <div className="flex flex-col items-center gap-3">
-          <RefreshCw className="w-5 h-5 animate-spin text-axonel-lime" />
+          <RefreshCw className="w-5 h-5 animate-spin text-sentinel-lime" />
           <span className="text-xs font-mono text-gray-400">Loading system state...</span>
         </div>
       </div>
@@ -158,12 +158,12 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           <div className="text-[10px] text-gray-500 mt-0.5 font-sans">parallel leases</div>
         </Panel>
 
-        <Panel dense className={`bg-surface-card ${s.busy_agents > 0 ? 'border-axonel-lime/40' : ''}`}>
+        <Panel dense className={`bg-surface-card ${s.busy_agents > 0 ? 'border-sentinel-lime/40' : ''}`}>
           <div className="flex items-center justify-between text-gray-400 mb-1.5">
             <span className="text-[10px] font-sans font-semibold uppercase tracking-wider">Busy Agents</span>
-            <Cpu className="w-3.5 h-3.5 text-axonel-lime" />
+            <Cpu className="w-3.5 h-3.5 text-sentinel-lime" />
           </div>
-          <div className={`text-xl sm:text-2xl font-bold font-mono ${s.busy_agents > 0 ? 'text-axonel-lime' : 'text-gray-100'}`}>
+          <div className={`text-xl sm:text-2xl font-bold font-mono ${s.busy_agents > 0 ? 'text-sentinel-lime' : 'text-gray-100'}`}>
             {s.busy_agents}
           </div>
           <div className="text-[10px] text-gray-500 mt-0.5 font-sans">
@@ -217,7 +217,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         <div className="lg:col-span-2 space-y-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Layers className="w-4 h-4 text-axonel-lime" />
+              <Layers className="w-4 h-4 text-sentinel-lime" />
               <h2 className="text-xs font-sans uppercase tracking-wider text-gray-300 font-semibold">
                 Recent Workflows
               </h2>
@@ -271,7 +271,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                       ID: {w.id.slice(0, 8)}...
                     </div>
                   </div>
-                  <div className="flex items-center gap-2 text-gray-500 group-hover:text-axonel-lime transition-colors shrink-0">
+                  <div className="flex items-center gap-2 text-gray-500 group-hover:text-sentinel-lime transition-colors shrink-0">
                     <span className="text-[11px] font-mono">
                       {new Date(w.created_at).toLocaleTimeString()}
                     </span>

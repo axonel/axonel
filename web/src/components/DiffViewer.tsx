@@ -119,7 +119,7 @@ export const DiffViewer: React.FC<DiffViewerProps> = ({
             onClick={() => setSelectedFile(null)}
             className={`px-2 py-0.5 rounded text-[11px] font-mono transition-colors select-none ${
               selectedFile === null
-                ? 'bg-surface-card text-axonel-lime border border-surface-border font-semibold'
+                ? 'bg-surface-card text-sentinel-lime border border-surface-border font-semibold'
                 : 'text-gray-400 hover:text-gray-200 hover:bg-surface-hover/50 border border-transparent'
             }`}
           >
@@ -131,7 +131,7 @@ export const DiffViewer: React.FC<DiffViewerProps> = ({
               onClick={() => setSelectedFile(chunk.filename)}
               className={`px-2 py-0.5 rounded font-mono text-[11px] truncate max-w-[200px] transition-colors select-none ${
                 selectedFile === chunk.filename
-                  ? 'bg-surface-card text-axonel-lime border border-surface-border font-semibold'
+                  ? 'bg-surface-card text-sentinel-lime border border-surface-border font-semibold'
                   : 'text-gray-400 hover:text-gray-200 hover:bg-surface-hover/50 border border-transparent'
               }`}
             >

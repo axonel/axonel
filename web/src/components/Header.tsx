@@ -48,67 +48,67 @@ export const Header: React.FC<HeaderProps> = ({
         return {
           title: 'Mission Control',
           subtitle: 'Durable long-horizon execution and human acceptance gates',
-          icon: <Target className="w-4 h-4 text-axonel-lime" />,
+          icon: <Target className="w-4 h-4 text-sentinel-lime" />,
         };
       case 'dashboard':
         return {
           title: 'Operations Dashboard',
           subtitle: 'Real-time control plane telemetry and system health',
-          icon: <Activity className="w-4 h-4 text-axonel-lime" />,
+          icon: <Activity className="w-4 h-4 text-sentinel-lime" />,
         };
       case 'workflows':
         return {
           title: 'Workflows & Task Graphs',
           subtitle: 'Autonomous DAG formulation, task leases, and state machines',
-          icon: <Layers className="w-4 h-4 text-axonel-lime" />,
+          icon: <Layers className="w-4 h-4 text-sentinel-lime" />,
         };
       case 'approvals':
         return {
           title: 'Human Governance & Approvals',
           subtitle: 'Verification checkpoints requiring manual review or escalation',
-          icon: <ShieldCheck className="w-4 h-4 text-axonel-lime" />,
+          icon: <ShieldCheck className="w-4 h-4 text-sentinel-lime" />,
         };
       case 'timeline':
         return {
           title: 'Live Event Timeline',
           subtitle: 'Authoritative SSE event stream with monotonic sequence cursor',
-          icon: <Radio className="w-4 h-4 text-axonel-lime" />,
+          icon: <Radio className="w-4 h-4 text-sentinel-lime" />,
         };
       case 'agents':
         return {
           title: 'Agent Fleet Governance',
           subtitle: 'Multi-agent role attribution, active leases, and inter-agent messages',
-          icon: <Bot className="w-4 h-4 text-axonel-lime" />,
+          icon: <Bot className="w-4 h-4 text-sentinel-lime" />,
         };
       case 'memory':
         return {
           title: 'Memory & Context Store',
           subtitle: 'Hierarchical memory scopes across global, workflow, agent, and task levels',
-          icon: <Database className="w-4 h-4 text-axonel-lime" />,
+          icon: <Database className="w-4 h-4 text-sentinel-lime" />,
         };
       case 'tools':
         return {
           title: 'Sandboxed Tool Registry',
           subtitle: 'Confinement policies, environment stripping, and JSON schemas',
-          icon: <Wrench className="w-4 h-4 text-axonel-lime" />,
+          icon: <Wrench className="w-4 h-4 text-sentinel-lime" />,
         };
       case 'providers':
         return {
           title: 'Inference & Agent Hosts',
           subtitle: 'LLM inference endpoints and external process control adapters',
-          icon: <Server className="w-4 h-4 text-axonel-lime" />,
+          icon: <Server className="w-4 h-4 text-sentinel-lime" />,
         };
       case 'usage':
         return {
           title: 'Usage & Cost Attribution',
           subtitle: 'Token expenditure, execution budgets, and retention pruning',
-          icon: <DollarSign className="w-4 h-4 text-axonel-lime" />,
+          icon: <DollarSign className="w-4 h-4 text-sentinel-lime" />,
         };
       default:
         return {
           title: 'Control Plane',
-          subtitle: 'Axonel autonomous supervisor',
-          icon: <Target className="w-4 h-4 text-axonel-lime" />,
+          subtitle: 'Sentinel autonomous supervisor',
+          icon: <Target className="w-4 h-4 text-sentinel-lime" />,
         };
     }
   };

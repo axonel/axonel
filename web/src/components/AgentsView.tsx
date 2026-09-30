@@ -107,7 +107,7 @@ export const AgentsView: React.FC<AgentsViewProps> = ({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-surface-border">
         <div>
           <div className="flex items-center gap-2">
-            <Bot className="w-4 h-4 text-axonel-lime" />
+            <Bot className="w-4 h-4 text-sentinel-lime" />
             <h1 className="text-base sm:text-lg font-bold text-gray-100 tracking-tight font-sans">
               Agent Fleet Governance
             </h1>
@@ -165,14 +165,14 @@ export const AgentsView: React.FC<AgentsViewProps> = ({
                     >
                       <Td className="text-gray-500 pl-3.5 pr-0">
                         {isSelected ? (
-                          <ChevronDown className="w-3.5 h-3.5 text-axonel-lime" />
+                          <ChevronDown className="w-3.5 h-3.5 text-sentinel-lime" />
                         ) : (
                           <ChevronRight className="w-3.5 h-3.5" />
                         )}
                       </Td>
                       <Td>
                         <div className="flex items-center gap-2.5">
-                          <div className="w-6 h-6 rounded bg-surface-base border border-surface-border flex items-center justify-center text-axonel-lime shrink-0">
+                          <div className="w-6 h-6 rounded bg-surface-base border border-surface-border flex items-center justify-center text-sentinel-lime shrink-0">
                             <Cpu className="w-3 h-3" />
                           </div>
                           <div>
@@ -263,7 +263,7 @@ export const AgentsView: React.FC<AgentsViewProps> = ({
                             onClick={() => setActiveMessageAgent(agent)}
                             variant="outline"
                             size="xs"
-                            icon={<MessageSquare className="w-3 h-3 text-axonel-lime" />}
+                            icon={<MessageSquare className="w-3 h-3 text-sentinel-lime" />}
                             className="text-[11px]"
                           >
                             <span>Message</span>
@@ -356,7 +356,7 @@ export const AgentsView: React.FC<AgentsViewProps> = ({
           onClose={() => setActiveMessageAgent(null)}
           title={
             <div className="flex items-center gap-2">
-              <MessageSquare className="w-4 h-4 text-axonel-lime" />
+              <MessageSquare className="w-4 h-4 text-sentinel-lime" />
               <span className="font-sans font-bold text-gray-100">
                 Message to {activeMessageAgent.display_name}
               </span>
