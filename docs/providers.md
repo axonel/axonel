@@ -1,6 +1,6 @@
 # Agent Providers & CLI Adapters
 
-Axonel decouples the supervisor and control plane from the underlying coding agent. You can run external CLI coding agents (like Google Gemini CLI), local LLMs, or deterministic mock agents for testing.
+Sentinel decouples the supervisor and control plane from the underlying coding agent. You can run external CLI coding agents (like Google Gemini CLI), local LLMs, or deterministic mock agents for testing.
 
 ---
 
@@ -18,7 +18,7 @@ Axonel decouples the supervisor and control plane from the underlying coding age
 
 ## 2. Gemini CLI Adapter
 
-The Gemini CLI adapter connects Axonel to Google's official `gemini` CLI tool.
+The Gemini CLI adapter connects Sentinel to Google's official `gemini` CLI tool.
 
 ### Prerequisites
 
@@ -30,17 +30,17 @@ The Gemini CLI adapter connects Axonel to Google's official `gemini` CLI tool.
 
 ### Execution Lifecycle
 
-1. **Worktree Provisioning:** Axonel provisions an isolated worktree at `.plexis/worktrees/<mission-id>`.
+1. **Worktree Provisioning:** Sentinel provisions an isolated worktree at `.plexis/worktrees/<mission-id>`.
 2. **Subprocess Invocation:** `LocalAgentHost` spawns the `gemini` binary into a dedicated POSIX process group (PGID).
-3. **Environment Scrubbing:** Sensitive host environment variables (e.g. `AXONEL_AUTH_TOKEN`, AWS credentials) are scrubbed before launching the subprocess.
-4. **Stream Parsing:** Stdout and stderr from the CLI are parsed in real time into structured events (tool calls, file edits, thinking steps) and streamed to the Axonel Web UI via Server-Sent Events (SSE).
-5. **Termination & Cleanup:** When the CLI exits or is cancelled, Axonel terminates the entire process group (`SIGTERM` -> `SIGKILL`), ensuring no orphan child processes remain.
+3. **Environment Scrubbing:** Sensitive host environment variables (e.g. `SENTINEL_AUTH_TOKEN`, AWS credentials) are scrubbed before launching the subprocess.
+4. **Stream Parsing:** Stdout and stderr from the CLI are parsed in real time into structured events (tool calls, file edits, thinking steps) and streamed to the Sentinel Web UI via Server-Sent Events (SSE).
+5. **Termination & Cleanup:** When the CLI exits or is cancelled, Sentinel terminates the entire process group (`SIGTERM` -> `SIGKILL`), ensuring no orphan child processes remain.
 
 ---
 
 ## 3. Deterministic Fake Agent (Offline Mode)
 
-For local development, CI/CD, and regression testing without incurring LLM costs or requiring internet access, Axonel includes `plexis-fake-agent`.
+For local development, CI/CD, and regression testing without incurring LLM costs or requiring internet access, Sentinel includes `plexis-fake-agent`.
 
 ### How It Works
 
@@ -51,7 +51,7 @@ For local development, CI/CD, and regression testing without incurring LLM costs
 cargo build -p plexis-fake-agent --bin fake_agent
 
 # Run a mission using the fake agent
-axonel mission create \
+sentinel mission create \
   --prompt "Fix math library add function" \
   --repo-path "/path/to/test-repo" \
   --stopping-condition "cargo test" \
@@ -69,8 +69,8 @@ The fake agent inspects the target repository, applies a pre-programmed fix to s
 | `GEMINI_API_KEY` | API key used for Google Gemini CLI or API adapter. | None (Required for Gemini) |
 | `OPENAI_API_KEY` | API key used for OpenAI adapter. | None (Required for OpenAI) |
 | `OLLAMA_BASE_URL` | Base URL for local Ollama server. | `http://localhost:11434` |
-| `AXONEL_AGENT_TIMEOUT` | Monotonic timeout in seconds for agent subprocesses. | `300` (5 minutes) |
-| `AXONEL_AGENT_BIN` | Override path to the external agent executable. | System `$PATH` resolution |
+| `SENTINEL_AGENT_TIMEOUT` | Monotonic timeout in seconds for agent subprocesses. | `300` (5 minutes) |
+| `SENTINEL_AGENT_BIN` | Override path to the external agent executable. | System `$PATH` resolution |
 
 ---
 
