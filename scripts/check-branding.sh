@@ -15,7 +15,7 @@ fi
 
 matches="$(
   git grep -n -I -i -e "$old_product_name" -- . \
-    | grep -vE 'github\.com/axonel/|raw\.githubusercontent\.com/axonel/|axonel\.dev|security@axonel\.dev' \
+    | grep -vE 'github\\.com/axonel/|raw\\.githubusercontent\\.com/axonel/|img\\.shields\\.io/github/stars/axonel/|axonel/sentinel|axonel\\.dev|security@axonel\\.dev' \
     || true
 )"
 
