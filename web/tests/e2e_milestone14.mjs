@@ -5,13 +5,13 @@ import path from "path";
 
 const PORT = 4027;
 const BASE_URL = `http://127.0.0.1:${PORT}`;
-const DB_PATH = `/tmp/axonel_m14_${Date.now()}.db`;
-const WORKLOAD_DIR = `/tmp/axonel_workload_m14_${Date.now()}`;
+const DB_PATH = `/tmp/sentinel_m14_${Date.now()}.db`;
+const WORKLOAD_DIR = `/tmp/sentinel_workload_m14_${Date.now()}`;
 const AUTH_TOKEN = "m14-multi-agent-token-998877";
 const ARTIFACTS_DIR = `/tmp/milestone14_artifacts_${Date.now()}`;
 
 console.log("================================================================");
-console.log("   AXONEL / PLEXIS MILESTONE 14: MULTI-AGENT COLLABORATION E2E  ");
+console.log("   SENTINEL / PLEXIS MILESTONE 14: MULTI-AGENT COLLABORATION E2E  ");
 console.log("================================================================");
 console.log(`[E2E Setup] Database path: ${DB_PATH}`);
 console.log(`[E2E Setup] Target workload repository: ${WORKLOAD_DIR}`);
@@ -24,7 +24,7 @@ fs.mkdirSync(ARTIFACTS_DIR, { recursive: true });
 // 1. Setup clean Git workload repository: config_loader crate with comment/whitespace bug
 execFileSync("git", ["init"], { cwd: WORKLOAD_DIR });
 execFileSync("git", ["config", "user.name", "Plexis Multi-Agent Tester"], { cwd: WORKLOAD_DIR });
-execFileSync("git", ["config", "user.email", "multi-agent@axonel.local"], { cwd: WORKLOAD_DIR });
+execFileSync("git", ["config", "user.email", "multi-agent@sentinel.local"], { cwd: WORKLOAD_DIR });
 fs.mkdirSync(path.join(WORKLOAD_DIR, "src"), { recursive: true });
 fs.mkdirSync(path.join(WORKLOAD_DIR, "tests"), { recursive: true });
 

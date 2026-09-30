@@ -4,12 +4,12 @@ import path from "path";
 
 const PORT = 4065;
 const BASE_URL = `http://127.0.0.1:${PORT}`;
-const DB_PATH = `/tmp/axonel_honest_val_${Date.now()}.db`;
+const DB_PATH = `/tmp/sentinel_honest_val_${Date.now()}.db`;
 const AUTH_TOKEN = "honest-val-token-secret-445566";
 const RESULTS_FILE = "/tmp/m18_validation_results.json";
 
 console.log("================================================================");
-console.log("   AXONEL MILESTONE 18: HONEST MULTI-RUN VALIDATION BENCHMARK   ");
+console.log("   SENTINEL MILESTONE 18: HONEST MULTI-RUN VALIDATION BENCHMARK   ");
 console.log("================================================================");
 console.log(`[Config] Database: ${DB_PATH}`);
 console.log(`[Config] Results:  ${RESULTS_FILE}`);
@@ -24,12 +24,12 @@ let serverProc = null;
 const tempDirs = [];
 
 function createTempRepo(prefix) {
-  const dir = `/tmp/axonel_val_${prefix}_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+  const dir = `/tmp/sentinel_val_${prefix}_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
   fs.mkdirSync(dir, { recursive: true });
   tempDirs.push(dir);
   execFileSync("git", ["init", "-b", "main"], { cwd: dir });
   execFileSync("git", ["config", "user.name", "Validation Bot"], { cwd: dir });
-  execFileSync("git", ["config", "user.email", "val@axonel.local"], { cwd: dir });
+  execFileSync("git", ["config", "user.email", "val@sentinel.local"], { cwd: dir });
   fs.mkdirSync(path.join(dir, "src"), { recursive: true });
   fs.mkdirSync(path.join(dir, "tests"), { recursive: true });
   fs.writeFileSync(path.join(dir, ".gitignore"), "/target\nCargo.lock\n.plexis/\n", "utf-8");
@@ -255,7 +255,7 @@ async function runBenchmark() {
   try {
     serverProc = startServer();
     await waitForServer();
-    console.log(`✓ Axonel Server active on ${BASE_URL}\n`);
+    console.log(`✓ Sentinel Server active on ${BASE_URL}\n`);
 
     for (const wl of WORKLOAD_DEFINITIONS) {
       console.log(`\n================================================================`);
@@ -323,20 +323,20 @@ async function runBenchmark() {
           `[Run ${rep} - Baseline A] Duration: ${rawDurationSec}s | Verified: ${rawVerificationPassed} | Clean Git State: ${!rawGitStatus} | Developer Actions: 4`
         );
 
-        // 2. BASELINE B: Axonel Autonomous Mission
-        console.log(`[Run ${rep} - Baseline B: Axonel Mission] Initializing...`);
-        const axonelDir = createTempRepo(`${wl.id}_axonel_rep${rep}`);
-        fs.writeFileSync(path.join(axonelDir, "Cargo.toml"), wl.cargoToml, "utf-8");
-        fs.writeFileSync(path.join(axonelDir, "src/lib.rs"), wl.libRs, "utf-8");
-        fs.writeFileSync(path.join(axonelDir, wl.testRs.path), wl.testRs.content, "utf-8");
-        execFileSync("git", ["add", "-A"], { cwd: axonelDir });
-        execFileSync("git", ["commit", "-m", "Initial baseline commit"], { cwd: axonelDir });
+        // 2. BASELINE B: Sentinel Autonomous Mission
+        console.log(`[Run ${rep} - Baseline B: Sentinel Mission] Initializing...`);
+        const sentinelDir = createTempRepo(`${wl.id}_sentinel_rep${rep}`);
+        fs.writeFileSync(path.join(sentinelDir, "Cargo.toml"), wl.cargoToml, "utf-8");
+        fs.writeFileSync(path.join(sentinelDir, "src/lib.rs"), wl.libRs, "utf-8");
+        fs.writeFileSync(path.join(sentinelDir, wl.testRs.path), wl.testRs.content, "utf-8");
+        execFileSync("git", ["add", "-A"], { cwd: sentinelDir });
+        execFileSync("git", ["commit", "-m", "Initial baseline commit"], { cwd: sentinelDir });
 
-        execFileSync(plexisCliPath, ["init", axonelDir, "--name", `${wl.id}_ws_rep${rep}`, "--db", DB_PATH], { stdio: "ignore" });
+        execFileSync(plexisCliPath, ["init", sentinelDir, "--name", `${wl.id}_ws_rep${rep}`, "--db", DB_PATH], { stdio: "ignore" });
         const wsListRes = await (await fetch(`${BASE_URL}/api/v1/workspaces`, { headers: { Authorization: `Bearer ${AUTH_TOKEN}` } })).json();
-        const wsObj = wsListRes.find((w) => w.canonical_path.includes(path.basename(axonelDir)));
+        const wsObj = wsListRes.find((w) => w.canonical_path.includes(path.basename(sentinelDir)));
 
-        const axonelStart = Date.now();
+        const sentinelStart = Date.now();
         const createRes = await fetch(`${BASE_URL}/api/v1/missions`, {
           method: "POST",
           headers: { Authorization: `Bearer ${AUTH_TOKEN}`, "Content-Type": "application/json" },
@@ -351,13 +351,13 @@ async function runBenchmark() {
         });
         let mission = await createRes.json();
         mission = await waitForMission(mission.id, 240);
-        const axonelDurationSec = Math.round((Date.now() - axonelStart) / 1000);
+        const sentinelDurationSec = Math.round((Date.now() - sentinelStart) / 1000);
 
         // Autonomous execution completed with independent physical verification
-        // In Axonel v1, autonomous execution stops at awaiting_acceptance (0 dev actions during execution).
+        // In Sentinel v1, autonomous execution stops at awaiting_acceptance (0 dev actions during execution).
         // Then human review & explicit acceptance gate (1 dev action):
         let integrated = false;
-        let developerActionsAxonel = 0;
+        let developerActionsSentinel = 0;
         if (mission.state === "awaiting_acceptance" || mission.state === "accepted") {
           // 1. Inspect review package (evidence audit)
           await fetch(`${BASE_URL}/api/v1/missions/${mission.id}/review`, {
@@ -372,7 +372,7 @@ async function runBenchmark() {
           });
           const acceptData = await acceptRes.json();
           integrated = acceptData.integrated === true;
-          developerActionsAxonel = 1; // 1 explicit review & acceptance action
+          developerActionsSentinel = 1; // 1 explicit review & acceptance action
         } else if (mission.state === "completed") {
           const intRes = await fetch(`${BASE_URL}/api/v1/missions/${mission.id}/integrate`, {
             method: "POST",
@@ -381,20 +381,20 @@ async function runBenchmark() {
           });
           const intData = await intRes.json();
           integrated = intData.integrated === true;
-          developerActionsAxonel = 1;
+          developerActionsSentinel = 1;
         }
 
         // Independent out-of-band verification on target disk
-        let axonelTargetVerified = false;
+        let sentinelTargetVerified = false;
         try {
-          execFileSync("cargo", ["test"], { cwd: axonelDir, stdio: "ignore" });
-          axonelTargetVerified = true;
+          execFileSync("cargo", ["test"], { cwd: sentinelDir, stdio: "ignore" });
+          sentinelTargetVerified = true;
         } catch {}
 
-        const axonelGitStatus = execFileSync("git", ["status", "--porcelain"], { cwd: axonelDir, encoding: "utf-8" }).trim();
+        const sentinelGitStatus = execFileSync("git", ["status", "--porcelain"], { cwd: sentinelDir, encoding: "utf-8" }).trim();
 
         console.log(
-          `[Run ${rep} - Baseline B] Duration: ${axonelDurationSec}s | Verified: ${axonelTargetVerified} | Integrated: ${integrated} | Clean Git State: ${!axonelGitStatus} | Unattended Exec Actions: 0 | Acceptance Gate Actions: ${developerActionsAxonel}`
+          `[Run ${rep} - Baseline B] Duration: ${sentinelDurationSec}s | Verified: ${sentinelTargetVerified} | Integrated: ${integrated} | Clean Git State: ${!sentinelGitStatus} | Unattended Exec Actions: 0 | Acceptance Gate Actions: ${developerActionsSentinel}`
         );
 
         wlRecord.runs.push({
@@ -407,16 +407,16 @@ async function runBenchmark() {
             committed_by_agent: rawCommitted,
             developer_actions_required: 4, // monitor, diagnose dirty tree, test manually, commit & merge
           },
-          baseline_b_axonel: {
-            duration_secs: axonelDurationSec,
+          baseline_b_sentinel: {
+            duration_secs: sentinelDurationSec,
             mission_state: mission.state,
             cycles_count: mission.cycle_index + 1,
-            tests_pass: axonelTargetVerified,
-            clean_git_tree: !axonelGitStatus,
+            tests_pass: sentinelTargetVerified,
+            clean_git_tree: !sentinelGitStatus,
             integrated: integrated,
             verified_commit_sha: mission.latest_verified_commit,
             unattended_execution_actions: 0, // 0 dev actions during autonomous agent loop
-            developer_actions_required: developerActionsAxonel, // 1 human review & acceptance action
+            developer_actions_required: developerActionsSentinel, // 1 human review & acceptance action
           },
         });
       }

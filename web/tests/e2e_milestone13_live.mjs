@@ -5,13 +5,13 @@ import os from "os";
 
 const PORT = 4025;
 const BASE_URL = `http://127.0.0.1:${PORT}`;
-const DB_PATH = `/tmp/axonel_m13_live_${Date.now()}.db`;
-const WORKLOAD_DIR = `/tmp/axonel_workload_m13_live_${Date.now()}`;
+const DB_PATH = `/tmp/sentinel_m13_live_${Date.now()}.db`;
+const WORKLOAD_DIR = `/tmp/sentinel_workload_m13_live_${Date.now()}`;
 const AUTH_TOKEN = "m13-live-hardened-auth-token-556677";
 const ARTIFACTS_DIR = `/tmp/milestone13_live_artifacts_${Date.now()}`;
 
 console.log("================================================================");
-console.log("   AXONEL / PLEXIS MILESTONE 13: REAL LIVE GEMINI CODING E2E   ");
+console.log("   SENTINEL / PLEXIS MILESTONE 13: REAL LIVE GEMINI CODING E2E   ");
 console.log("================================================================");
 console.log(`[E2E Setup] Database path: ${DB_PATH}`);
 console.log(`[E2E Setup] Target workload repository: ${WORKLOAD_DIR}`);
@@ -120,7 +120,7 @@ fs.mkdirSync(ARTIFACTS_DIR, { recursive: true });
 
 execFileSync("git", ["init"], { cwd: WORKLOAD_DIR });
 execFileSync("git", ["config", "user.name", "Plexis Live Gemini Tester"], { cwd: WORKLOAD_DIR });
-execFileSync("git", ["config", "user.email", "live-gemini@axonel.local"], { cwd: WORKLOAD_DIR });
+execFileSync("git", ["config", "user.email", "live-gemini@sentinel.local"], { cwd: WORKLOAD_DIR });
 fs.mkdirSync(path.join(WORKLOAD_DIR, "src"), { recursive: true });
 
 fs.writeFileSync(

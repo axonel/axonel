@@ -5,13 +5,13 @@ import path from "path";
 
 const PORT = 4023;
 const BASE_URL = `http://127.0.0.1:${PORT}`;
-const DB_PATH = `/tmp/axonel_m12_${Date.now()}.db`;
-const WORKLOAD_DIR = `/tmp/axonel_workload_m12_${Date.now()}`;
+const DB_PATH = `/tmp/sentinel_m12_${Date.now()}.db`;
+const WORKLOAD_DIR = `/tmp/sentinel_workload_m12_${Date.now()}`;
 const AUTH_TOKEN = "m12-hardened-auth-token-998877";
 const ARTIFACTS_DIR = `/tmp/milestone12_artifacts_${Date.now()}`;
 
 console.log("================================================================");
-console.log("   AXONEL / PLEXIS MILESTONE 12: EXTERNAL AGENT HOST E2E RUN    ");
+console.log("   SENTINEL / PLEXIS MILESTONE 12: EXTERNAL AGENT HOST E2E RUN    ");
 console.log("================================================================");
 console.log(`[E2E Setup] Database path: ${DB_PATH}`);
 console.log(`[E2E Setup] Target workload repository: ${WORKLOAD_DIR}`);
@@ -24,7 +24,7 @@ fs.mkdirSync(ARTIFACTS_DIR, { recursive: true });
 // Setup a clean git repository in WORKLOAD_DIR
 execFileSync("git", ["init"], { cwd: WORKLOAD_DIR });
 execFileSync("git", ["config", "user.name", "Plexis Tester"], { cwd: WORKLOAD_DIR });
-execFileSync("git", ["config", "user.email", "tester@axonel.local"], { cwd: WORKLOAD_DIR });
+execFileSync("git", ["config", "user.email", "tester@sentinel.local"], { cwd: WORKLOAD_DIR });
 fs.mkdirSync(path.join(WORKLOAD_DIR, "src"), { recursive: true });
 fs.writeFileSync(
   path.join(WORKLOAD_DIR, "src", "lib.rs"),
