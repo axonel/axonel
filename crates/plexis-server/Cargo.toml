@@ -37,8 +37,8 @@ name = "plexis-server"
 path = "src/main.rs"
 
 [[bin]]
-name = "axonel"
-path = "src/bin/axonel.rs"
+name = "sentinel"
+path = "src/bin/sentinel.rs"
 
 [dev-dependencies]
 tower = { version = "0.5", features = ["util"] }

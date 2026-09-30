@@ -115,9 +115,9 @@ impl GitHubIntegration for DefaultGitHubClient {
         let Some(ref token) = self.token else {
             return Ok(vec![
                 GitHubRepoInfo {
-                    name: "axonel".to_string(),
-                    full_name: "axonel/axonel".to_string(),
-                    html_url: "https://github.com/axonel/axonel".to_string(),
+                    name: "sentinel".to_string(),
+                    full_name: "sentinel/sentinel".to_string(),
+                    html_url: "https://github.com/sentinel/sentinel".to_string(),
                     default_branch: "main".to_string(),
                     is_private: true,
                 },
@@ -135,7 +135,7 @@ impl GitHubIntegration for DefaultGitHubClient {
             .client
             .get("https://api.github.com/user/repos?sort=updated&per_page=30")
             .header("Authorization", format!("Bearer {}", token))
-            .header("User-Agent", "Axonel-Platform")
+            .header("User-Agent", "Sentinel-Platform")
             .header("Accept", "application/vnd.github+json")
             .send()
             .await
@@ -190,7 +190,7 @@ impl GitHubIntegration for DefaultGitHubClient {
             .client
             .get(&url)
             .header("Authorization", format!("Bearer {}", token))
-            .header("User-Agent", "Axonel-Platform")
+            .header("User-Agent", "Sentinel-Platform")
             .header("Accept", "application/vnd.github+json")
             .send()
             .await
@@ -253,7 +253,7 @@ impl GitHubIntegration for DefaultGitHubClient {
             .client
             .post(&url)
             .header("Authorization", format!("Bearer {}", token))
-            .header("User-Agent", "Axonel-Platform")
+            .header("User-Agent", "Sentinel-Platform")
             .header("Accept", "application/vnd.github+json")
             .json(&body)
             .send()
@@ -309,7 +309,7 @@ impl GitHubIntegration for DefaultGitHubClient {
             .client
             .get(&url)
             .header("Authorization", format!("Bearer {}", token))
-            .header("User-Agent", "Axonel-Platform")
+            .header("User-Agent", "Sentinel-Platform")
             .header("Accept", "application/vnd.github+json")
             .send()
             .await

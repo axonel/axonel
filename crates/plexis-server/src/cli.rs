@@ -21,9 +21,9 @@ use crate::routes::create_router;
 use crate::state::AppState;
 
 #[derive(Parser, Debug)]
-#[command(name = "axonel")]
+#[command(name = "sentinel")]
 #[command(version)]
-#[command(about = "Axonel — Autonomous Software Engineering Execution Engine & Control Plane", long_about = None)]
+#[command(about = "Sentinel — Autonomous Software Engineering Execution Engine & Control Plane", long_about = None)]
 pub struct Cli {
     #[command(subcommand)]
     pub command: Option<Commands>,
@@ -31,7 +31,7 @@ pub struct Cli {
 
 #[derive(Subcommand, Debug)]
 pub enum Commands {
-    /// Initialize a project workspace for Axonel
+    /// Initialize a project workspace for Sentinel
     Init {
         /// Target directory to initialize as workspace (defaults to current working directory)
         path: Option<PathBuf>,
@@ -42,7 +42,7 @@ pub enum Commands {
         #[arg(long, default_value = "plexis.db")]
         db: String,
     },
-    /// Start the Axonel operational control plane server
+    /// Start the Sentinel operational control plane server
     Serve {
         /// Bind host address
         #[arg(long, default_value = "127.0.0.1")]
@@ -214,7 +214,7 @@ pub async fn run_cli() -> Result<(), Box<dyn std::error::Error>> {
                 .ok()
                 .and_then(|p| p.parse::<u16>().ok())
                 .unwrap_or(3000);
-            let auth_token = std::env::var("AXONEL_AUTH_TOKEN")
+            let auth_token = std::env::var("SENTINEL_AUTH_TOKEN")
                 .or_else(|_| std::env::var("PLEXIS_AUTH_TOKEN"))
                 .ok();
             run_server("127.0.0.1", port, &db_path, auth_token).await?;
@@ -240,7 +240,7 @@ async fn init_workspace(
             .to_string()
     });
 
-    println!("Initializing Axonel workspace in: {}", canonical.display());
+    println!("Initializing Sentinel workspace in: {}", canonical.display());
 
     // Create .plexis directory and config
     let plexis_dir = canonical.join(".plexis");
@@ -287,7 +287,7 @@ async fn init_workspace(
 async fn show_status(db_path: &str) -> Result<(), Box<dyn std::error::Error>> {
     if !Path::new(db_path).exists() && db_path != ":memory:" {
         println!("Database not found at: {}", db_path);
-        println!("Run 'axonel init' or start 'axonel serve' to create one.");
+        println!("Run 'sentinel init' or start 'sentinel serve' to create one.");
         return Ok(());
     }
 
@@ -303,7 +303,7 @@ async fn show_status(db_path: &str) -> Result<(), Box<dyn std::error::Error>> {
     let agents = store.list_agents().await?;
 
     println!("============================================================");
-    println!("                 AXONEL SYSTEM STATUS                       ");
+    println!("                 SENTINEL SYSTEM STATUS                       ");
     println!("============================================================");
     println!("Authoritative Database : {}", db_path);
     println!("Total Workspaces       : {}", workspaces.len());
@@ -312,7 +312,7 @@ async fn show_status(db_path: &str) -> Result<(), Box<dyn std::error::Error>> {
     println!("Active Agents          : {}", agents.len());
     println!("------------------------------------------------------------");
     if workspaces.is_empty() {
-        println!("No workspaces registered. Use 'axonel init' to register one.");
+        println!("No workspaces registered. Use 'sentinel init' to register one.");
     } else {
         println!("Workspaces:");
         for ws in &workspaces {
@@ -365,7 +365,7 @@ async fn run_server(
         .map_err(|e| format!("Invalid bind host address '{}': {}", host, e))?;
 
     let effective_auth_token = auth_token.filter(|t| !t.trim().is_empty()).or_else(|| {
-        std::env::var("AXONEL_AUTH_TOKEN")
+        std::env::var("SENTINEL_AUTH_TOKEN")
             .or_else(|_| std::env::var("PLEXIS_AUTH_TOKEN"))
             .ok()
             .filter(|t| !t.trim().is_empty())
@@ -380,7 +380,7 @@ async fn run_server(
             "================================================================================"
         );
         eprintln!(
-            "Axonel attempted to bind to external address '{}' without authentication.",
+            "Sentinel attempted to bind to external address '{}' without authentication.",
             host
         );
         eprintln!(
@@ -391,15 +391,15 @@ async fn run_server(
         );
         eprintln!();
         eprintln!(
-            "To start Axonel on a non-loopback interface, provide an authentication token via:"
+            "To start Sentinel on a non-loopback interface, provide an authentication token via:"
         );
         eprintln!("  1. CLI flag:            --auth-token <SECRET_TOKEN>");
-        eprintln!("  2. Environment variable: AXONEL_AUTH_TOKEN=<SECRET_TOKEN>");
+        eprintln!("  2. Environment variable: SENTINEL_AUTH_TOKEN=<SECRET_TOKEN>");
         eprintln!(
             "================================================================================"
         );
         return Err(format!(
-            "FATAL SECURITY ERROR: Server configured to bind to non-loopback address '{}' without authentication. Provide --auth-token or set AXONEL_AUTH_TOKEN.",
+            "FATAL SECURITY ERROR: Server configured to bind to non-loopback address '{}' without authentication. Provide --auth-token or set SENTINEL_AUTH_TOKEN.",
             host
         ).into());
     }
@@ -436,7 +436,7 @@ async fn run_server(
     let app = create_router(state);
 
     let addr = SocketAddr::from((ip, port));
-    info!("Axonel API server listening on http://{}", addr);
+    info!("Sentinel API server listening on http://{}", addr);
 
     let listener = tokio::net::TcpListener::bind(addr).await?;
     axum::serve(listener, app).await?;
@@ -583,7 +583,7 @@ async fn handle_mission_command(
                 .ok_or_else(|| format!("Mission '{}' not found", id))?;
 
             println!("================================================================");
-            println!("               AXONEL MISSION REVIEW PACKAGE                   ");
+            println!("               SENTINEL MISSION REVIEW PACKAGE                   ");
             println!("================================================================");
             println!("Mission ID:   {}", mission.id);
             println!("Title:        {}", mission.title);
@@ -637,12 +637,12 @@ async fn handle_mission_command(
                 plexis_core::state::MissionState::AwaitingAcceptance => {
                     println!("\nACTION REQUIRED: Mission is verified and awaiting explicit human acceptance.");
                     println!(
-                        "  Accept & Integrate: axonel mission accept {} --integrate",
+                        "  Accept & Integrate: sentinel mission accept {} --integrate",
                         mission_id
                     );
-                    println!("  Accept Only:        axonel mission accept {}", mission_id);
+                    println!("  Accept Only:        sentinel mission accept {}", mission_id);
                     println!(
-                        "  Reject:             axonel mission reject {} -r \"reason\"",
+                        "  Reject:             sentinel mission reject {} -r \"reason\"",
                         mission_id
                     );
                 }
@@ -651,7 +651,7 @@ async fn handle_mission_command(
                         "\nACTION REQUIRED: Mission has been accepted. Ready for integration."
                     );
                     println!(
-                        "  Integrate:          axonel mission integrate {}",
+                        "  Integrate:          sentinel mission integrate {}",
                         mission_id
                     );
                 }
@@ -726,7 +726,7 @@ async fn handle_mission_command(
                 println!("✓ {}", res.integration_summary);
             } else {
                 println!(
-                    "Run 'axonel mission integrate {}' to merge into target branch.",
+                    "Run 'sentinel mission integrate {}' to merge into target branch.",
                     mission_id
                 );
             }

@@ -265,7 +265,7 @@ struct SystemStatusResponse {
 
 async fn system_status() -> impl IntoResponse {
     Json(SystemStatusResponse {
-        system: "axonel-control-plane",
+        system: "sentinel-control-plane",
         database: "sqlite-authoritative",
         version: env!("CARGO_PKG_VERSION"),
     })
@@ -2568,7 +2568,7 @@ async fn create_github_pull(
     let repo = payload
         .repo
         .clone()
-        .unwrap_or_else(|| "axonel/axonel".to_string());
+        .unwrap_or_else(|| "sentinel/sentinel".to_string());
     let pr = state
         .github
         .create_pull_request(&repo, payload)
@@ -2600,7 +2600,7 @@ async fn spa_fallback_page() -> impl IntoResponse {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Axonel Operational Control Plane</title>
+  <title>Sentinel Operational Control Plane</title>
   <style>
     body { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; background: #0b0f19; color: #e2e8f0; padding: 2rem; margin: 0; }
     .card { background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 2rem; max-width: 680px; margin: 4rem auto; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
@@ -2615,8 +2615,8 @@ async fn spa_fallback_page() -> impl IntoResponse {
 <body>
   <div class="card">
     <div class="status-badge">API ONLINE</div>
-    <h1>Axonel Operational Control Plane</h1>
-    <p>The Axonel server is actively listening. All control plane API endpoints and event streaming channels are operational.</p>
+    <h1>Sentinel Operational Control Plane</h1>
+    <p>The Sentinel server is actively listening. All control plane API endpoints and event streaming channels are operational.</p>
     <p><strong>Available Endpoints:</strong></p>
     <ul>
       <li><a href="/health"><code>GET /health</code></a> &mdash; Health probe</li>
@@ -2627,7 +2627,7 @@ async fn spa_fallback_page() -> impl IntoResponse {
       <li><a href="/api/v1/approvals"><code>GET /api/v1/approvals</code></a> &mdash; Approval center</li>
     </ul>
     <p>To run the developer web dashboard in development mode:<br /><code>cd web && npm run dev</code></p>
-    <p>To build static web assets for direct serving by Axonel Server:<br /><code>cd web && npm run build</code></p>
+    <p>To build static web assets for direct serving by Sentinel Server:<br /><code>cd web && npm run build</code></p>
   </div>
 </body>
 </html>"#,
@@ -4434,7 +4434,7 @@ pub async fn execute_canonical_integration(
     if mission.state == MissionState::AwaitingAcceptance {
         return Err((
             StatusCode::CONFLICT,
-            "Cannot integrate mission: mission is in state 'awaiting_acceptance'; human acceptance is required before integration. Call POST /api/v1/missions/{id}/accept or run 'axonel mission accept <id>' first.".to_string(),
+            "Cannot integrate mission: mission is in state 'awaiting_acceptance'; human acceptance is required before integration. Call POST /api/v1/missions/{id}/accept or run 'sentinel mission accept <id>' first.".to_string(),
         ));
     }
 
