@@ -1,8 +1,8 @@
 /**
- * Axonel Real Browser Release Candidate E2E Test
+ * Sentinel Real Browser Release Candidate E2E Test
  *
  * Verifies the complete product lifecycle via a real browser (Playwright Chromium):
- * 1. OPEN AXONEL in browser
+ * 1. OPEN SENTINEL in browser
  * 2. Select / Register real Git repository workspace
  * 3. Create autonomous mission with Gemini CLI backend
  * 4. Explicitly dispatch mission
@@ -25,17 +25,17 @@ import { chromium } from "@playwright/test";
 
 const PORT = 4099;
 const BASE_URL = `http://127.0.0.1:${PORT}`;
-const DB_PATH = `/tmp/axonel_e2e_${Date.now()}.db`;
+const DB_PATH = `/tmp/sentinel_e2e_${Date.now()}.db`;
 const projectRoot = path.resolve(path.dirname(new URL(import.meta.url).pathname), "../..");
-const releaseBinary = path.join(projectRoot, "target/release/axonel");
-const debugBinary = path.join(projectRoot, "target/debug/axonel");
+const releaseBinary = path.join(projectRoot, "target/release/sentinel");
+const debugBinary = path.join(projectRoot, "target/debug/sentinel");
 const fallbackServerBinary = path.join(projectRoot, "target/debug/plexis-server");
 
-const binToUse = process.env.AXONEL_BIN ||
+const binToUse = process.env.SENTINEL_BIN ||
   (fs.existsSync(releaseBinary) ? releaseBinary : (fs.existsSync(debugBinary) ? debugBinary : fallbackServerBinary));
 
 console.log("========================================================================");
-console.log("   AXONEL REAL BROWSER RELEASE CANDIDATE END-TO-END VERIFICATION");
+console.log("   SENTINEL REAL BROWSER RELEASE CANDIDATE END-TO-END VERIFICATION");
 console.log(`   Binary in use: ${binToUse}`);
 console.log("========================================================================\n");
 
@@ -48,13 +48,13 @@ let serverProc = null;
 const tempDirs = [];
 
 function createTargetRepo() {
-  const dir = `/tmp/axonel_e2e_repo_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+  const dir = `/tmp/sentinel_e2e_repo_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
   fs.mkdirSync(dir, { recursive: true });
   tempDirs.push(dir);
 
   execFileSync("git", ["init", "-b", "main"], { cwd: dir });
-  execFileSync("git", ["config", "user.name", "Axonel E2E Verifier"], { cwd: dir });
-  execFileSync("git", ["config", "user.email", "e2e@axonel.local"], { cwd: dir });
+  execFileSync("git", ["config", "user.name", "Sentinel E2E Verifier"], { cwd: dir });
+  execFileSync("git", ["config", "user.email", "e2e@sentinel.local"], { cwd: dir });
 
   fs.mkdirSync(path.join(dir, "src"), { recursive: true });
   fs.writeFileSync(
@@ -83,14 +83,14 @@ function createTargetRepo() {
 }
 
 function startServer() {
-  console.log(`Starting Axonel server on ${BASE_URL}...`);
+  console.log(`Starting Sentinel server on ${BASE_URL}...`);
   const env = {
     ...process.env,
     PORT: PORT.toString(),
     PLEXIS_DB_PATH: DB_PATH,
     RUST_LOG: "info",
   };
-  const args = binToUse.endsWith("axonel")
+  const args = binToUse.endsWith("sentinel")
     ? ["serve", "--host", "127.0.0.1", "--port", PORT.toString(), "--db", DB_PATH]
     : ["--host", "127.0.0.1", "--port", PORT.toString(), "--db", DB_PATH];
   const p = spawn(binToUse, args, {
@@ -162,7 +162,7 @@ async function run() {
 
     serverProc = startServer();
     await waitForServer();
-    console.log("✓ Axonel server is healthy and responding on loopback.");
+    console.log("✓ Sentinel server is healthy and responding on loopback.");
 
     // Launch Playwright Chromium
     console.log("Launching Playwright Chromium browser...");
@@ -174,14 +174,14 @@ async function run() {
       await dialog.accept();
     });
 
-    // 1. OPEN AXONEL
-    console.log(`Navigating to Axonel UI: ${BASE_URL}...`);
+    // 1. OPEN SENTINEL
+    console.log(`Navigating to Sentinel UI: ${BASE_URL}...`);
     await page.goto(BASE_URL, { waitUntil: "networkidle" });
     const headerText = await page.locator("header").textContent();
-    if (!headerText.includes("AXONEL")) {
-      throw new Error(`Expected header to contain 'AXONEL', got '${headerText}'`);
+    if (!headerText.includes("SENTINEL")) {
+      throw new Error(`Expected header to contain 'SENTINEL', got '${headerText}'`);
     }
-    console.log("✓ [Assertion 1] Axonel application loaded successfully in browser.");
+    console.log("✓ [Assertion 1] Sentinel application loaded successfully in browser.");
 
     // 2. REGISTER / SELECT REPOSITORY WORKSPACE
     console.log("Opening Workspace Modal to register target repository...");

@@ -4,12 +4,12 @@ import path from "path";
 
 const PORT = 4035;
 const BASE_URL = `http://127.0.0.1:${PORT}`;
-const DB_PATH = `/tmp/axonel_m17_${Date.now()}.db`;
+const DB_PATH = `/tmp/sentinel_m17_${Date.now()}.db`;
 const AUTH_TOKEN = "m17-validation-token-secret-778899";
 const RESULTS_FILE = `/tmp/m17_validation_results_${Date.now()}.json`;
 
 console.log("================================================================");
-console.log("   AXONEL MILESTONE 17: REAL USER WORKFLOW PRODUCT VALIDATION   ");
+console.log("   SENTINEL MILESTONE 17: REAL USER WORKFLOW PRODUCT VALIDATION   ");
 console.log("================================================================");
 console.log(`[E2E Setup] Database path: ${DB_PATH}`);
 console.log(`[E2E Setup] Results output path: ${RESULTS_FILE}`);
@@ -39,12 +39,12 @@ let serverProc = null;
 const tempDirs = [];
 
 function createTempRepo(prefix) {
-  const dir = `/tmp/axonel_${prefix}_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+  const dir = `/tmp/sentinel_${prefix}_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
   fs.mkdirSync(dir, { recursive: true });
   tempDirs.push(dir);
   execFileSync("git", ["init"], { cwd: dir });
-  execFileSync("git", ["config", "user.name", "Axonel M17 Validator"], { cwd: dir });
-  execFileSync("git", ["config", "user.email", "validator@axonel.local"], { cwd: dir });
+  execFileSync("git", ["config", "user.name", "Sentinel M17 Validator"], { cwd: dir });
+  execFileSync("git", ["config", "user.email", "validator@sentinel.local"], { cwd: dir });
   fs.mkdirSync(path.join(dir, "src"), { recursive: true });
   fs.mkdirSync(path.join(dir, "tests"), { recursive: true });
   fs.writeFileSync(path.join(dir, ".gitignore"), "/target\nCargo.lock\n.plexis/\n", "utf-8");
@@ -138,10 +138,10 @@ async function waitForMissionCompletion(missionId, maxWaitSec = 240) {
 
 async function main() {
   try {
-    console.log("--- Step 1: Starting Axonel Control Plane Server ---");
+    console.log("--- Step 1: Starting Sentinel Control Plane Server ---");
     serverProc = startServerProcess();
     await waitForServer();
-    console.log(`✓ Axonel server operational on ${BASE_URL}`);
+    console.log(`✓ Sentinel server operational on ${BASE_URL}`);
 
     // =========================================================================
     // WORKLOAD 1: Failing/Flaky Concurrency Test Investigation and Repair
@@ -253,11 +253,11 @@ fn test_burst_concurrency_capacity() {
     const w1RawGitStatus = execFileSync("git", ["status", "--porcelain"], { cwd: w1RawDir, encoding: "utf-8" });
     console.log(`[Workload 1 - Baseline A] Duration: ${w1RawDurationSec}s, Success: ${w1RawSuccess}, Dirty Files: ${w1RawGitStatus.trim() ? "Yes" : "Clean"}`);
 
-    // --- Baseline B: Axonel Supervised Mission ---
-    console.log("\n[Workload 1 - Baseline B] Dispatching Axonel Supervised Mission...");
+    // --- Baseline B: Sentinel Supervised Mission ---
+    console.log("\n[Workload 1 - Baseline B] Dispatching Sentinel Supervised Mission...");
     const w1StartTime = Date.now();
 
-    // 1. Initialize workspace in Axonel
+    // 1. Initialize workspace in Sentinel
     execFileSync(plexisCliPath, ["init", w1Dir, "--name", "concurrency_gate_project", "--db", DB_PATH], { stdio: "inherit" });
 
     const wsRes1 = await fetch(`${BASE_URL}/api/v1/workspaces`, {
@@ -350,7 +350,7 @@ fn test_burst_concurrency_capacity() {
         crash_recovery_available: false,
         isolated_worktree: false,
       },
-      baseline_b_axonel: {
+      baseline_b_sentinel: {
         duration_secs: w1DurationSec,
         success: true,
         cycles_count: mission1.cycle_index + 1,
@@ -454,8 +454,8 @@ fn test_route_traffic_all_variants() {
     const w2RawGitStatus = execFileSync("git", ["status", "--porcelain"], { cwd: w2RawDir, encoding: "utf-8" });
     console.log(`[Workload 2 - Baseline A] Duration: ${w2RawDurationSec}s, Success: ${w2RawSuccess}, Dirty Files: ${w2RawGitStatus.trim() ? "Yes" : "Clean"}`);
 
-    // --- Baseline B: Axonel Supervised Mission ---
-    console.log("\n[Workload 2 - Baseline B] Dispatching Axonel Supervised Mission...");
+    // --- Baseline B: Sentinel Supervised Mission ---
+    console.log("\n[Workload 2 - Baseline B] Dispatching Sentinel Supervised Mission...");
     const w2StartTime = Date.now();
 
     execFileSync(plexisCliPath, ["init", w2Dir, "--name", "api_gateway_project", "--db", DB_PATH], { stdio: "inherit" });
@@ -521,7 +521,7 @@ fn test_route_traffic_all_variants() {
         crash_recovery_available: false,
         isolated_worktree: false,
       },
-      baseline_b_axonel: {
+      baseline_b_sentinel: {
         duration_secs: w2DurationSec,
         success: true,
         cycles_count: mission2.cycle_index + 1,
@@ -623,8 +623,8 @@ fn test_query_decoding() {
     const w3RawGitStatus = execFileSync("git", ["status", "--porcelain"], { cwd: w3RawDir, encoding: "utf-8" });
     console.log(`[Workload 3 - Baseline A] Duration: ${w3RawDurationSec}s, Success: ${w3RawSuccess}, Dirty Files: ${w3RawGitStatus.trim() ? "Yes" : "Clean"}`);
 
-    // --- Baseline B: Axonel Supervised Mission ---
-    console.log("\n[Workload 3 - Baseline B] Dispatching Axonel Supervised Mission...");
+    // --- Baseline B: Sentinel Supervised Mission ---
+    console.log("\n[Workload 3 - Baseline B] Dispatching Sentinel Supervised Mission...");
     const w3StartTime = Date.now();
 
     execFileSync(plexisCliPath, ["init", w3Dir, "--name", "query_parser_project", "--db", DB_PATH], { stdio: "inherit" });
@@ -699,7 +699,7 @@ fn test_query_decoding() {
         crash_recovery_available: false,
         isolated_worktree: false,
       },
-      baseline_b_axonel: {
+      baseline_b_sentinel: {
         duration_secs: w3DurationSec,
         success: true,
         cycles_count: mission3.cycle_index + 1,
@@ -732,11 +732,11 @@ fn test_query_decoding() {
         Workload: w.name,
         "Raw Duration": `${w.baseline_a_raw.duration_secs}s`,
         "Raw Working Tree": w.baseline_a_raw.dirty_working_tree ? "DIRTY" : "Clean",
-        "Axonel Duration": `${w.baseline_b_axonel.duration_secs}s`,
-        "Axonel Cycles": w.baseline_b_axonel.cycles_count,
-        "Axonel Verified": w.baseline_b_axonel.success ? "YES (disk)" : "NO",
-        "Axonel Integrated": w.baseline_b_axonel.integrated ? "YES" : "NO",
-        "Crash Recovery": w.baseline_b_axonel.crash_recovery_proven ? "PROVEN" : "NO",
+        "Sentinel Duration": `${w.baseline_b_sentinel.duration_secs}s`,
+        "Sentinel Cycles": w.baseline_b_sentinel.cycles_count,
+        "Sentinel Verified": w.baseline_b_sentinel.success ? "YES (disk)" : "NO",
+        "Sentinel Integrated": w.baseline_b_sentinel.integrated ? "YES" : "NO",
+        "Crash Recovery": w.baseline_b_sentinel.crash_recovery_proven ? "PROVEN" : "NO",
       }))
     );
   } finally {

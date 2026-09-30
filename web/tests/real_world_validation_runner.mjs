@@ -1,5 +1,5 @@
 /**
- * Axonel Milestone 22: Real-World Engineering Validation Harness
+ * Sentinel Milestone 22: Real-World Engineering Validation Harness
  *
  * Executes real-world tasks on actual non-synthetic repositories across:
  * - Rust
@@ -7,7 +7,7 @@
  * - Python
  *
  * Measures:
- * - Baseline A (Direct Gemini CLI) vs Baseline B (Axonel Supervisor)
+ * - Baseline A (Direct Gemini CLI) vs Baseline B (Sentinel Supervisor)
  * - Real Long-Horizon Mission (multi-cycle verification, replanning)
  * - Real Crash / Recovery Test on non-synthetic repository
  * - Generates machine-readable docs/validation/results.json
@@ -21,8 +21,8 @@ import http from 'node:http';
 const SERVER_PORT = 4199;
 const SERVER_HOST = '127.0.0.1';
 const BASE_URL = `http://${SERVER_HOST}:${SERVER_PORT}`;
-const DB_PATH = `/tmp/axonel_val_${Date.now()}.db`;
-const VAL_DIR = `/tmp/axonel_val_run_${Date.now()}`;
+const DB_PATH = `/tmp/sentinel_val_${Date.now()}.db`;
+const VAL_DIR = `/tmp/sentinel_val_run_${Date.now()}`;
 
 const RESULTS_FILE = path.resolve('docs/validation/results.json');
 
@@ -120,10 +120,10 @@ async function waitForServer(timeoutMs = 15000) {
 
 let serverProcess = null;
 
-async function startAxonelServer(db = DB_PATH) {
-  log(`Starting Axonel server on port ${SERVER_PORT} (DB: ${db})...`);
+async function startSentinelServer(db = DB_PATH) {
+  log(`Starting Sentinel server on port ${SERVER_PORT} (DB: ${db})...`);
   serverProcess = spawn(
-    path.resolve('target/debug/axonel'),
+    path.resolve('target/debug/sentinel'),
     ['serve', '--host', SERVER_HOST, '--port', String(SERVER_PORT), '--db', db],
     {
       stdio: ['ignore', 'pipe', 'pipe'],
@@ -137,14 +137,14 @@ async function startAxonelServer(db = DB_PATH) {
 
   const healthy = await waitForServer();
   if (!healthy) {
-    throw new Error('Axonel server failed to start within timeout');
+    throw new Error('Sentinel server failed to start within timeout');
   }
-  log('✓ Axonel server is healthy and responding.');
+  log('✓ Sentinel server is healthy and responding.');
 }
 
-async function stopAxonelServer(sig = 'SIGTERM') {
+async function stopSentinelServer(sig = 'SIGTERM') {
   if (serverProcess) {
-    log(`Stopping Axonel server (${sig})...`);
+    log(`Stopping Sentinel server (${sig})...`);
     serverProcess.kill(sig);
     await new Promise((r) => setTimeout(r, 1000));
     serverProcess = null;
@@ -161,8 +161,8 @@ async function setupRealTsRepo(targetDir) {
   // Clone commander.js
   await runCmd('git', ['-c', 'url.https://github.com/.insteadOf=', 'clone', '--depth=1', 'https://github.com/tj/commander.js.git', targetDir], '/tmp');
   // Configure git identity
-  await runCmd('git', ['config', 'user.name', 'Axonel Evaluator'], targetDir);
-  await runCmd('git', ['config', 'user.email', 'eval@axonel.local'], targetDir);
+  await runCmd('git', ['config', 'user.name', 'Sentinel Evaluator'], targetDir);
+  await runCmd('git', ['config', 'user.email', 'eval@sentinel.local'], targetDir);
   const head = (await runCmd('git', ['rev-parse', 'HEAD'], targetDir)).stdout.trim();
   log(`✓ Real TS repo ready (HEAD: ${head})`);
   return head;
@@ -173,8 +173,8 @@ async function setupRealRustRepo(targetDir) {
   await fs.mkdir(targetDir, { recursive: true });
   // Initialize multi-file crate with Cargo.toml, src/lib.rs, src/parser.rs, src/error.rs, tests/integration_test.rs
   await runCmd('git', ['init'], targetDir);
-  await runCmd('git', ['config', 'user.name', 'Axonel Evaluator'], targetDir);
-  await runCmd('git', ['config', 'user.email', 'eval@axonel.local'], targetDir);
+  await runCmd('git', ['config', 'user.name', 'Sentinel Evaluator'], targetDir);
+  await runCmd('git', ['config', 'user.email', 'eval@sentinel.local'], targetDir);
 
   await fs.mkdir(path.join(targetDir, 'src'), { recursive: true });
   await fs.mkdir(path.join(targetDir, 'tests'), { recursive: true });
@@ -187,7 +187,7 @@ async function setupRealRustRepo(targetDir) {
   await fs.writeFile(
     path.join(targetDir, 'Cargo.toml'),
     `[package]
-name = "axonel-real-eval-rust"
+name = "sentinel-real-eval-rust"
 version = "0.1.0"
 edition = "2021"
 
@@ -245,7 +245,7 @@ pub use parser::ConfigParser;
   // A failing test that expects support for JSON string literals or quotes stripping
   await fs.writeFile(
     path.join(targetDir, 'tests/integration_test.rs'),
-    `use axonel_real_eval_rust::{ConfigParser, ConfigError};
+    `use sentinel_real_eval_rust::{ConfigParser, ConfigError};
 
 #[test]
 fn test_basic_parsing() {
@@ -258,9 +258,9 @@ fn test_basic_parsing() {
 #[test]
 fn test_quoted_values_stripped() {
     // Feature requirement: parser must strip matching enclosing double quotes from values
-    let input = "name = \\"axonel-server\\"\\nmode = \\"production\\"";
+    let input = "name = \\"sentinel-server\\"\\nmode = \\"production\\"";
     let cfg = ConfigParser::parse(input).unwrap();
-    assert_eq!(cfg.get("name").unwrap(), "axonel-server", "Quoted string should have quotes stripped");
+    assert_eq!(cfg.get("name").unwrap(), "sentinel-server", "Quoted string should have quotes stripped");
     assert_eq!(cfg.get("mode").unwrap(), "production", "Quoted string should have quotes stripped");
 }
 `
@@ -329,8 +329,8 @@ async function runBaselineDirectGemini(repoDir, objective, testCommand) {
   };
 }
 
-async function runBaselineAxonel(repoDir, objective, testCommand) {
-  log(`[BASELINE B - AXONEL SUPERVISOR] Executing through Axonel on ${repoDir}...`);
+async function runBaselineSentinel(repoDir, objective, testCommand) {
+  log(`[BASELINE B - SENTINEL SUPERVISOR] Executing through Sentinel on ${repoDir}...`);
   const startTime = Date.now();
 
   // Register workspace
@@ -401,7 +401,7 @@ async function runBaselineAxonel(repoDir, objective, testCommand) {
     if (currentCycle > lastCycle) {
       recoveries += (currentCycle - lastCycle);
       lastCycle = currentCycle;
-      log(`[Axonel] Mission advanced to cycle #${currentCycle} (replanning/recovery triggered)`);
+      log(`[Sentinel] Mission advanced to cycle #${currentCycle} (replanning/recovery triggered)`);
     }
 
     await new Promise((r) => setTimeout(r, 3000));
@@ -438,7 +438,7 @@ async function runBaselineAxonel(repoDir, objective, testCommand) {
   const dirty = statusRes.stdout.trim().length > 0;
   const untracked = statusRes.stdout.includes('??');
   if (dirty) {
-    log(`[Axonel] Target repo dirty status:\n${statusRes.stdout}`);
+    log(`[Sentinel] Target repo dirty status:\n${statusRes.stdout}`);
   }
   finalCommit = (await runCmd('git', ['rev-parse', 'HEAD'], repoDir)).stdout.trim();
 
@@ -446,13 +446,13 @@ async function runBaselineAxonel(repoDir, objective, testCommand) {
   const [testBin, ...testArgs] = testCommand.split(' ');
   const targetTest = await runCmd(testBin, testArgs, repoDir);
   if (targetTest.code !== 0) {
-    log(`[Axonel] Target test failed (code ${targetTest.code}):\n${targetTest.stderr || targetTest.stdout}`);
+    log(`[Sentinel] Target test failed (code ${targetTest.code}):\n${targetTest.stderr || targetTest.stdout}`);
   }
 
   log(`[BASELINE B] Duration: ${durationSecs}s, Verified: ${verified}, Integrated: ${integrated}, Target Test: ${targetTest.code === 0}, Clean Tree: ${!dirty}`);
 
   return {
-    baseline: 'axonel',
+    baseline: 'sentinel',
     duration_secs: durationSecs,
     attempts: 1,
     recoveries,
@@ -486,11 +486,11 @@ async function runLongHorizonTest() {
 
   const testCommand = 'cargo test';
 
-  log('Starting long-horizon mission with Axonel...');
-  const res = await runBaselineAxonel(repoDir, objective, testCommand);
+  log('Starting long-horizon mission with Sentinel...');
+  const res = await runBaselineSentinel(repoDir, objective, testCommand);
 
   results.push({
-    repository: 'axonel-real-eval-rust',
+    repository: 'sentinel-real-eval-rust',
     base_commit: baseCommit,
     objective,
     language: 'rust',
@@ -552,13 +552,13 @@ async function runCrashRecoveryTest() {
   }
   log(`Mission state prior to crash: active (executing=${executing})`);
 
-  // 4. Terminate Axonel server abruptly with SIGKILL
-  log('Simulating server crash: sending SIGKILL to Axonel server...');
-  await stopAxonelServer('SIGKILL');
+  // 4. Terminate Sentinel server abruptly with SIGKILL
+  log('Simulating server crash: sending SIGKILL to Sentinel server...');
+  await stopSentinelServer('SIGKILL');
 
-  // 5. Restart Axonel server with SAME database
-  log('Restarting Axonel server with same database...');
-  await startAxonelServer(DB_PATH);
+  // 5. Restart Sentinel server with SAME database
+  log('Restarting Sentinel server with same database...');
+  await startSentinelServer(DB_PATH);
 
   // 6. Verify durable mission recovery
   log('Checking mission state after server restart...');
@@ -600,13 +600,13 @@ async function runCrashRecoveryTest() {
   log(`✓ Target repo on disk test passed: ${targetPassed} (HEAD: ${headCommit})`);
 
   results.push({
-    repository: 'axonel-real-eval-rust',
+    repository: 'sentinel-real-eval-rust',
     base_commit: baseCommit,
     objective,
     language: 'rust',
     provider: 'gemini_cli',
     model: 'gemini-2.5-pro',
-    baseline: 'axonel',
+    baseline: 'sentinel',
     duration_secs: Math.round((Date.now() - waitStart) / 1000),
     attempts: 1,
     recoveries: 1,
@@ -625,16 +625,16 @@ async function runCrashRecoveryTest() {
 
 async function main() {
   log('========================================================================');
-  log('   AXONEL REAL-WORLD ENGINEERING VALIDATION SUITE (MILESTONE 22)');
+  log('   SENTINEL REAL-WORLD ENGINEERING VALIDATION SUITE (MILESTONE 22)');
   log('========================================================================\n');
 
   await fs.mkdir(VAL_DIR, { recursive: true });
 
-  // Start Axonel daemon
-  await startAxonelServer(DB_PATH);
+  // Start Sentinel daemon
+  await startSentinelServer(DB_PATH);
 
   try {
-    // 1. Rust Baseline Comparison (Direct Gemini vs Axonel)
+    // 1. Rust Baseline Comparison (Direct Gemini vs Sentinel)
     log('\n--- EXPERIMENT 1: RUST BASELINE COMPARISON ---');
     const rustDirA = path.join(VAL_DIR, 'rust_baseline_a');
     const baseCommitRust = await setupRealRustRepo(rustDirA);
@@ -645,7 +645,7 @@ async function main() {
     // Baseline A (Direct)
     const baseARust = await runBaselineDirectGemini(rustDirA, rustObjective, rustTestCmd);
     results.push({
-      repository: 'axonel-real-eval-rust',
+      repository: 'sentinel-real-eval-rust',
       base_commit: baseCommitRust,
       objective: rustObjective,
       language: 'rust',
@@ -655,12 +655,12 @@ async function main() {
       test_type: 'baseline_comparison',
     });
 
-    // Baseline B (Axonel)
+    // Baseline B (Sentinel)
     const rustDirB = path.join(VAL_DIR, 'rust_baseline_b');
     await setupRealRustRepo(rustDirB);
-    const baseBRust = await runBaselineAxonel(rustDirB, rustObjective, rustTestCmd);
+    const baseBRust = await runBaselineSentinel(rustDirB, rustObjective, rustTestCmd);
     results.push({
-      repository: 'axonel-real-eval-rust',
+      repository: 'sentinel-real-eval-rust',
       base_commit: baseCommitRust,
       objective: rustObjective,
       language: 'rust',
@@ -686,7 +686,7 @@ async function main() {
     log('   ALL REAL-WORLD VALIDATION EXPERIMENTS COMPLETED SUCCESSFULLY');
     log('========================================================================');
   } finally {
-    await stopAxonelServer();
+    await stopSentinelServer();
     // Cleanup temp dir
     try {
       await fs.rm(VAL_DIR, { recursive: true, force: true });
