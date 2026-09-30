@@ -1,6 +1,6 @@
-# Axonel Contributor & Agent Guidelines
+# Sentinel Contributor & Agent Guidelines
 
-This document defines the rules, invariants, and conventions for engineers and AI agents implementing or extending **Axonel**.
+This document defines the rules, invariants, and conventions for engineers and AI agents implementing or extending **Sentinel**.
 
 ---
 
@@ -9,7 +9,7 @@ This document defines the rules, invariants, and conventions for engineers and A
 When making architectural or implementation decisions, adhere strictly to this hierarchy:
 
 ```text
-1. Axonel Architecture Specification & Invariants (docs/architecture.md)
+1. Sentinel Architecture Specification & Invariants (docs/architecture.md)
 2. Domain Invariants and Type Safety (crates/plexis-core)
 3. Storage & Concurrency Guarantees (crates/plexis-storage, crates/plexis-runtime)
 4. Existing Passing Test Suites and Verification Contracts
@@ -56,7 +56,7 @@ When making architectural or implementation decisions, adhere strictly to this h
 
 ## 3. Crate and Dependency Boundaries
 
-Axonel strictly prohibits circular dependencies and reverse-layer dependencies:
+Sentinel strictly prohibits circular dependencies and reverse-layer dependencies:
 
 - **`plexis-core`**: Pure domain logic only. Zero database drivers, zero network code, zero async runtime dependencies.
 - **`plexis-storage`**: Implements repository traits (`MissionStore`, `TaskStore`, etc.) using SQLite. SQL queries and migrations belong here.
@@ -65,7 +65,7 @@ Axonel strictly prohibits circular dependencies and reverse-layer dependencies:
 - **`plexis-memory`**: Session context, memory scopes, and search engines.
 - **`plexis-planner`**: Task decomposition, prompt templates, and plan validation budgets.
 - **`plexis-runtime`**: Supervisor engine, worktree lifecycle, lease manager, and process group containment.
-- **`plexis-server`**: Axum HTTP daemon, SSE event streaming, and user-facing `axonel` CLI binary.
+- **`plexis-server`**: Axum HTTP daemon, SSE event streaming, and user-facing `sentinel` CLI binary.
 - **`plexis-fake-agent`**: Deterministic mock agent for offline regression testing and CI.
 
 ---

@@ -1,6 +1,6 @@
-# Contributing to Axonel
+# Contributing to Sentinel
 
-Thank you for your interest in contributing to Axonel! We welcome issues, documentation improvements, bug fixes, and feature contributions.
+Thank you for your interest in contributing to Sentinel! We welcome issues, documentation improvements, bug fixes, and feature contributions.
 
 ---
 
@@ -15,10 +15,10 @@ Thank you for your interest in contributing to Axonel! We welcome issues, docume
 
 ## 2. Repository Structure
 
-Axonel is organized as a Cargo workspace with a Vite/React frontend:
+Sentinel is organized as a Cargo workspace with a Vite/React frontend:
 
 ```text
-axonel/
+sentinel/
 ├── crates/
 │   ├── plexis-core/         # Domain types, errors, configuration
 │   ├── plexis-storage/      # SQLite persistence layer (WAL mode)
@@ -34,7 +34,7 @@ axonel/
 └── tests/                   # Workspace integration and end-to-end test suites
 ```
 
-> **Note on crate naming:** Internal crates are prefixed with `plexis-*` for modular stability. The user-facing binary and product name is `axonel`.
+> **Note on crate naming:** Internal crates are prefixed with `plexis-*` for modular stability. The user-facing binary and product name is `sentinel`.
 
 ---
 
@@ -42,7 +42,7 @@ axonel/
 
 ### Building the Web UI
 
-The Web UI assets are embedded into the `axonel` binary during release builds.
+The Web UI assets are embedded into the `sentinel` binary during release builds.
 
 ```bash
 cd web
@@ -58,7 +58,7 @@ cd ..
 cargo build --workspace
 
 # Release build
-cargo build --release -p plexis-server --bin axonel
+cargo build --release -p plexis-server --bin sentinel
 ```
 
 ### Running Tests
