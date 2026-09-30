@@ -182,7 +182,7 @@ export const TaskDetailDrawer: React.FC<TaskDetailDrawerProps> = ({
       {/* Drawer Header */}
       <div className="p-4 border-b border-surface-border flex items-center justify-between bg-surface-header/70">
         <div className="flex items-center gap-2">
-          <Terminal className="w-4 h-4 text-axonel-lime" />
+          <Terminal className="w-4 h-4 text-sentinel-lime" />
           <h2 className="text-xs sm:text-sm font-semibold text-gray-100 font-mono uppercase tracking-tight">
             Task Inspection & Governance
           </h2>
@@ -215,7 +215,7 @@ export const TaskDetailDrawer: React.FC<TaskDetailDrawerProps> = ({
           onClick={() => setActiveTab('overview')}
           className={`px-3 py-2 font-medium border-b-2 transition-colors select-none ${
             activeTab === 'overview'
-              ? 'border-axonel-lime text-gray-100'
+              ? 'border-sentinel-lime text-gray-100'
               : 'border-transparent text-gray-400 hover:text-gray-200'
           }`}
         >
@@ -225,7 +225,7 @@ export const TaskDetailDrawer: React.FC<TaskDetailDrawerProps> = ({
           onClick={() => setActiveTab('terminal')}
           className={`px-3 py-2 font-medium border-b-2 transition-colors select-none ${
             activeTab === 'terminal'
-              ? 'border-axonel-lime text-gray-100'
+              ? 'border-sentinel-lime text-gray-100'
               : 'border-transparent text-gray-400 hover:text-gray-200'
           }`}
         >
@@ -235,7 +235,7 @@ export const TaskDetailDrawer: React.FC<TaskDetailDrawerProps> = ({
           onClick={() => setActiveTab('diagnostics')}
           className={`px-3 py-2 font-medium border-b-2 transition-colors select-none ${
             activeTab === 'diagnostics'
-              ? 'border-axonel-lime text-gray-100'
+              ? 'border-sentinel-lime text-gray-100'
               : 'border-transparent text-gray-400 hover:text-gray-200'
           }`}
         >
@@ -247,7 +247,7 @@ export const TaskDetailDrawer: React.FC<TaskDetailDrawerProps> = ({
       <div className="flex-1 overflow-y-auto p-4 space-y-5">
         {loading ? (
           <div className="flex items-center justify-center py-12">
-            <RefreshCw className="w-5 h-5 animate-spin text-axonel-lime" />
+            <RefreshCw className="w-5 h-5 animate-spin text-sentinel-lime" />
           </div>
         ) : activeTab === 'terminal' ? (
           <div className="h-[520px]">
@@ -256,7 +256,7 @@ export const TaskDetailDrawer: React.FC<TaskDetailDrawerProps> = ({
         ) : activeTab === 'diagnostics' ? (
           <div className="space-y-3 text-xs font-sans">
             <div className="p-3 bg-surface-base border border-surface-border rounded">
-              <span className="font-semibold text-axonel-lime block mb-1 font-mono text-[11px]">
+              <span className="font-semibold text-sentinel-lime block mb-1 font-mono text-[11px]">
                 1. What is this task trying to do?
               </span>
               <p className="text-gray-300 leading-relaxed font-mono text-[11px]">
@@ -264,7 +264,7 @@ export const TaskDetailDrawer: React.FC<TaskDetailDrawerProps> = ({
               </p>
             </div>
             <div className="p-3 bg-surface-base border border-surface-border rounded">
-              <span className="font-semibold text-axonel-lime block mb-1 font-mono text-[11px]">
+              <span className="font-semibold text-sentinel-lime block mb-1 font-mono text-[11px]">
                 2. Which files will change?
               </span>
               <p className="text-gray-300 leading-relaxed font-mono text-[11px]">
@@ -274,7 +274,7 @@ export const TaskDetailDrawer: React.FC<TaskDetailDrawerProps> = ({
               </p>
             </div>
             <div className="p-3 bg-surface-base border border-surface-border rounded">
-              <span className="font-semibold text-axonel-lime block mb-1 font-mono text-[11px]">
+              <span className="font-semibold text-sentinel-lime block mb-1 font-mono text-[11px]">
                 3. What tools or agent backends ran?
               </span>
               <p className="text-gray-300 leading-relaxed font-mono text-[11px]">
@@ -286,7 +286,7 @@ export const TaskDetailDrawer: React.FC<TaskDetailDrawerProps> = ({
               </p>
             </div>
             <div className="p-3 bg-surface-base border border-surface-border rounded">
-              <span className="font-semibold text-axonel-lime block mb-1 font-mono text-[11px]">
+              <span className="font-semibold text-sentinel-lime block mb-1 font-mono text-[11px]">
                 4. Did tests pass, fail, or not run?
               </span>
               <p className="text-gray-300 leading-relaxed font-mono text-[11px]">
@@ -296,7 +296,7 @@ export const TaskDetailDrawer: React.FC<TaskDetailDrawerProps> = ({
               </p>
             </div>
             <div className="p-3 bg-surface-base border border-surface-border rounded">
-              <span className="font-semibold text-axonel-lime block mb-1 font-mono text-[11px]">
+              <span className="font-semibold text-sentinel-lime block mb-1 font-mono text-[11px]">
                 5. Why is human approval needed?
               </span>
               <p className="text-gray-300 leading-relaxed font-mono text-[11px]">
@@ -306,7 +306,7 @@ export const TaskDetailDrawer: React.FC<TaskDetailDrawerProps> = ({
               </p>
             </div>
             <div className="p-3 bg-surface-base border border-surface-border rounded">
-              <span className="font-semibold text-axonel-lime block mb-1 font-mono text-[11px]">
+              <span className="font-semibold text-sentinel-lime block mb-1 font-mono text-[11px]">
                 6. What command will run if approved?
               </span>
               <p className="text-gray-300 leading-relaxed font-mono text-[11px]">
@@ -314,7 +314,7 @@ export const TaskDetailDrawer: React.FC<TaskDetailDrawerProps> = ({
               </p>
             </div>
             <div className="p-3 bg-surface-base border border-surface-border rounded">
-              <span className="font-semibold text-axonel-lime block mb-1 font-mono text-[11px]">
+              <span className="font-semibold text-sentinel-lime block mb-1 font-mono text-[11px]">
                 7. What changed since the previous attempt?
               </span>
               <p className="text-gray-300 leading-relaxed font-mono text-[11px]">
@@ -324,7 +324,7 @@ export const TaskDetailDrawer: React.FC<TaskDetailDrawerProps> = ({
               </p>
             </div>
             <div className="p-3 bg-surface-base border border-surface-border rounded">
-              <span className="font-semibold text-axonel-lime block mb-1 font-mono text-[11px]">
+              <span className="font-semibold text-sentinel-lime block mb-1 font-mono text-[11px]">
                 8. How does this task fit into the overall plan?
               </span>
               <p className="text-gray-300 leading-relaxed font-mono text-[11px]">
@@ -376,7 +376,7 @@ export const TaskDetailDrawer: React.FC<TaskDetailDrawerProps> = ({
             {/* State Diagnostic Banner */}
             <div className="p-3 bg-surface-base border border-surface-border rounded space-y-1">
               <div className="flex items-center gap-1.5">
-                <Clock className="w-3.5 h-3.5 text-axonel-lime" />
+                <Clock className="w-3.5 h-3.5 text-sentinel-lime" />
                 <span className="text-[10px] font-semibold text-gray-300 uppercase tracking-wider font-mono">
                   State Diagnostic
                 </span>
@@ -450,14 +450,14 @@ export const TaskDetailDrawer: React.FC<TaskDetailDrawerProps> = ({
             {/* Agent Allocation */}
             <div className="p-3 bg-surface-base border border-surface-border rounded space-y-2.5">
               <div className="flex items-center gap-1.5">
-                <Bot className="w-3.5 h-3.5 text-axonel-lime" />
+                <Bot className="w-3.5 h-3.5 text-sentinel-lime" />
                 <span className="text-[10px] font-semibold text-gray-300 uppercase tracking-wider font-mono">
                   Agent Allocation
                 </span>
               </div>
               <div className="text-xs text-gray-300 font-mono">
                 Current Agent:{' '}
-                <span className="text-axonel-lime">
+                <span className="text-sentinel-lime">
                   {currentTask?.assigned_agent_id || 'Unassigned'}
                 </span>
               </div>
@@ -625,7 +625,7 @@ export const TaskDetailDrawer: React.FC<TaskDetailDrawerProps> = ({
                       {/* Commit SHA */}
                       {sha && (
                         <div className="p-2 bg-surface-card border border-surface-border rounded text-xs space-y-1">
-                          <div className="flex items-center gap-1.5 text-axonel-lime font-mono text-[11px]">
+                          <div className="flex items-center gap-1.5 text-sentinel-lime font-mono text-[11px]">
                             <GitCommit className="w-3.5 h-3.5" />
                             <span>Git Commit:</span>
                             <span className="font-semibold select-all text-gray-100">{sha}</span>
@@ -683,7 +683,7 @@ export const TaskDetailDrawer: React.FC<TaskDetailDrawerProps> = ({
             {messages.length > 0 && (
               <div className="space-y-2">
                 <div className="flex items-center gap-1.5">
-                  <MessageSquare className="w-3.5 h-3.5 text-axonel-lime" />
+                  <MessageSquare className="w-3.5 h-3.5 text-sentinel-lime" />
                   <span className="text-[10px] font-semibold uppercase tracking-wider text-gray-400 font-mono">
                     Task Messages ({messages.length})
                   </span>

@@ -179,7 +179,7 @@ export const WorkflowDetailView: React.FC<WorkflowDetailViewProps> = ({
     return (
       <div className="flex items-center justify-center min-h-[50vh]">
         <div className="flex flex-col items-center gap-3">
-          <RefreshCw className="w-5 h-5 animate-spin text-axonel-lime" />
+          <RefreshCw className="w-5 h-5 animate-spin text-sentinel-lime" />
           <span className="text-xs font-mono text-gray-400">Loading workflow state...</span>
         </div>
       </div>
@@ -270,7 +270,7 @@ export const WorkflowDetailView: React.FC<WorkflowDetailViewProps> = ({
                 onClick={handlePlan}
                 variant="secondary"
                 size="xs"
-                icon={<GitPullRequest className="w-3.5 h-3.5 text-axonel-lime" />}
+                icon={<GitPullRequest className="w-3.5 h-3.5 text-sentinel-lime" />}
               >
                 Autonomous Plan
               </Button>
@@ -346,11 +346,11 @@ export const WorkflowDetailView: React.FC<WorkflowDetailViewProps> = ({
                 onClick={() => setActiveSubTab(tab.id as WorkflowSubTab)}
                 className={`flex items-center gap-1.5 px-3 py-2.5 text-xs font-medium border-b-2 transition-colors whitespace-nowrap select-none ${
                   isActive
-                    ? 'border-axonel-lime text-gray-100'
+                    ? 'border-sentinel-lime text-gray-100'
                     : 'border-transparent text-gray-400 hover:text-gray-200 hover:bg-surface-hover/30'
                 }`}
               >
-                <span className={isActive ? 'text-axonel-lime' : 'text-gray-400'}>
+                <span className={isActive ? 'text-sentinel-lime' : 'text-gray-400'}>
                   {tab.icon}
                 </span>
                 <span>{tab.label}</span>
@@ -420,7 +420,7 @@ export const WorkflowDetailView: React.FC<WorkflowDetailViewProps> = ({
                         {task.assigned_agent_id ? task.assigned_agent_id.slice(0, 12) : 'Unassigned'}
                       </Td>
                       <Td className="text-right">
-                        <span className="text-axonel-lime font-mono text-[11px] inline-flex items-center gap-1">
+                        <span className="text-sentinel-lime font-mono text-[11px] inline-flex items-center gap-1">
                           Inspect <ArrowRight className="w-3 h-3" />
                         </span>
                       </Td>
@@ -467,7 +467,7 @@ export const WorkflowDetailView: React.FC<WorkflowDetailViewProps> = ({
                   >
                     <div className="flex items-center justify-between text-xs">
                       <div className="flex items-center gap-2 font-mono">
-                        <span className="text-axonel-lime font-semibold">{m.from_agent.slice(0, 8)}</span>
+                        <span className="text-sentinel-lime font-semibold">{m.from_agent.slice(0, 8)}</span>
                         <span className="text-gray-500">→</span>
                         <span className="text-sky-400 font-semibold">{m.to_agent.slice(0, 8)}</span>
                         <span className="text-[10px] text-gray-400 px-1.5 py-0.2 bg-surface-card border border-surface-border rounded">

@@ -110,7 +110,7 @@ export const TaskReviewModal: React.FC<TaskReviewModalProps> = ({
       onClose={onClose}
       title={
         <div className="flex items-center gap-2">
-          <FileText className="w-4 h-4 text-axonel-lime" />
+          <FileText className="w-4 h-4 text-sentinel-lime" />
           <span className="truncate">{task.objective}</span>
           <Badge variant="neutral" size="xs">
             {task.state}
@@ -176,7 +176,7 @@ export const TaskReviewModal: React.FC<TaskReviewModalProps> = ({
             onClick={() => setActiveTab('diff')}
             className={`px-3 py-1.5 rounded transition-colors flex items-center gap-1.5 select-none ${
               activeTab === 'diff'
-                ? 'bg-surface-base text-axonel-lime border border-surface-border-bold font-semibold'
+                ? 'bg-surface-base text-sentinel-lime border border-surface-border-bold font-semibold'
                 : 'text-gray-400 hover:text-gray-200 hover:bg-surface-hover/50 border border-transparent'
             }`}
           >
@@ -193,7 +193,7 @@ export const TaskReviewModal: React.FC<TaskReviewModalProps> = ({
             onClick={() => setActiveTab('terminal')}
             className={`px-3 py-1.5 rounded transition-colors flex items-center gap-1.5 select-none ${
               activeTab === 'terminal'
-                ? 'bg-surface-base text-axonel-lime border border-surface-border-bold font-semibold'
+                ? 'bg-surface-base text-sentinel-lime border border-surface-border-bold font-semibold'
                 : 'text-gray-400 hover:text-gray-200 hover:bg-surface-hover/50 border border-transparent'
             }`}
           >
@@ -205,7 +205,7 @@ export const TaskReviewModal: React.FC<TaskReviewModalProps> = ({
             onClick={() => setActiveTab('verification')}
             className={`px-3 py-1.5 rounded transition-colors flex items-center gap-1.5 select-none ${
               activeTab === 'verification'
-                ? 'bg-surface-base text-axonel-lime border border-surface-border-bold font-semibold'
+                ? 'bg-surface-base text-sentinel-lime border border-surface-border-bold font-semibold'
                 : 'text-gray-400 hover:text-gray-200 hover:bg-surface-hover/50 border border-transparent'
             }`}
           >
@@ -225,7 +225,7 @@ export const TaskReviewModal: React.FC<TaskReviewModalProps> = ({
             onClick={() => setActiveTab('diagnostics')}
             className={`px-3 py-1.5 rounded transition-colors flex items-center gap-1.5 select-none ${
               activeTab === 'diagnostics'
-                ? 'bg-surface-base text-axonel-lime border border-surface-border-bold font-semibold'
+                ? 'bg-surface-base text-sentinel-lime border border-surface-border-bold font-semibold'
                 : 'text-gray-400 hover:text-gray-200 hover:bg-surface-hover/50 border border-transparent'
             }`}
           >
@@ -257,7 +257,7 @@ export const TaskReviewModal: React.FC<TaskReviewModalProps> = ({
               {/* Acceptance Criteria */}
               <div className="bg-surface-base border border-surface-border rounded p-4 space-y-2.5">
                 <h3 className="text-xs font-semibold text-gray-200 font-mono uppercase tracking-wider flex items-center gap-2">
-                  <ShieldCheck className="w-3.5 h-3.5 text-axonel-lime" />
+                  <ShieldCheck className="w-3.5 h-3.5 text-sentinel-lime" />
                   <span>Acceptance Criteria</span>
                 </h3>
                 {task.required_capabilities && task.required_capabilities.length > 0 ? (
@@ -282,7 +282,7 @@ export const TaskReviewModal: React.FC<TaskReviewModalProps> = ({
               {/* Independent Verifications History */}
               <div className="bg-surface-base border border-surface-border rounded p-4 space-y-2.5">
                 <h3 className="text-xs font-semibold text-gray-200 font-mono uppercase tracking-wider flex items-center gap-2">
-                  <ShieldCheck className="w-3.5 h-3.5 text-axonel-lime" />
+                  <ShieldCheck className="w-3.5 h-3.5 text-sentinel-lime" />
                   <span>Verification Evidence & Sign-Off</span>
                 </h3>
                 {verifications.length === 0 ? (
@@ -320,14 +320,14 @@ export const TaskReviewModal: React.FC<TaskReviewModalProps> = ({
           {activeTab === 'diagnostics' && (
             <div className="space-y-3 max-w-4xl text-xs font-sans">
               <div className="p-3.5 bg-surface-base border border-surface-border rounded">
-                <span className="font-semibold text-axonel-lime block mb-1 font-mono text-[11px]">
+                <span className="font-semibold text-sentinel-lime block mb-1 font-mono text-[11px]">
                   1. What is this task trying to do?
                 </span>
                 <p className="text-gray-300 leading-relaxed font-mono text-[11px]">{task.description || task.objective}</p>
               </div>
 
               <div className="p-3.5 bg-surface-base border border-surface-border rounded">
-                <span className="font-semibold text-axonel-lime block mb-1 font-mono text-[11px]">
+                <span className="font-semibold text-sentinel-lime block mb-1 font-mono text-[11px]">
                   2. Which files will change?
                 </span>
                 <p className="text-gray-300 leading-relaxed font-mono text-[11px]">
@@ -338,7 +338,7 @@ export const TaskReviewModal: React.FC<TaskReviewModalProps> = ({
               </div>
 
               <div className="p-3.5 bg-surface-base border border-surface-border rounded">
-                <span className="font-semibold text-axonel-lime block mb-1 font-mono text-[11px]">
+                <span className="font-semibold text-sentinel-lime block mb-1 font-mono text-[11px]">
                   3. What tools ran, with what arguments?
                 </span>
                 <p className="text-gray-300 leading-relaxed font-mono text-[11px]">
@@ -347,7 +347,7 @@ export const TaskReviewModal: React.FC<TaskReviewModalProps> = ({
               </div>
 
               <div className="p-3.5 bg-surface-base border border-surface-border rounded">
-                <span className="font-semibold text-axonel-lime block mb-1 font-mono text-[11px]">
+                <span className="font-semibold text-sentinel-lime block mb-1 font-mono text-[11px]">
                   4. Did tests pass, fail, or not run?
                 </span>
                 <p className="text-gray-300 leading-relaxed font-mono text-[11px]">
@@ -358,7 +358,7 @@ export const TaskReviewModal: React.FC<TaskReviewModalProps> = ({
               </div>
 
               <div className="p-3.5 bg-surface-base border border-surface-border rounded">
-                <span className="font-semibold text-axonel-lime block mb-1 font-mono text-[11px]">
+                <span className="font-semibold text-sentinel-lime block mb-1 font-mono text-[11px]">
                   5. Why is human approval needed?
                 </span>
                 <p className="text-gray-300 leading-relaxed font-mono text-[11px]">
@@ -369,7 +369,7 @@ export const TaskReviewModal: React.FC<TaskReviewModalProps> = ({
               </div>
 
               <div className="p-3.5 bg-surface-base border border-surface-border rounded">
-                <span className="font-semibold text-axonel-lime block mb-1 font-mono text-[11px]">
+                <span className="font-semibold text-sentinel-lime block mb-1 font-mono text-[11px]">
                   6. What command will run if approved?
                 </span>
                 <p className="text-gray-300 leading-relaxed font-mono text-[11px]">
@@ -380,7 +380,7 @@ export const TaskReviewModal: React.FC<TaskReviewModalProps> = ({
               </div>
 
               <div className="p-3.5 bg-surface-base border border-surface-border rounded">
-                <span className="font-semibold text-axonel-lime block mb-1 font-mono text-[11px]">
+                <span className="font-semibold text-sentinel-lime block mb-1 font-mono text-[11px]">
                   7. What changed since the previous attempt?
                 </span>
                 <p className="text-gray-300 leading-relaxed font-mono text-[11px]">
@@ -389,7 +389,7 @@ export const TaskReviewModal: React.FC<TaskReviewModalProps> = ({
               </div>
 
               <div className="p-3.5 bg-surface-base border border-surface-border rounded">
-                <span className="font-semibold text-axonel-lime block mb-1 font-mono text-[11px]">
+                <span className="font-semibold text-sentinel-lime block mb-1 font-mono text-[11px]">
                   8. How does this task fit into the overall plan?
                 </span>
                 <p className="text-gray-300 leading-relaxed font-mono text-[11px]">

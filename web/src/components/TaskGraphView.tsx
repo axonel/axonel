@@ -184,7 +184,7 @@ export const TaskGraphView: React.FC<TaskGraphViewProps> = ({
   };
 
   const getNodeBorder = (state: string, isSelected: boolean) => {
-    if (isSelected) return 'stroke-axonel-lime stroke-2';
+    if (isSelected) return 'stroke-sentinel-lime stroke-2';
     switch (state.toLowerCase()) {
       case 'verified':
         return 'stroke-emerald-500/70 stroke-1';
@@ -342,7 +342,7 @@ export const TaskGraphView: React.FC<TaskGraphViewProps> = ({
                   className={`${getNodeBorder(
                     node.state,
                     isSelected
-                  )} transition-all duration-150 group-hover:stroke-axonel-lime/80`}
+                  )} transition-all duration-150 group-hover:stroke-sentinel-lime/80`}
                 />
 
                 {/* Node Title / Objective */}

@@ -29,7 +29,7 @@ export const ToolsView: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-surface-border">
         <div>
           <div className="flex items-center gap-2">
-            <Wrench className="w-4 h-4 text-axonel-lime" />
+            <Wrench className="w-4 h-4 text-sentinel-lime" />
             <h1 className="text-base sm:text-lg font-bold text-gray-100 tracking-tight font-sans">
               Sandbox Tool Registry
             </h1>
@@ -71,7 +71,7 @@ export const ToolsView: React.FC = () => {
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2.5">
-                    <div className="w-6 h-6 rounded bg-surface-base border border-surface-border flex items-center justify-center font-mono font-bold text-xs text-axonel-lime">
+                    <div className="w-6 h-6 rounded bg-surface-base border border-surface-border flex items-center justify-center font-mono font-bold text-xs text-sentinel-lime">
                       T
                     </div>
                     <span className="font-mono font-semibold text-gray-100 text-xs sm:text-sm">
