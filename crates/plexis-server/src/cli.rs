@@ -240,7 +240,10 @@ async fn init_workspace(
             .to_string()
     });
 
-    println!("Initializing Sentinel workspace in: {}", canonical.display());
+    println!(
+        "Initializing Sentinel workspace in: {}",
+        canonical.display()
+    );
 
     // Create .plexis directory and config
     let plexis_dir = canonical.join(".plexis");
@@ -640,7 +643,10 @@ async fn handle_mission_command(
                         "  Accept & Integrate: sentinel mission accept {} --integrate",
                         mission_id
                     );
-                    println!("  Accept Only:        sentinel mission accept {}", mission_id);
+                    println!(
+                        "  Accept Only:        sentinel mission accept {}",
+                        mission_id
+                    );
                     println!(
                         "  Reject:             sentinel mission reject {} -r \"reason\"",
                         mission_id

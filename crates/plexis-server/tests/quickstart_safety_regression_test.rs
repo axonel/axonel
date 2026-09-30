@@ -384,7 +384,11 @@ async fn test_adversarial_full_lifecycle_and_git_sha_tracking() {
     // Untracked files in agent workspace that must never be swept into agent commits
     std::fs::write(worktree_dir.path().join("Cargo.lock"), "# lockfile").unwrap();
     std::fs::write(worktree_dir.path().join("plexis.db"), "plexis db binary").unwrap();
-    std::fs::write(worktree_dir.path().join("sentinel.db"), "sentinel db binary").unwrap();
+    std::fs::write(
+        worktree_dir.path().join("sentinel.db"),
+        "sentinel db binary",
+    )
+    .unwrap();
     std::fs::write(
         worktree_dir.path().join("arbitrary_sensitive.env"),
         "SECRET=topsecret",
