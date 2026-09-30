@@ -1,6 +1,6 @@
-# Axonel System Architecture
+# Sentinel System Architecture
 
-Axonel is structured as a modular, local-first supervisor daemon and execution control plane for coding agents. It separates agent execution from the primary developer workspace, enforcing strict verification gates and durable state persistence.
+Sentinel is structured as a modular, local-first supervisor daemon and execution control plane for coding agents. It separates agent execution from the primary developer workspace, enforcing strict verification gates and durable state persistence.
 
 ---
 
@@ -9,7 +9,7 @@ Axonel is structured as a modular, local-first supervisor daemon and execution c
 ```text
 ┌────────────────────────────────────────────────────────────────────────┐
 │                             OPERATOR LAYER                             │
-│       Web Dashboard (React/Vite)       │      Developer CLI (axonel)   │
+│       Web Dashboard (React/Vite)       │      Developer CLI (sentinel)   │
 └───────────────────────────────────┬────────────────────────────────────┘
                                     │ HTTP API / Server-Sent Events (SSE)
                                     ▼
@@ -59,14 +59,14 @@ The codebase is organized into modular Rust crates under `crates/`:
 | **`plexis-core`** | Domain types (`Mission`, `Checkpoint`, `Budget`), state machine definitions, errors, and common traits. |
 | **`plexis-storage`** | Persistent SQLite storage with Write-Ahead Logging (WAL), connection pooling, migrations, and audit logging. |
 | **`plexis-runtime`** | Subprocess execution supervisor, POSIX Process Group ID (PGID) management, timeout enforcement, and Git worktree orchestration. |
-| **`plexis-server`** | Axum-based HTTP REST API, Server-Sent Events (SSE) broadcast hub, and user-facing `axonel` CLI binary. |
+| **`plexis-server`** | Axum-based HTTP REST API, Server-Sent Events (SSE) broadcast hub, and user-facing `sentinel` CLI binary. |
 | **`plexis-providers`** | Provider adapters interfacing external agents (e.g. Gemini CLI, OpenAI, Anthropic) into the runtime contract. |
 | **`plexis-tools`** | File system tools (read, write, diff, search) with path canonicalization and workspace containment checks. |
 | **`plexis-planner`** | Task decomposition, execution strategies, and stopping condition synthesis. |
 | **`plexis-memory`** | Context tracking, session history, and checkpoint caching. |
 | **`plexis-fake-agent`**| Deterministic mock agent implementation for offline regression tests and reproducible benchmarks. |
 
-> **Naming Note:** Internal crates use the `plexis-*` prefix for crate registry isolation and modular stability. The public CLI binary and brand name is **Axonel**.
+> **Naming Note:** Internal crates use the `plexis-*` prefix for crate registry isolation and modular stability. The public CLI binary and brand name is **Sentinel**.
 
 ---
 
@@ -82,7 +82,7 @@ To guarantee that an agent cannot corrupt an active developer workspace or dirty
 
 ### 3.2 Out-of-Band Physical Verification
 
-Agents frequently hallucinate success, report tests passing when they never ran, or claim fixes that do not compile. Axonel solves this via **independent physical verification**:
+Agents frequently hallucinate success, report tests passing when they never ran, or claim fixes that do not compile. Sentinel solves this via **independent physical verification**:
 - The supervisor reads the `stopping_conditions` declared in the mission contract (e.g., `cargo test`, `npm test`).
 - The supervisor itself executes the command inside the worktree as a fresh process.
 - The supervisor inspects exit codes, stdout, and stderr on disk.
@@ -126,14 +126,14 @@ Integrating changes into the developer's primary branch is protected by a two-ph
 
 1. **`ReadyForReview`**: Verification has passed. A unified review package with diffs and execution metrics is available.
 2. **`Accepted`**: The operator has signed off on the diff. The candidate commit is locked.
-3. **`Integrating`**: Axonel checks target branch freshness. If the target commit has drifted or the primary tree is dirty, integration aborts and rolls back to `Accepted`.
+3. **`Integrating`**: Sentinel checks target branch freshness. If the target commit has drifted or the primary tree is dirty, integration aborts and rolls back to `Accepted`.
 4. **`Integrated`**: The changes are safely merged into the target branch.
 
 ### 3.4 Process Group (PGID) Containment
 
 Runaway agent processes, dangling compilers, or background subshells are prevented by POSIX process group isolation:
 - Each agent execution is spawned into a dedicated process group (`setpgid`).
-- When a command times out or is cancelled, Axonel sends `SIGTERM` followed by `SIGKILL` to `-pgid`.
+- When a command times out or is cancelled, Sentinel sends `SIGTERM` followed by `SIGKILL` to `-pgid`.
 - This guarantees all child and grandchild processes are cleanly reaped without orphaned daemons consuming host resources.
 
 ---

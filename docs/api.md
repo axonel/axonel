@@ -1,10 +1,10 @@
-# Axonel REST API Reference
+# Sentinel REST API Reference
 
-Axonel is designed as an API-first supervisor daemon. The Web Operations Dashboard and developer integrations communicate through standard JSON HTTP endpoints.
+Sentinel is designed as an API-first supervisor daemon. The Web Operations Dashboard and developer integrations communicate through standard JSON HTTP endpoints.
 
 All endpoints are prefixed with `/api/v1` unless noted otherwise. When authentication is enabled, requests must include the header:
 ```text
-Authorization: Bearer <AXONEL_AUTH_TOKEN>
+Authorization: Bearer <SENTINEL_AUTH_TOKEN>
 ```
 
 ---
