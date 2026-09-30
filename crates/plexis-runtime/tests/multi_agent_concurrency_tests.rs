@@ -37,7 +37,7 @@ fn setup_git_workspace(path: &std::path::Path) {
         .output()
         .expect("git config user.name");
     std::process::Command::new("git")
-        .args(["config", "user.email", "tester@axonel.local"])
+        .args(["config", "user.email", "tester@sentinel.local"])
         .current_dir(path)
         .output()
         .expect("git config user.email");
