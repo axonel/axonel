@@ -1,6 +1,6 @@
-# Axonel Development History & Milestone Archive
+# Sentinel Development History & Milestone Archive
 
-This document preserves the architectural progression and milestone history of Axonel from inception through the v0.1.1 release.
+This document preserves the architectural progression and milestone history of Sentinel from inception through the v0.1.1 release.
 
 ---
 
@@ -32,17 +32,17 @@ This document preserves the architectural progression and milestone history of A
 
 ## 4. Competitive Analysis & Positioning (Milestone 16)
 
-- Benchmarked Axonel against existing coding tools (Cursor, Aider, Claude Code, Devin).
-- Solidified Axonel's core thesis: a local, transparent supervisor daemon providing worktree isolation, independent verification, and explicit human governance.
+- Benchmarked Sentinel against existing coding tools (Cursor, Aider, Claude Code, Devin).
+- Solidified Sentinel's core thesis: a local, transparent supervisor daemon providing worktree isolation, independent verification, and explicit human governance.
 
 ---
 
 ## 5. Human Acceptance & Empirical Benchmarking (Milestones 17–19)
 
 - **Human Acceptance Gate:** Enforced an explicit stop at `ReadyForReview`, blocking unreviewed candidate merges with HTTP 409 Conflict.
-- **Empirical Benchmarks (M18):** Ran head-to-head trials comparing raw Gemini CLI execution against Axonel-supervised execution across 3 standard workloads:
+- **Empirical Benchmarks (M18):** Ran head-to-head trials comparing raw Gemini CLI execution against Sentinel-supervised execution across 3 standard workloads:
   - Raw Gemini CLI left repositories in a dirty state 100% of the time, requiring 4 manual developer actions per run.
-  - Axonel achieved 100% clean primary working trees with 0 manual developer actions required prior to the review gate.
+  - Sentinel achieved 100% clean primary working trees with 0 manual developer actions required prior to the review gate.
 - **Structured Review Deliverables (M19):** Added unified diff inspection, changed file manifests, and candidate commit SHA tracking.
 
 ---

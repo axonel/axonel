@@ -1,6 +1,6 @@
-# Axonel Operational Limitations & Boundaries
+# Sentinel Operational Limitations & Boundaries
 
-This document provides a transparent accounting of Axonel's operational assumptions, supported integrations, known failure modes, and boundaries.
+This document provides a transparent accounting of Sentinel's operational assumptions, supported integrations, known failure modes, and boundaries.
 
 ---
 
@@ -25,22 +25,22 @@ This document provides a transparent accounting of Axonel's operational assumpti
 - **Minimum Supported Rust Version (MSRV):** **Rust 1.88.0+** (Rust 2024 edition).
 - **Planned / Unverified:** **Linux aarch64** (`aarch64-unknown-linux-gnu`). Architecturally compatible, but unverified on hardware runners.
 - **Experimental:** **macOS**. Git worktrees and SQLite operate cleanly; Bubblewrap sandboxing is disabled on Darwin.
-- **Unsupported:** **Windows** (all versions). Axonel relies on POSIX process tree isolation (`killpg`, `setpgid`, `SIGTERM`/`SIGKILL`) and Unix domain sockets.
+- **Unsupported:** **Windows** (all versions). Sentinel relies on POSIX process tree isolation (`killpg`, `setpgid`, `SIGTERM`/`SIGKILL`) and Unix domain sockets.
 
 ---
 
 ## 3. Network Egress & LLM Privacy Model
 
-- **Local Control Plane:** The Axonel supervisor daemon, REST API, SQLite database (`plexis.db`), Git worktrees, unified diffs, and verification receipts remain strictly on your local disk.
+- **Local Control Plane:** The Sentinel supervisor daemon, REST API, SQLite database (`plexis.db`), Git worktrees, unified diffs, and verification receipts remain strictly on your local disk.
 - **Cloud LLM Egress:** When using external providers (such as Google Gemini CLI), prompts, repository file context, and error messages are transmitted outbound over HTTPS to provider APIs in accordance with your provider agreement.
-- **Secret Redaction:** Axonel runs an in-memory regex redactor (`SecretRedactor`) over all terminal streaming buffers, logs, and events, scrubbing Bearer tokens, OpenAI/Anthropic keys (`sk-...`), Google API keys (`AIza...`), and GitHub tokens (`ghp_...`).
+- **Secret Redaction:** Sentinel runs an in-memory regex redactor (`SecretRedactor`) over all terminal streaming buffers, logs, and events, scrubbing Bearer tokens, OpenAI/Anthropic keys (`sk-...`), Google API keys (`AIza...`), and GitHub tokens (`ghp_...`).
 
 ---
 
 ## 4. Verification & Correctness Boundaries
 
 - **Authoritative Disk Authority:** Verification is strictly physical (`cargo test`, `npm test`, `pytest`, `working_tree_clean == true`, `required_commit_exists == true`).
-- **No Mathematical Correctness Proof:** Axonel guarantees that *your test suite passed cleanly on disk*. It does not mathematically prove program correctness beyond what your test suite covers.
+- **No Mathematical Correctness Proof:** Sentinel guarantees that *your test suite passed cleanly on disk*. It does not mathematically prove program correctness beyond what your test suite covers.
 - **Flaky Test Sensitivity:** Non-deterministic tests with network or timing race conditions can cause false-negative verification rejections or trigger unnecessary replanning cycles.
 
 ---
@@ -49,4 +49,4 @@ This document provides a transparent accounting of Axonel's operational assumpti
 
 - **Single-Repository Scope:** Each mission is strictly confined to a single Git repository workspace. Multi-repository transactions are out of scope.
 - **Git Worktree Requirement:** The target repository must be a valid Git repository with `git worktree` support (`git >= 2.34`).
-- **Merge Conflicts:** If the target branch has moved concurrently and a merge conflict arises during integration, Axonel aborts the merge cleanly (`git merge --abort`) and returns HTTP 409 Conflict. Axonel does not automatically resolve conflicting merge hunks.
+- **Merge Conflicts:** If the target branch has moved concurrently and a merge conflict arises during integration, Sentinel aborts the merge cleanly (`git merge --abort`) and returns HTTP 409 Conflict. Sentinel does not automatically resolve conflicting merge hunks.

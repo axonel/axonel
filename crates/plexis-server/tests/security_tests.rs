@@ -45,10 +45,10 @@ async fn test_a_default_bind_loopback_auth_status() {
 /// non-zero exit code and explicit fatal error message.
 #[test]
 fn test_b_non_loopback_without_auth_fails_startup() {
-    // Locate the axonel / plexis-server binary
-    let bin_path = env!("CARGO_BIN_EXE_axonel");
+    // Locate the sentinel / plexis-server binary
+    let bin_path = env!("CARGO_BIN_EXE_sentinel");
     let db_path = format!(
-        "/tmp/axonel_sec_test_b_{}.db",
+        "/tmp/sentinel_sec_test_b_{}.db",
         std::time::SystemTime::now()
             .duration_since(std::time::UNIX_EPOCH)
             .unwrap()
@@ -63,10 +63,10 @@ fn test_b_non_loopback_without_auth_fails_startup() {
         .arg("4099")
         .arg("--db")
         .arg(&db_path)
-        .env_remove("AXONEL_AUTH_TOKEN")
+        .env_remove("SENTINEL_AUTH_TOKEN")
         .env_remove("PLEXIS_AUTH_TOKEN")
         .output()
-        .expect("failed to execute axonel serve");
+        .expect("failed to execute sentinel serve");
 
     assert!(
         !output.status.success(),
@@ -116,13 +116,13 @@ async fn test_c_non_loopback_with_auth_flag_succeeds() {
     assert_eq!(json["is_loopback"], false);
 }
 
-/// Test D: Non-loopback bind with AXONEL_AUTH_TOKEN environment variable succeeds.
+/// Test D: Non-loopback bind with SENTINEL_AUTH_TOKEN environment variable succeeds.
 #[tokio::test]
-async fn test_d_non_loopback_with_axonel_auth_token_env() {
-    std::env::set_var("AXONEL_AUTH_TOKEN", "env-token-xyz");
+async fn test_d_non_loopback_with_sentinel_auth_token_env() {
+    std::env::set_var("SENTINEL_AUTH_TOKEN", "env-token-xyz");
     let store = SqliteStore::open_in_memory().expect("open sqlite in-memory");
     let state = AppState::new(store).with_bind_host("0.0.0.0", false);
-    std::env::remove_var("AXONEL_AUTH_TOKEN");
+    std::env::remove_var("SENTINEL_AUTH_TOKEN");
 
     assert_eq!(state.auth_token.as_deref(), Some("env-token-xyz"));
 

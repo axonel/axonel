@@ -17,19 +17,19 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 }) => {
   const [token, setToken] = useState(api.getAuthToken());
   const [provider, setProvider] = useState(
-    () => localStorage.getItem('axonel_default_provider') || localStorage.getItem('plexis_default_provider') || 'mock'
+    () => localStorage.getItem('sentinel_default_provider') || localStorage.getItem('plexis_default_provider') || 'mock'
   );
   const [openaiKey, setOpenaiKey] = useState(
-    () => localStorage.getItem('axonel_openai_key') || localStorage.getItem('plexis_openai_key') || ''
+    () => localStorage.getItem('sentinel_openai_key') || localStorage.getItem('plexis_openai_key') || ''
   );
   const [geminiKey, setGeminiKey] = useState(
-    () => localStorage.getItem('axonel_gemini_key') || localStorage.getItem('plexis_gemini_key') || ''
+    () => localStorage.getItem('sentinel_gemini_key') || localStorage.getItem('plexis_gemini_key') || ''
   );
   const [anthropicKey, setAnthropicKey] = useState(
-    () => localStorage.getItem('axonel_anthropic_key') || localStorage.getItem('plexis_anthropic_key') || ''
+    () => localStorage.getItem('sentinel_anthropic_key') || localStorage.getItem('plexis_anthropic_key') || ''
   );
   const [ollamaUrl, setOllamaUrl] = useState(
-    () => localStorage.getItem('axonel_ollama_url') || localStorage.getItem('plexis_ollama_url') || 'http://localhost:11434'
+    () => localStorage.getItem('sentinel_ollama_url') || localStorage.getItem('plexis_ollama_url') || 'http://localhost:11434'
   );
   const [systemStatus, setSystemStatus] = useState<SystemStatus | null>(null);
   const [authStatus, setAuthStatus] = useState<AuthStatus | null>(null);
@@ -39,19 +39,19 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
     if (isOpen) {
       setToken(api.getAuthToken());
       setProvider(
-        localStorage.getItem('axonel_default_provider') || localStorage.getItem('plexis_default_provider') || 'mock'
+        localStorage.getItem('sentinel_default_provider') || localStorage.getItem('plexis_default_provider') || 'mock'
       );
       setOpenaiKey(
-        localStorage.getItem('axonel_openai_key') || localStorage.getItem('plexis_openai_key') || ''
+        localStorage.getItem('sentinel_openai_key') || localStorage.getItem('plexis_openai_key') || ''
       );
       setGeminiKey(
-        localStorage.getItem('axonel_gemini_key') || localStorage.getItem('plexis_gemini_key') || ''
+        localStorage.getItem('sentinel_gemini_key') || localStorage.getItem('plexis_gemini_key') || ''
       );
       setAnthropicKey(
-        localStorage.getItem('axonel_anthropic_key') || localStorage.getItem('plexis_anthropic_key') || ''
+        localStorage.getItem('sentinel_anthropic_key') || localStorage.getItem('plexis_anthropic_key') || ''
       );
       setOllamaUrl(
-        localStorage.getItem('axonel_ollama_url') || localStorage.getItem('plexis_ollama_url') || 'http://localhost:11434'
+        localStorage.getItem('sentinel_ollama_url') || localStorage.getItem('plexis_ollama_url') || 'http://localhost:11434'
       );
       api.getSystemStatus().then(setSystemStatus).catch(() => null);
       api.getAuthStatus().then(setAuthStatus).catch(() => null);
@@ -64,15 +64,15 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
     api.setAuthToken(token.trim());
-    localStorage.setItem('axonel_default_provider', provider);
+    localStorage.setItem('sentinel_default_provider', provider);
     localStorage.setItem('plexis_default_provider', provider);
-    localStorage.setItem('axonel_openai_key', openaiKey.trim());
+    localStorage.setItem('sentinel_openai_key', openaiKey.trim());
     localStorage.setItem('plexis_openai_key', openaiKey.trim());
-    localStorage.setItem('axonel_gemini_key', geminiKey.trim());
+    localStorage.setItem('sentinel_gemini_key', geminiKey.trim());
     localStorage.setItem('plexis_gemini_key', geminiKey.trim());
-    localStorage.setItem('axonel_anthropic_key', anthropicKey.trim());
+    localStorage.setItem('sentinel_anthropic_key', anthropicKey.trim());
     localStorage.setItem('plexis_anthropic_key', anthropicKey.trim());
-    localStorage.setItem('axonel_ollama_url', ollamaUrl.trim());
+    localStorage.setItem('sentinel_ollama_url', ollamaUrl.trim());
     localStorage.setItem('plexis_ollama_url', ollamaUrl.trim());
     setSaved(true);
     onTokenUpdated();
@@ -98,7 +98,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
       onClose={onClose}
       title={
         <div className="flex items-center gap-2">
-          <Sliders className="w-4 h-4 text-axonel-lime" />
+          <Sliders className="w-4 h-4 text-sentinel-lime" />
           <span className="font-sans font-bold text-gray-100">Control Plane Settings</span>
         </div>
       }
@@ -142,7 +142,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
         <div className="space-y-3">
           <div className="flex items-center justify-between pb-1.5 border-b border-surface-border">
             <div className="flex items-center gap-2">
-              <Shield className="w-3.5 h-3.5 text-axonel-lime" />
+              <Shield className="w-3.5 h-3.5 text-sentinel-lime" />
               <h3 className="text-xs font-semibold text-gray-200 uppercase tracking-wider font-sans">
                 Control Plane Authentication
               </h3>
@@ -164,13 +164,13 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           <Input
             label="Bearer Authentication Token"
             type="password"
-            placeholder="AXONEL_AUTH_TOKEN value..."
+            placeholder="SENTINEL_AUTH_TOKEN value..."
             value={token}
             onChange={(e) => setToken(e.target.value)}
             mono
             helperText={
               authStatus?.auth_required
-                ? 'Authentication is required by this Axonel daemon.'
+                ? 'Authentication is required by this Sentinel daemon.'
                 : 'Local loopback authentication is optional. Set token if daemon is protected.'
             }
           />
@@ -179,7 +179,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
         {/* Section 2: LLM Inference Defaults */}
         <div className="space-y-3 pt-2">
           <div className="flex items-center gap-2 pb-1.5 border-b border-surface-border">
-            <Key className="w-3.5 h-3.5 text-axonel-lime" />
+            <Key className="w-3.5 h-3.5 text-sentinel-lime" />
             <h3 className="text-xs font-semibold text-gray-200 uppercase tracking-wider font-sans">
               LLM Inference Defaults
             </h3>
@@ -248,7 +248,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           <div className="space-y-3 pt-2">
             <div className="flex items-center justify-between pb-1.5 border-b border-surface-border">
               <div className="flex items-center gap-2">
-                <Server className="w-3.5 h-3.5 text-axonel-lime" />
+                <Server className="w-3.5 h-3.5 text-sentinel-lime" />
                 <h3 className="text-xs font-semibold text-gray-200 uppercase tracking-wider font-sans">
                   Runtime Node Status
                 </h3>

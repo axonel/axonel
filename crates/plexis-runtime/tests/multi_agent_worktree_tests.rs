@@ -21,7 +21,7 @@ fn setup_test_repo() -> tempfile::TempDir {
         .expect("git config name");
 
     Command::new("git")
-        .args(["config", "user.email", "test@axonel.local"])
+        .args(["config", "user.email", "test@sentinel.local"])
         .current_dir(path)
         .output()
         .expect("git config email");

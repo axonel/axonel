@@ -133,7 +133,7 @@ export const ApprovalsView: React.FC<ApprovalsViewProps> = ({
             onClick={() => setFilter(tab)}
             className={`px-3 py-1 rounded text-xs font-sans capitalize transition-colors select-none ${
               filter === tab
-                ? 'bg-surface-card text-axonel-lime border border-surface-border font-semibold'
+                ? 'bg-surface-card text-sentinel-lime border border-surface-border font-semibold'
                 : 'text-gray-400 hover:text-gray-200 hover:bg-surface-hover/50 border border-transparent'
             }`}
           >
@@ -192,7 +192,7 @@ export const ApprovalsView: React.FC<ApprovalsViewProps> = ({
                 <div className="flex items-center gap-3 text-[11px] font-mono text-gray-400">
                   <button
                     onClick={() => onSelectWorkflow(approval.workflow_id)}
-                    className="flex items-center gap-1 text-axonel-lime hover:underline cursor-pointer"
+                    className="flex items-center gap-1 text-sentinel-lime hover:underline cursor-pointer"
                   >
                     <span>Workflow: {approval.workflow_id.slice(0, 8)}...</span>
                     <ExternalLink className="w-3 h-3" />

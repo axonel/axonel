@@ -42,7 +42,7 @@ fn setup_git_workspace(dir: &Path) {
         .expect("git config user");
     Command::new("git")
         .current_dir(dir)
-        .args(["config", "user.email", "tester@axonel.local"])
+        .args(["config", "user.email", "tester@sentinel.local"])
         .output()
         .expect("git config email");
 

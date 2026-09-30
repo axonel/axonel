@@ -68,7 +68,7 @@ export const TerminalView: React.FC<TerminalViewProps> = ({ taskId, isTaskActive
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80 inline-block" />
           </div>
           <span className="text-gray-300 font-semibold flex items-center gap-1.5 ml-1">
-            <Terminal className="w-3.5 h-3.5 text-axonel-lime" />
+            <Terminal className="w-3.5 h-3.5 text-sentinel-lime" />
             <span>Task Terminal</span>
           </span>
           <Badge variant="lime" size="xs">
@@ -102,7 +102,7 @@ export const TerminalView: React.FC<TerminalViewProps> = ({ taskId, isTaskActive
               type="checkbox"
               checked={autoScroll}
               onChange={(e) => setAutoScroll(e.target.checked)}
-              className="rounded bg-surface-base border-surface-border text-axonel-lime focus:ring-axonel-lime text-xs"
+              className="rounded bg-surface-base border-surface-border text-sentinel-lime focus:ring-sentinel-lime text-xs"
             />
             <span className="text-[10px] font-mono">Auto-scroll</span>
           </label>

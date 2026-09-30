@@ -5,13 +5,13 @@ import path from "path";
 
 const PORT = 4024;
 const BASE_URL = `http://127.0.0.1:${PORT}`;
-const DB_PATH = `/tmp/axonel_m13_${Date.now()}.db`;
-const WORKLOAD_DIR = `/tmp/axonel_workload_m13_${Date.now()}`;
+const DB_PATH = `/tmp/sentinel_m13_${Date.now()}.db`;
+const WORKLOAD_DIR = `/tmp/sentinel_workload_m13_${Date.now()}`;
 const AUTH_TOKEN = "m13-hardened-auth-token-112233";
 const ARTIFACTS_DIR = `/tmp/milestone13_artifacts_${Date.now()}`;
 
 console.log("================================================================");
-console.log("   AXONEL / PLEXIS MILESTONE 13: REAL GEMINI CLI ADAPTER E2E   ");
+console.log("   SENTINEL / PLEXIS MILESTONE 13: REAL GEMINI CLI ADAPTER E2E   ");
 console.log("================================================================");
 console.log(`[E2E Setup] Database path: ${DB_PATH}`);
 console.log(`[E2E Setup] Target workload repository: ${WORKLOAD_DIR}`);
@@ -24,7 +24,7 @@ fs.mkdirSync(ARTIFACTS_DIR, { recursive: true });
 // 1. Setup a clean Git repository in WORKLOAD_DIR with a genuine bug in multiply()
 execFileSync("git", ["init"], { cwd: WORKLOAD_DIR });
 execFileSync("git", ["config", "user.name", "Plexis Gemini Tester"], { cwd: WORKLOAD_DIR });
-execFileSync("git", ["config", "user.email", "gemini-tester@axonel.local"], { cwd: WORKLOAD_DIR });
+execFileSync("git", ["config", "user.email", "gemini-tester@sentinel.local"], { cwd: WORKLOAD_DIR });
 fs.mkdirSync(path.join(WORKLOAD_DIR, "src"), { recursive: true });
 
 fs.writeFileSync(

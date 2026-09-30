@@ -47,7 +47,7 @@ export const Badge: React.FC<BadgeProps> = ({
     neutral:
       'bg-surface-base text-gray-400 border border-surface-border',
     lime:
-      'bg-axonel-lime-muted text-axonel-lime border border-axonel-lime-border font-semibold',
+      'bg-sentinel-lime-muted text-sentinel-lime border border-sentinel-lime-border font-semibold',
     running:
       'bg-sky-950/40 text-status-running border border-sky-800/50',
     verified:

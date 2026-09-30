@@ -1,6 +1,6 @@
-# Axonel Product Overview & Design Principles
+# Sentinel Product Overview & Design Principles
 
-Axonel is an **autonomous software engineering supervisor daemon and control plane**. It enables developers to delegate real programming tasks to external coding agents while maintaining total repository safety, independent verification, and explicit human governance.
+Sentinel is an **autonomous software engineering supervisor daemon and control plane**. It enables developers to delegate real programming tasks to external coding agents while maintaining total repository safety, independent verification, and explicit human governance.
 
 ---
 
@@ -13,7 +13,7 @@ When coding agents execute directly inside a developer's repository:
 3. **Dirty Working Trees:** Agents leave untracked build artifacts, lockfile residue, and temporary files that accidentally get swept into commits.
 4. **Zero Durability:** Process crashes, network disconnects, or machine restarts lose all in-flight work.
 
-### The Axonel Thesis
+### The Sentinel Thesis
 Developers do not need another chatbot in their IDE. They need an **operating system and supervisor layer** for coding agents that treats agents as untrusted background workers:
 - Confine agents to isolated Git worktrees.
 - Verify deliverables on disk using the repository's ground-truth test suite out-of-band.
@@ -49,7 +49,7 @@ Developers do not need another chatbot in their IDE. They need an **operating sy
 
 ## 4. Non-Goals
 
-- **Not an IDE or Chat Extension:** Axonel does not provide code completion popups or in-editor chat sidebars.
-- **Not a Black-Box SaaS:** Axonel does not execute code in untrusted multi-tenant cloud sandboxes.
-- **Not "Zero Babysitting":** Axonel automates execution and testing, but human engineers retain authority over review and merging.
-- **Not a Mathematical Prover:** Axonel proves that your test suite passed on disk; it does not claim formal mathematical correctness beyond test coverage.
+- **Not an IDE or Chat Extension:** Sentinel does not provide code completion popups or in-editor chat sidebars.
+- **Not a Black-Box SaaS:** Sentinel does not execute code in untrusted multi-tenant cloud sandboxes.
+- **Not "Zero Babysitting":** Sentinel automates execution and testing, but human engineers retain authority over review and merging.
+- **Not a Mathematical Prover:** Sentinel proves that your test suite passed on disk; it does not claim formal mathematical correctness beyond test coverage.

@@ -26,7 +26,7 @@ export const Panel: React.FC<PanelProps> = ({
     default: 'bg-surface-card border border-surface-border',
     subtle: 'bg-surface-base border border-surface-border',
     ghost: 'bg-transparent border border-surface-border',
-    lime: 'bg-surface-card border border-surface-border border-t-2 border-t-axonel-lime',
+    lime: 'bg-surface-card border border-surface-border border-t-2 border-t-sentinel-lime',
   };
 
   const paddingClass = noPadding

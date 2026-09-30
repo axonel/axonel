@@ -1,5 +1,5 @@
 /**
- * Axonel Clean Install Smoke Test
+ * Sentinel Clean Install Smoke Test
  *
  * Verifies the complete documented installation procedure from docs/REPRODUCIBLE_RELEASE.md:
  * 1. Test binary --help and --version from release build
@@ -16,12 +16,12 @@ import http from 'http';
 import path from 'path';
 import fs from 'fs';
 
-const CLEAN_DIR = fs.existsSync('/tmp/axonel_clean_install_test')
-  ? '/tmp/axonel_clean_install_test'
+const CLEAN_DIR = fs.existsSync('/tmp/sentinel_clean_install_test')
+  ? '/tmp/sentinel_clean_install_test'
   : process.cwd();
-const BIN_PATH = fs.existsSync(path.join(CLEAN_DIR, 'target/release/axonel'))
-  ? path.join(CLEAN_DIR, 'target/release/axonel')
-  : path.resolve('target/release/axonel');
+const BIN_PATH = fs.existsSync(path.join(CLEAN_DIR, 'target/release/sentinel'))
+  ? path.join(CLEAN_DIR, 'target/release/sentinel')
+  : path.resolve('target/release/sentinel');
 const PORT = 4399;
 const DB_PATH = `/tmp/clean_install_${Date.now()}.db`;
 const REPO_DIR = `/tmp/clean_install_repo_${Date.now()}`;
@@ -65,7 +65,7 @@ function request(method, reqPath, body = null) {
 
 async function main() {
   log('========================================================================');
-  log('   AXONEL CLEAN-INSTALL & RELEASE BUILD SMOKE VERIFICATION');
+  log('   SENTINEL CLEAN-INSTALL & RELEASE BUILD SMOKE VERIFICATION');
   log('========================================================================\n');
 
   if (!fs.existsSync(BIN_PATH)) {
@@ -74,20 +74,20 @@ async function main() {
   log(`Found release binary at: ${BIN_PATH}`);
 
   // 1. Test --help
-  log('Step 1: Testing axonel --help...');
+  log('Step 1: Testing sentinel --help...');
   const helpOut = execFileSync(BIN_PATH, ['--help'], { encoding: 'utf8' });
-  if (!helpOut.includes('Usage: axonel') || !helpOut.includes('serve')) {
+  if (!helpOut.includes('Usage: sentinel') || !helpOut.includes('serve')) {
     throw new Error(`Unexpected --help output:\n${helpOut}`);
   }
-  log('✓ Step 1: axonel --help is clean and complete.');
+  log('✓ Step 1: sentinel --help is clean and complete.');
 
   // 2. Test --version
-  log('Step 2: Testing axonel --version...');
+  log('Step 2: Testing sentinel --version...');
   const verOut = execFileSync(BIN_PATH, ['--version'], { encoding: 'utf8' });
   if (!verOut.includes('0.1.1') && !verOut.includes('0.1.0')) {
     throw new Error(`Unexpected --version output: ${verOut}`);
   }
-  log(`✓ Step 2: axonel --version outputs: ${verOut.trim()}`);
+  log(`✓ Step 2: sentinel --version outputs: ${verOut.trim()}`);
 
   // 3. Test non-loopback without auth fails hard
   log('Step 3: Verifying non-loopback bind without auth token fails hard...');
@@ -105,7 +105,7 @@ async function main() {
   log('✓ Step 3: Server correctly refused non-loopback startup with exit code 1.');
 
   // 4. Start server on loopback default
-  log(`Step 4: Starting Axonel release server on 127.0.0.1:${PORT}...`);
+  log(`Step 4: Starting Sentinel release server on 127.0.0.1:${PORT}...`);
   const server = spawn(BIN_PATH, ['serve', '--host', '127.0.0.1', '--port', String(PORT), '--db', DB_PATH], {
     cwd: CLEAN_DIR,
     stdio: ['ignore', 'pipe', 'pipe'],
@@ -129,8 +129,8 @@ async function main() {
       } catch {}
       await new Promise((r) => setTimeout(r, 200));
     }
-    if (!healthy) throw new Error('Axonel server failed to respond on /health within timeout');
-    log('✓ Step 4: Axonel server started and is healthy on loopback.');
+    if (!healthy) throw new Error('Sentinel server failed to respond on /health within timeout');
+    log('✓ Step 4: Sentinel server started and is healthy on loopback.');
 
     // 5. Verify auth status
     log('Step 5: Verifying /api/v1/auth/status...');
@@ -153,7 +153,7 @@ async function main() {
     fs.mkdirSync(REPO_DIR, { recursive: true });
     execFileSync('git', ['init', '-b', 'main'], { cwd: REPO_DIR });
     execFileSync('git', ['config', 'user.name', 'Clean Test'], { cwd: REPO_DIR });
-    execFileSync('git', ['config', 'user.email', 'clean@axonel.local'], { cwd: REPO_DIR });
+    execFileSync('git', ['config', 'user.email', 'clean@sentinel.local'], { cwd: REPO_DIR });
     fs.writeFileSync(path.join(REPO_DIR, 'README.md'), '# Test Repo\n');
     execFileSync('git', ['add', 'README.md'], { cwd: REPO_DIR });
     execFileSync('git', ['commit', '-m', 'initial commit'], { cwd: REPO_DIR });

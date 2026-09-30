@@ -4,13 +4,13 @@
 
 @layer base {
   body {
-    @apply bg-background text-gray-200 antialiased selection:bg-axonel-lime selection:text-black;
+    @apply bg-background text-gray-200 antialiased selection:bg-sentinel-lime selection:text-black;
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
   }
 
   /* Compact native inputs */
   input, select, textarea {
-    @apply bg-surface-card border border-surface-border text-gray-100 placeholder-gray-500 focus:border-axonel-lime focus:outline-none focus:ring-1 focus:ring-axonel-lime;
+    @apply bg-surface-card border border-surface-border text-gray-100 placeholder-gray-500 focus:border-sentinel-lime focus:outline-none focus:ring-1 focus:ring-sentinel-lime;
   }
 }
 

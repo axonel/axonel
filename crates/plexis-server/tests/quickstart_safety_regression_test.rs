@@ -27,7 +27,7 @@ fn setup_repo(dir: &std::path::Path) -> String {
 
     run(&["init", "-b", "main"]);
     run(&["config", "user.name", "Test User"]);
-    run(&["config", "user.email", "test@axonel.local"]);
+    run(&["config", "user.email", "test@sentinel.local"]);
 
     std::fs::write(
         dir.join("Cargo.toml"),
@@ -60,8 +60,8 @@ async fn test_quickstart_never_commits_to_main_or_sweeps_untracked() {
     std::fs::write(temp_repo.path().join("Cargo.lock"), "# lockfile").unwrap();
     std::fs::write(temp_repo.path().join("plexis.db"), "database content").unwrap();
     std::fs::write(
-        temp_repo.path().join("axonel.db"),
-        "axonel database content",
+        temp_repo.path().join("sentinel.db"),
+        "sentinel database content",
     )
     .unwrap();
     std::fs::write(
@@ -193,7 +193,7 @@ async fn test_quickstart_never_commits_to_main_or_sweeps_untracked() {
         log_str
     );
     assert!(
-        !log_str.contains("Axonel Agent"),
+        !log_str.contains("Sentinel Agent"),
         "CRITICAL INVARIANT VIOLATION: Agent committed directly to main: {}",
         log_str
     );
@@ -214,8 +214,8 @@ async fn test_quickstart_never_commits_to_main_or_sweeps_untracked() {
         "plexis.db was swept into git index!"
     );
     assert!(
-        status_str.contains("?? axonel.db"),
-        "axonel.db was swept into git index!"
+        status_str.contains("?? sentinel.db"),
+        "sentinel.db was swept into git index!"
     );
     assert!(
         status_str.contains("?? untracked.txt"),
@@ -240,7 +240,7 @@ fn setup_buggy_math_repo(dir: &std::path::Path) -> String {
 
     run(&["init", "-b", "main"]);
     run(&["config", "user.name", "Test User"]);
-    run(&["config", "user.email", "test@axonel.local"]);
+    run(&["config", "user.email", "test@sentinel.local"]);
 
     std::fs::write(
         dir.join("Cargo.toml"),
@@ -384,7 +384,11 @@ async fn test_adversarial_full_lifecycle_and_git_sha_tracking() {
     // Untracked files in agent workspace that must never be swept into agent commits
     std::fs::write(worktree_dir.path().join("Cargo.lock"), "# lockfile").unwrap();
     std::fs::write(worktree_dir.path().join("plexis.db"), "plexis db binary").unwrap();
-    std::fs::write(worktree_dir.path().join("axonel.db"), "axonel db binary").unwrap();
+    std::fs::write(
+        worktree_dir.path().join("sentinel.db"),
+        "sentinel db binary",
+    )
+    .unwrap();
     std::fs::write(
         worktree_dir.path().join("arbitrary_sensitive.env"),
         "SECRET=topsecret",
@@ -399,7 +403,7 @@ async fn test_adversarial_full_lifecycle_and_git_sha_tracking() {
         .unwrap();
     assert!(wt_test.status.success());
 
-    // Agent stages and commits ONLY modified tracked file using Axonel git tools exclusion semantics
+    // Agent stages and commits ONLY modified tracked file using Sentinel git tools exclusion semantics
     let wt_add = Command::new("git")
         .args(["add", "-A"])
         .current_dir(worktree_dir.path())
@@ -418,7 +422,7 @@ async fn test_adversarial_full_lifecycle_and_git_sha_tracking() {
             ":(glob)**/*.db-shm",
             ":(glob)**/*.db-wal",
             ":(glob)**/plexis.db*",
-            ":(glob)**/axonel.db*",
+            ":(glob)**/sentinel.db*",
             ":(glob)**/*.env*",
             ":(glob)**/.env*",
             ":(glob)**/*.pem",
@@ -431,7 +435,7 @@ async fn test_adversarial_full_lifecycle_and_git_sha_tracking() {
             "*.db-shm",
             "*.db-wal",
             "plexis.db*",
-            "axonel.db*",
+            "sentinel.db*",
             "*.env*",
             ".env*",
         ])
@@ -441,9 +445,9 @@ async fn test_adversarial_full_lifecycle_and_git_sha_tracking() {
     let wt_commit = Command::new("git")
         .args([
             "-c",
-            "user.name=Axonel Agent",
+            "user.name=Sentinel Agent",
             "-c",
-            "user.email=agent@axonel.local",
+            "user.email=agent@sentinel.local",
             "commit",
             "-m",
             "fix(math): implement addition in src/lib.rs",
@@ -481,8 +485,8 @@ async fn test_adversarial_full_lifecycle_and_git_sha_tracking() {
         "plexis.db swept into agent commit!"
     );
     assert!(
-        wt_status_str.contains("?? axonel.db"),
-        "axonel.db swept into agent commit!"
+        wt_status_str.contains("?? sentinel.db"),
+        "sentinel.db swept into agent commit!"
     );
     assert!(
         wt_status_str.contains("?? arbitrary_sensitive.env"),

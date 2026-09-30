@@ -11,7 +11,7 @@ export const UsageView: React.FC = () => {
   const [pruneResult, setPruneResult] = useState<PruneRetentionResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [budgetLimit, setBudgetLimit] = useState<number>(() => {
-    const saved = localStorage.getItem('axonel_budget_threshold') || localStorage.getItem('plexis_budget_threshold');
+    const saved = localStorage.getItem('sentinel_budget_threshold') || localStorage.getItem('plexis_budget_threshold');
     return saved ? parseFloat(saved) : 50.0;
   });
 
@@ -21,7 +21,7 @@ export const UsageView: React.FC = () => {
 
   const handleBudgetChange = (newVal: number) => {
     setBudgetLimit(newVal);
-    localStorage.setItem('axonel_budget_threshold', newVal.toString());
+    localStorage.setItem('sentinel_budget_threshold', newVal.toString());
   };
 
   const loadCapabilities = async () => {
@@ -69,7 +69,7 @@ export const UsageView: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-surface-border">
         <div>
           <div className="flex items-center gap-2">
-            <DollarSign className="w-4 h-4 text-axonel-lime" />
+            <DollarSign className="w-4 h-4 text-sentinel-lime" />
             <h2 className="text-base sm:text-lg font-bold text-gray-100 tracking-tight font-mono uppercase">
               Cost & Usage Accounting
             </h2>
@@ -124,7 +124,7 @@ export const UsageView: React.FC = () => {
               step="5"
               value={budgetLimit}
               onChange={(e) => handleBudgetChange(parseFloat(e.target.value) || 0)}
-              className="w-20 bg-surface-base border border-surface-border rounded px-2 py-0.5 text-xs text-gray-100 font-mono focus:border-axonel-lime focus:outline-none"
+              className="w-20 bg-surface-base border border-surface-border rounded px-2 py-0.5 text-xs text-gray-100 font-mono focus:border-sentinel-lime focus:outline-none"
             />
           </div>
           <span className="text-[10px] text-gray-500 mt-0.5 block font-mono">Alert triggered at limit</span>
@@ -134,7 +134,7 @@ export const UsageView: React.FC = () => {
           <span className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider block mb-1 font-mono">
             Configured Models
           </span>
-          <div className="text-xl sm:text-2xl font-bold text-axonel-lime font-mono">
+          <div className="text-xl sm:text-2xl font-bold text-sentinel-lime font-mono">
             {capabilities.length}
           </div>
           <span className="text-[10px] text-gray-500 mt-0.5 block font-mono">Across active providers</span>

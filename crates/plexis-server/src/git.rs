@@ -567,7 +567,7 @@ pub fn integrate_git_commit(
     }
 
     // 5. If ff-only failed, attempt standard merge with commit message
-    let msg = custom_message.unwrap_or("Merge verified Axonel mission commit");
+    let msg = custom_message.unwrap_or("Merge verified Sentinel mission commit");
     let merge_output = Command::new("git")
         .args(["merge", "-m", msg, verified_commit])
         .current_dir(repo_path)

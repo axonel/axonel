@@ -556,7 +556,7 @@ mod tests {
                     ":(glob)**/*.db-shm",
                     ":(glob)**/*.db-wal",
                     ":(glob)**/plexis.db*",
-                    ":(glob)**/axonel.db*",
+                    ":(glob)**/sentinel.db*",
                     ":(glob)**/*.env*",
                     ":(glob)**/.env*",
                     ":(glob)**/*.pem",
@@ -569,7 +569,7 @@ mod tests {
                     "*.db-shm",
                     "*.db-wal",
                     "plexis.db*",
-                    "axonel.db*",
+                    "sentinel.db*",
                     "*.env*",
                     ".env*",
                 ])

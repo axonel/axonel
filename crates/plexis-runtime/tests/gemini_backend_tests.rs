@@ -37,7 +37,7 @@ fn setup_git_workspace(dir: &Path) {
         .expect("git config user");
     Command::new("git")
         .current_dir(dir)
-        .args(["config", "user.email", "tester@axonel.local"])
+        .args(["config", "user.email", "tester@sentinel.local"])
         .output()
         .expect("git config email");
 
@@ -198,7 +198,7 @@ exit 0
     fs::create_dir_all(&gemini_cfg_dir).expect("create .gemini");
     fs::write(
         gemini_cfg_dir.join("google_accounts.json"),
-        r#"{"active": "test-bot@axonel.local", "old": []}"#,
+        r#"{"active": "test-bot@sentinel.local", "old": []}"#,
     )
     .expect("write accounts");
 
@@ -274,7 +274,7 @@ exit 2
     fs::create_dir_all(&gemini_cfg_dir).expect("create .gemini");
     fs::write(
         gemini_cfg_dir.join("google_accounts.json"),
-        r#"{"active": "test-bot@axonel.local", "old": []}"#,
+        r#"{"active": "test-bot@sentinel.local", "old": []}"#,
     )
     .expect("write accounts");
 
@@ -326,7 +326,7 @@ sleep 60
     fs::create_dir_all(&gemini_cfg_dir).expect("create .gemini");
     fs::write(
         gemini_cfg_dir.join("google_accounts.json"),
-        r#"{"active": "test-bot@axonel.local", "old": []}"#,
+        r#"{"active": "test-bot@sentinel.local", "old": []}"#,
     )
     .expect("write accounts");
 
@@ -373,7 +373,7 @@ sleep 30
     fs::create_dir_all(&gemini_cfg_dir).expect("create .gemini");
     fs::write(
         gemini_cfg_dir.join("google_accounts.json"),
-        r#"{"active": "test-bot@axonel.local", "old": []}"#,
+        r#"{"active": "test-bot@sentinel.local", "old": []}"#,
     )
     .expect("write accounts");
 

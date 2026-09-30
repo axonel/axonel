@@ -4,11 +4,11 @@ import path from "path";
 
 const PORT = 4055;
 const BASE_URL = `http://127.0.0.1:${PORT}`;
-const DB_PATH = `/tmp/axonel_rc_matrix_${Date.now()}.db`;
+const DB_PATH = `/tmp/sentinel_rc_matrix_${Date.now()}.db`;
 const AUTH_TOKEN = "rc-matrix-secret-token-998877";
 
 console.log("================================================================");
-console.log("   AXONEL RELEASE CANDIDATE TEST MATRIX (SCENARIOS A THROUGH O)  ");
+console.log("   SENTINEL RELEASE CANDIDATE TEST MATRIX (SCENARIOS A THROUGH O)  ");
 console.log("================================================================\n");
 
 const projectRoot = path.resolve(path.dirname(new URL(import.meta.url).pathname), "../..");
@@ -24,12 +24,12 @@ let serverProc = null;
 const tempDirs = [];
 
 function createTempRepo(prefix) {
-  const dir = `/tmp/axonel_rc_${prefix}_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+  const dir = `/tmp/sentinel_rc_${prefix}_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
   fs.mkdirSync(dir, { recursive: true });
   tempDirs.push(dir);
   execFileSync("git", ["init", "-b", "main"], { cwd: dir });
   execFileSync("git", ["config", "user.name", "RC Tester"], { cwd: dir });
-  execFileSync("git", ["config", "user.email", "tester@axonel.local"], { cwd: dir });
+  execFileSync("git", ["config", "user.email", "tester@sentinel.local"], { cwd: dir });
   fs.mkdirSync(path.join(dir, "src"), { recursive: true });
   fs.mkdirSync(path.join(dir, "tests"), { recursive: true });
   fs.writeFileSync(path.join(dir, ".gitignore"), "/target\nCargo.lock\n.plexis/\n", "utf-8");
@@ -130,7 +130,7 @@ async function runMatrix() {
   try {
     serverProc = startServerProcess();
     await waitForServer();
-    console.log(`✓ Axonel Server running at ${BASE_URL}\n`);
+    console.log(`✓ Sentinel Server running at ${BASE_URL}\n`);
 
     // =========================================================================
     // SCENARIO A: Happy-Path Mission with Real Gemini CLI

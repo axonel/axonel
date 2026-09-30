@@ -5,14 +5,14 @@ import path from "path";
 
 const PORT = 4029;
 const BASE_URL = `http://127.0.0.1:${PORT}`;
-const DB_PATH = `/tmp/axonel_m15_${Date.now()}.db`;
-const WORKLOAD_DIR = `/tmp/axonel_workload_m15_${Date.now()}`;
+const DB_PATH = `/tmp/sentinel_m15_${Date.now()}.db`;
+const WORKLOAD_DIR = `/tmp/sentinel_workload_m15_${Date.now()}`;
 const AUTH_TOKEN = "m15-mission-token-secret-112233";
 const ARTIFACTS_DIR = `/tmp/milestone15_artifacts_${Date.now()}`;
 const ARTIFACT_DEST = "/home/roonakyadav/.gemini/antigravity/brain/f5e605a3-b2dc-4c5c-8c4d-347413f30290/milestone15_success.png";
 
 console.log("================================================================");
-console.log("   AXONEL / PLEXIS MILESTONE 15: AUTONOMOUS MISSION ENGINE E2E   ");
+console.log("   SENTINEL / PLEXIS MILESTONE 15: AUTONOMOUS MISSION ENGINE E2E   ");
 console.log("================================================================");
 console.log(`[E2E Setup] Database path: ${DB_PATH}`);
 console.log(`[E2E Setup] Target workload repository: ${WORKLOAD_DIR}`);
@@ -25,7 +25,7 @@ fs.mkdirSync(ARTIFACTS_DIR, { recursive: true });
 // 1. Setup real Git workload repository: auth_service crate with token verification bug
 execFileSync("git", ["init"], { cwd: WORKLOAD_DIR });
 execFileSync("git", ["config", "user.name", "Plexis Mission Tester"], { cwd: WORKLOAD_DIR });
-execFileSync("git", ["config", "user.email", "mission-tester@axonel.local"], { cwd: WORKLOAD_DIR });
+execFileSync("git", ["config", "user.email", "mission-tester@sentinel.local"], { cwd: WORKLOAD_DIR });
 fs.mkdirSync(path.join(WORKLOAD_DIR, "src"), { recursive: true });
 fs.mkdirSync(path.join(WORKLOAD_DIR, "tests"), { recursive: true });
 

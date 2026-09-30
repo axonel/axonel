@@ -288,7 +288,7 @@ impl Tool for GitTool {
                     let branch_name = String::from_utf8_lossy(&out.stdout).trim().to_string();
                     if branch_name == "main" {
                         return Err(ToolError::ExecutionFailed(format!(
-                            "Direct agent commits to target branch '{}' are strictly prohibited by Axonel safety governance. Agent mutations must occur in an isolated worktree.",
+                            "Direct agent commits to target branch '{}' are strictly prohibited by Sentinel safety governance. Agent mutations must occur in an isolated worktree.",
                             branch_name
                         )));
                     }
@@ -305,10 +305,10 @@ impl Tool for GitTool {
                         || p.ends_with(".db-shm")
                         || p.ends_with(".db-wal")
                         || p.contains("plexis.db")
-                        || p.contains("axonel.db")
+                        || p.contains("sentinel.db")
                     {
                         return Err(ToolError::ExecutionFailed(format!(
-                            "Staging protected runtime file '{}' is strictly prohibited by Axonel safety governance.",
+                            "Staging protected runtime file '{}' is strictly prohibited by Sentinel safety governance.",
                             p
                         )));
                     }
@@ -340,7 +340,7 @@ impl Tool for GitTool {
                         ":(glob)**/*.db-shm",
                         ":(glob)**/*.db-wal",
                         ":(glob)**/plexis.db*",
-                        ":(glob)**/axonel.db*",
+                        ":(glob)**/sentinel.db*",
                         ":(glob)**/*.env*",
                         ":(glob)**/.env*",
                         ":(glob)**/*.pem",
@@ -353,7 +353,7 @@ impl Tool for GitTool {
                         "*.db-shm",
                         "*.db-wal",
                         "plexis.db*",
-                        "axonel.db*",
+                        "sentinel.db*",
                         "*.env*",
                         ".env*",
                     ])
@@ -364,9 +364,9 @@ impl Tool for GitTool {
                 // git commit -m msg with explicit agent author identity
                 let commit_output = Command::new("git")
                     .arg("-c")
-                    .arg("user.name=Axonel Agent")
+                    .arg("user.name=Sentinel Agent")
                     .arg("-c")
-                    .arg("user.email=agent@axonel.local")
+                    .arg("user.email=agent@sentinel.local")
                     .arg("commit")
                     .arg("-m")
                     .arg(&msg)

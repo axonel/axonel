@@ -89,7 +89,7 @@ export const WorkspaceModal: React.FC<WorkspaceModalProps> = ({
       onClose={onClose}
       title={
         <div className="flex items-center gap-2">
-          <FolderGit2 className="w-4 h-4 text-axonel-lime" />
+          <FolderGit2 className="w-4 h-4 text-sentinel-lime" />
           <span>Project Workspaces</span>
         </div>
       }
@@ -132,7 +132,7 @@ export const WorkspaceModal: React.FC<WorkspaceModalProps> = ({
         ) : (
           <div className="w-full flex items-center justify-between">
             <span className="text-[11px] text-gray-500 font-mono flex items-center gap-1.5">
-              <Shield className="w-3.5 h-3.5 text-axonel-lime" />
+              <Shield className="w-3.5 h-3.5 text-sentinel-lime" />
               <span>Security: Path confinement and secret redactor enforced</span>
             </span>
             <div className="flex items-center gap-2">
@@ -204,7 +204,7 @@ export const WorkspaceModal: React.FC<WorkspaceModalProps> = ({
                       }}
                       className={`p-3.5 rounded border transition cursor-pointer flex items-center justify-between gap-3 ${
                         isActive
-                          ? 'bg-axonel-lime/5 border-axonel-lime/40 ring-1 ring-axonel-lime/20'
+                          ? 'bg-sentinel-lime/5 border-sentinel-lime/40 ring-1 ring-sentinel-lime/20'
                           : 'bg-surface-base border-surface-border hover:border-surface-border-strong hover:bg-surface-raised'
                       }`}
                     >
@@ -229,7 +229,7 @@ export const WorkspaceModal: React.FC<WorkspaceModalProps> = ({
                       </div>
                       <div className="text-xs shrink-0">
                         {isActive ? (
-                          <span className="text-axonel-lime font-mono text-[11px] font-medium flex items-center gap-1">
+                          <span className="text-sentinel-lime font-mono text-[11px] font-medium flex items-center gap-1">
                             <Check className="w-3.5 h-3.5" />
                             <span>Selected</span>
                           </span>
@@ -262,12 +262,12 @@ export const WorkspaceModal: React.FC<WorkspaceModalProps> = ({
               value={newPath}
               onChange={(e) => setNewPath(e.target.value)}
               mono
-              helperText="Axonel strictly confines file reads, writes, and shell execution inside this directory root."
+              helperText="Sentinel strictly confines file reads, writes, and shell execution inside this directory root."
             />
 
             <Input
               label="Description (Optional)"
-              placeholder="e.g. Rate limiter crate for Axonel core"
+              placeholder="e.g. Rate limiter crate for Sentinel core"
               value={newDescription}
               onChange={(e) => setNewDescription(e.target.value)}
             />

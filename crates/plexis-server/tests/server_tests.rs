@@ -794,7 +794,7 @@ async fn test_github_integration_endpoints() {
 
     // 3. Create PR with repo and workflow link
     let pr_payload = serde_json::json!({
-        "repo": "axonel/axonel",
+        "repo": "axonel/sentinel",
         "title": "feat: add capability matrix",
         "body": "Implements provider capabilities and reasoning tiers",
         "head": "feat/capabilities",
@@ -830,7 +830,7 @@ async fn test_github_integration_endpoints() {
         .clone()
         .oneshot(
             Request::builder()
-                .uri("/api/v1/github/issues?repo=axonel/axonel")
+                .uri("/api/v1/github/issues?repo=sentinel/sentinel")
                 .body(Body::empty())
                 .unwrap(),
         )
@@ -1170,7 +1170,7 @@ async fn test_mission_diff_and_integration_lifecycle() {
         .output()
         .unwrap();
     let _ = Command::new("git")
-        .args(["config", "user.email", "test@axonel.local"])
+        .args(["config", "user.email", "test@sentinel.local"])
         .current_dir(repo_path)
         .output()
         .unwrap();
@@ -1505,7 +1505,7 @@ async fn test_integration_refuses_dirty_target_branch() {
         .output()
         .unwrap();
     let _ = Command::new("git")
-        .args(["config", "user.email", "test@axonel.local"])
+        .args(["config", "user.email", "test@sentinel.local"])
         .current_dir(repo_path)
         .output()
         .unwrap();
@@ -1662,7 +1662,7 @@ async fn test_integration_refuses_merge_conflict() {
         .output()
         .unwrap();
     let _ = Command::new("git")
-        .args(["config", "user.email", "test@axonel.local"])
+        .args(["config", "user.email", "test@sentinel.local"])
         .current_dir(repo_path)
         .output()
         .unwrap();

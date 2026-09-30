@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to **Axonel** are documented in this file.
+All notable changes to **Sentinel** are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
@@ -11,7 +11,7 @@ Corrective patch release addressing all 10 findings identified during independen
 
 ### Safety & Invariant Hardening
 - **Target Branch Invariant (`main` Protection):** Removed premature auto-merging `Integrator` role. Strictly enforces isolated Git worktree execution for all agent roles (`.plexis/worktrees/<task_id>`). Direct agent commits to `main` are strictly forbidden; changes reach `main` exclusively via transactional integration following explicit human acceptance.
-- **Untracked File Hygiene:** Replaced blanket staging with explicit exclusions (`:!*.db`, `:!*.db-shm`, `:!*.db-wal`, `:!plexis.db*`, `:!axonel.db*`) in built-in Git tools. Agent commit identity updated to `Axonel Agent <agent@axonel.local>`.
+- **Untracked File Hygiene:** Replaced blanket staging with explicit exclusions (`:!*.db`, `:!*.db-shm`, `:!*.db-wal`, `:!plexis.db*`, `:!sentinel.db*`) in built-in Git tools. Agent commit identity updated to `Sentinel Agent <agent@sentinel.local>`.
 - **Candidate Deliverable Verification:** `MissionEngine` stopping condition evaluator now verifies candidate deliverables directly within isolated agent worktrees rather than testing the untouched base repository.
 - **Immediate Diagnostic Escalation:** Missing external CLI binaries or unrecoverable provider errors fail fast with actionable diagnostics and immediately transition to `NeedsHuman` instead of silently cycling to stagnation.
 
@@ -30,7 +30,7 @@ Corrective patch release addressing all 10 findings identified during independen
 ## [0.1.0] - 2026-09-19
 
 ### Overview
-Initial public release candidate of **Axonel**, a local-first autonomous engineering supervisor daemon designed to supervise external CLI coding agents (such as Google Gemini CLI) in isolated Git worktrees with out-of-band test verification and explicit human acceptance gates.
+Initial public release candidate of **Sentinel**, a local-first autonomous engineering supervisor daemon designed to supervise external CLI coding agents (such as Google Gemini CLI) in isolated Git worktrees with out-of-band test verification and explicit human acceptance gates.
 
 ### Major Capabilities
 - **Isolated Worktree Provisioning:** Executes agent tasks exclusively in isolated Git worktrees (`.plexis/worktrees/<task_id>`), leaving the active development tree and current Git branch untouched during background execution.
@@ -50,7 +50,7 @@ Initial public release candidate of **Axonel**, a local-first autonomous enginee
 
 ### Security Model
 - **Default Loopback Binding:** Server binds strictly to `127.0.0.1:3000` by default.
-- **External Bind Authentication:** Binding to non-loopback addresses (`0.0.0.0` or public interfaces) requires `--auth-token` or `AXONEL_AUTH_TOKEN`; startup fails immediately with exit code 1 if unauthenticated.
+- **External Bind Authentication:** Binding to non-loopback addresses (`0.0.0.0` or public interfaces) requires `--auth-token` or `SENTINEL_AUTH_TOKEN`; startup fails immediately with exit code 1 if unauthenticated.
 - **Automated Secret Redaction:** In-memory redactor scrubs Bearer tokens, OpenAI/Anthropic API keys, Google API keys, and GitHub access tokens from terminal streaming buffers, logs, and events.
 - **Workspace Path Confinement:** Resolves canonical paths and rejects directory traversal attempts (`..`) outside workspace boundaries.
 
@@ -62,4 +62,4 @@ Initial public release candidate of **Axonel**, a local-first autonomous enginee
 
 ### Compatibility & Migration Notes
 - Initial public release; no prior stable API versions to migrate.
-- Internal crate names (`plexis-core`, `plexis-runtime`, `plexis-storage`, `plexis-server`) are retained for internal stability; public CLI and product identity are unified under `axonel`.
+- Internal crate names (`plexis-core`, `plexis-runtime`, `plexis-storage`, `plexis-server`) are retained for internal stability; public CLI and product identity are unified under `sentinel`.

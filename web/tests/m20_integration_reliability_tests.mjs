@@ -4,17 +4,17 @@ import path from "path";
 
 const PORT = 4060;
 const BASE_URL = `http://127.0.0.1:${PORT}`;
-const DB_PATH = `/tmp/axonel_m20_reliability_${Date.now()}.db`;
+const DB_PATH = `/tmp/sentinel_m20_reliability_${Date.now()}.db`;
 const AUTH_TOKEN = "m20-reliability-secret-token-445566";
 
 console.log("========================================================================");
-console.log("   AXONEL M20 TRANSACTIONAL INTEGRATION & RELIABILITY TEST SUITE (A - O)");
+console.log("   SENTINEL M20 TRANSACTIONAL INTEGRATION & RELIABILITY TEST SUITE (A - O)");
 console.log("========================================================================\n");
 
 const projectRoot = path.resolve(path.dirname(new URL(import.meta.url).pathname), "../..");
 const serverBinary = path.join(projectRoot, "target/debug/plexis-server");
-const plexisCliPath = fs.existsSync(path.join(projectRoot, "target/debug/axonel"))
-  ? path.join(projectRoot, "target/debug/axonel")
+const plexisCliPath = fs.existsSync(path.join(projectRoot, "target/debug/sentinel"))
+  ? path.join(projectRoot, "target/debug/sentinel")
   : path.join(projectRoot, "target/debug/plexis");
 
 if (!fs.existsSync(serverBinary)) {
@@ -26,12 +26,12 @@ let serverProc = null;
 const tempDirs = [];
 
 function createTempRepo(prefix) {
-  const dir = `/tmp/axonel_m20_${prefix}_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+  const dir = `/tmp/sentinel_m20_${prefix}_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
   fs.mkdirSync(dir, { recursive: true });
   tempDirs.push(dir);
   execFileSync("git", ["init", "-b", "main"], { cwd: dir });
   execFileSync("git", ["config", "user.name", "M20 Reliability Tester"], { cwd: dir });
-  execFileSync("git", ["config", "user.email", "m20@axonel.local"], { cwd: dir });
+  execFileSync("git", ["config", "user.email", "m20@sentinel.local"], { cwd: dir });
   fs.mkdirSync(path.join(dir, "src"), { recursive: true });
   fs.writeFileSync(path.join(dir, "Cargo.toml"), `[package]\nname = "${prefix}_crate"\nversion = "0.1.0"\nedition = "2021"\n`);
   fs.writeFileSync(path.join(dir, "src/lib.rs"), `pub fn compute() -> i32 { 10 }\n`);

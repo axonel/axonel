@@ -1,9 +1,9 @@
 /**
- * Axonel Milestone 23: Real-World Multi-Language Validation Runner
+ * Sentinel Milestone 23: Real-World Multi-Language Validation Runner
  *
  * Executes real-world tasks on TypeScript and Python repositories:
- * 1. axonel-real-eval-ts (Node/ESM parser with native test runner)
- * 2. axonel-real-eval-py (Python config parser with pytest)
+ * 1. sentinel-real-eval-ts (Node/ESM parser with native test runner)
+ * 2. sentinel-real-eval-py (Python config parser with pytest)
  *
  * Appends honest telemetry to docs/validation/results.json
  */
@@ -16,8 +16,8 @@ import http from 'node:http';
 const SERVER_PORT = 4299;
 const SERVER_HOST = '127.0.0.1';
 const BASE_URL = `http://${SERVER_HOST}:${SERVER_PORT}`;
-const DB_PATH = `/tmp/axonel_multilang_${Date.now()}.db`;
-const VAL_DIR = `/tmp/axonel_multilang_run_${Date.now()}`;
+const DB_PATH = `/tmp/sentinel_multilang_${Date.now()}.db`;
+const VAL_DIR = `/tmp/sentinel_multilang_run_${Date.now()}`;
 const RESULTS_FILE = path.resolve('docs/validation/results.json');
 
 function log(msg) {
@@ -112,10 +112,10 @@ async function waitForServer(timeoutMs = 15000) {
 
 let serverProcess = null;
 
-async function startAxonelServer(db = DB_PATH) {
-  log(`Starting Axonel server on port ${SERVER_PORT} (DB: ${db})...`);
+async function startSentinelServer(db = DB_PATH) {
+  log(`Starting Sentinel server on port ${SERVER_PORT} (DB: ${db})...`);
   serverProcess = spawn(
-    path.resolve('target/debug/axonel'),
+    path.resolve('target/debug/sentinel'),
     ['serve', '--host', SERVER_HOST, '--port', String(SERVER_PORT), '--db', db],
     {
       stdio: ['ignore', 'pipe', 'pipe'],
@@ -125,14 +125,14 @@ async function startAxonelServer(db = DB_PATH) {
 
   const healthy = await waitForServer();
   if (!healthy) {
-    throw new Error('Axonel server failed to start within timeout');
+    throw new Error('Sentinel server failed to start within timeout');
   }
-  log('✓ Axonel server is healthy and responding.');
+  log('✓ Sentinel server is healthy and responding.');
 }
 
-async function stopAxonelServer() {
+async function stopSentinelServer() {
   if (serverProcess) {
-    log('Stopping Axonel server...');
+    log('Stopping Sentinel server...');
     serverProcess.kill('SIGTERM');
     await new Promise((r) => setTimeout(r, 1000));
     serverProcess = null;
@@ -143,8 +143,8 @@ async function setupRealTsRepo(targetDir) {
   log(`Provisioning real TypeScript repository at ${targetDir}...`);
   await fs.mkdir(targetDir, { recursive: true });
   await runCmd('git', ['init', '-b', 'main'], targetDir);
-  await runCmd('git', ['config', 'user.name', 'Axonel Evaluator'], targetDir);
-  await runCmd('git', ['config', 'user.email', 'eval@axonel.local'], targetDir);
+  await runCmd('git', ['config', 'user.name', 'Sentinel Evaluator'], targetDir);
+  await runCmd('git', ['config', 'user.email', 'eval@sentinel.local'], targetDir);
 
   await fs.mkdir(path.join(targetDir, 'src'), { recursive: true });
   await fs.mkdir(path.join(targetDir, 'tests'), { recursive: true });
@@ -154,7 +154,7 @@ async function setupRealTsRepo(targetDir) {
   await fs.writeFile(
     path.join(targetDir, 'package.json'),
     JSON.stringify({
-      name: 'axonel-real-eval-ts',
+      name: 'sentinel-real-eval-ts',
       version: '1.0.0',
       type: 'module',
       scripts: {
@@ -207,8 +207,8 @@ test('parses basic key-value pairs', () => {
 });
 
 test('strips enclosing double quotes from values', () => {
-  const cfg = parseConfig('name = "axonel-service"\\nenv = "production"');
-  assert.equal(cfg.name, 'axonel-service');
+  const cfg = parseConfig('name = "sentinel-service"\\nenv = "production"');
+  assert.equal(cfg.name, 'sentinel-service');
   assert.equal(cfg.env, 'production');
 });
 `
@@ -225,8 +225,8 @@ async function setupRealPyRepo(targetDir) {
   log(`Provisioning real Python repository at ${targetDir}...`);
   await fs.mkdir(targetDir, { recursive: true });
   await runCmd('git', ['init', '-b', 'main'], targetDir);
-  await runCmd('git', ['config', 'user.name', 'Axonel Evaluator'], targetDir);
-  await runCmd('git', ['config', 'user.email', 'eval@axonel.local'], targetDir);
+  await runCmd('git', ['config', 'user.name', 'Sentinel Evaluator'], targetDir);
+  await runCmd('git', ['config', 'user.email', 'eval@sentinel.local'], targetDir);
 
   await fs.mkdir(path.join(targetDir, 'config_parser'), { recursive: true });
   await fs.mkdir(path.join(targetDir, 'tests'), { recursive: true });
@@ -236,7 +236,7 @@ async function setupRealPyRepo(targetDir) {
   await fs.writeFile(
     path.join(targetDir, 'pyproject.toml'),
     `[project]
-name = "axonel-real-eval-py"
+name = "sentinel-real-eval-py"
 version = "0.1.0"
 `
   );
@@ -286,8 +286,8 @@ def test_basic_parse():
     assert cfg["port"] == "8080"
 
 def test_quoted_values_stripped():
-    cfg = parse_config('name = "axonel-app"\\nenv = "production"')
-    assert cfg["name"] == "axonel-app"
+    cfg = parse_config('name = "sentinel-app"\\nenv = "production"')
+    assert cfg["name"] == "sentinel-app"
     assert cfg["env"] == "production"
 `
   );
@@ -299,8 +299,8 @@ def test_quoted_values_stripped():
   return head;
 }
 
-async function runAxonelMission(repoDir, objective, testCommand) {
-  log(`[AXONEL SUPERVISOR] Executing mission on ${repoDir}...`);
+async function runSentinelMission(repoDir, objective, testCommand) {
+  log(`[SENTINEL SUPERVISOR] Executing mission on ${repoDir}...`);
   const startTime = Date.now();
 
   // Register workspace
@@ -370,7 +370,7 @@ async function runAxonelMission(repoDir, objective, testCommand) {
     if (currentCycle > lastCycle) {
       recoveries += (currentCycle - lastCycle);
       lastCycle = currentCycle;
-      log(`[Axonel] Mission advanced to cycle #${currentCycle} (recovery triggered)`);
+      log(`[Sentinel] Mission advanced to cycle #${currentCycle} (recovery triggered)`);
     }
 
     await new Promise((r) => setTimeout(r, 3000));
@@ -426,11 +426,11 @@ async function runAxonelMission(repoDir, objective, testCommand) {
 
 async function main() {
   log('========================================================================');
-  log('   AXONEL MULTI-LANGUAGE REAL-WORLD TASK RUNNER (TS & PYTHON)');
+  log('   SENTINEL MULTI-LANGUAGE REAL-WORLD TASK RUNNER (TS & PYTHON)');
   log('========================================================================\n');
 
   await fs.mkdir(VAL_DIR, { recursive: true });
-  await startAxonelServer(DB_PATH);
+  await startSentinelServer(DB_PATH);
 
   const newResults = [];
 
@@ -442,15 +442,15 @@ async function main() {
     const tsObjective = 'Fix the failing test in tests/parser.test.mjs by stripping enclosing double quotes from values in src/parser.js. Ensure npm test passes cleanly and commit your changes with git.';
     const tsTestCmd = 'npm test';
 
-    const tsResult = await runAxonelMission(tsDir, tsObjective, tsTestCmd);
+    const tsResult = await runSentinelMission(tsDir, tsObjective, tsTestCmd);
     newResults.push({
-      repository: 'axonel-real-eval-ts',
+      repository: 'sentinel-real-eval-ts',
       base_commit: baseCommitTs,
       objective: tsObjective,
       language: 'typescript',
       provider: 'gemini_cli',
       model: 'gemini-2.5-pro',
-      baseline: 'axonel',
+      baseline: 'sentinel',
       ...tsResult,
       test_type: 'multi_language_validation',
     });
@@ -459,18 +459,18 @@ async function main() {
     log('\n--- EXECUTING REAL PYTHON TASK ---');
     const pyDir = path.join(VAL_DIR, 'py_task');
     const baseCommitPy = await setupRealPyRepo(pyDir);
-    const pyObjective = 'Fix the failing test test_quoted_values_stripped in tests/test_parser.py by stripping enclosing double quotes from values in config_parser/parser.py. Ensure /tmp/axonel_eval_venv/bin/pytest tests/test_parser.py passes cleanly and commit your changes with git.';
-    const pyTestCmd = '/tmp/axonel_eval_venv/bin/pytest tests/test_parser.py';
+    const pyObjective = 'Fix the failing test test_quoted_values_stripped in tests/test_parser.py by stripping enclosing double quotes from values in config_parser/parser.py. Ensure /tmp/sentinel_eval_venv/bin/pytest tests/test_parser.py passes cleanly and commit your changes with git.';
+    const pyTestCmd = '/tmp/sentinel_eval_venv/bin/pytest tests/test_parser.py';
 
-    const pyResult = await runAxonelMission(pyDir, pyObjective, pyTestCmd);
+    const pyResult = await runSentinelMission(pyDir, pyObjective, pyTestCmd);
     newResults.push({
-      repository: 'axonel-real-eval-py',
+      repository: 'sentinel-real-eval-py',
       base_commit: baseCommitPy,
       objective: pyObjective,
       language: 'python',
       provider: 'gemini_cli',
       model: 'gemini-2.5-pro',
-      baseline: 'axonel',
+      baseline: 'sentinel',
       ...pyResult,
       test_type: 'multi_language_validation',
     });
@@ -490,7 +490,7 @@ async function main() {
     log(`✓ Successfully updated results.json. Total empirical records: ${mergedResults.length}`);
 
   } finally {
-    await stopAxonelServer();
+    await stopSentinelServer();
     try {
       await fs.rm(VAL_DIR, { recursive: true, force: true });
       await fs.rm(DB_PATH, { force: true });

@@ -28,7 +28,7 @@ pub struct AppState {
 
 impl AppState {
     pub fn new(store: SqliteStore) -> Self {
-        let auth_token = std::env::var("AXONEL_AUTH_TOKEN")
+        let auth_token = std::env::var("SENTINEL_AUTH_TOKEN")
             .or_else(|_| std::env::var("PLEXIS_AUTH_TOKEN"))
             .ok()
             .filter(|s| !s.trim().is_empty());
@@ -63,7 +63,7 @@ impl AppState {
     }
 
     pub fn with_store(store: Arc<SqliteStore>) -> Self {
-        let auth_token = std::env::var("AXONEL_AUTH_TOKEN")
+        let auth_token = std::env::var("SENTINEL_AUTH_TOKEN")
             .or_else(|_| std::env::var("PLEXIS_AUTH_TOKEN"))
             .ok()
             .filter(|s| !s.trim().is_empty());

@@ -1,4 +1,4 @@
-# Formal Specification: Axonel Integration State Machine & Consistency Guarantees
+# Formal Specification: Sentinel Integration State Machine & Consistency Guarantees
 
 **Version:** 1.0.0-rc  
 **Status:** Authoritative Specification  
@@ -8,19 +8,19 @@
 
 ## 1. Domain Model & Formal Invariants
 
-Axonel coordinates two independent storage engines:
+Sentinel coordinates two independent storage engines:
 1. **Relational Control Plane Storage (SQLite):** Stores mission metadata, task states, approval records, and immutable audit events.
 2. **Physical Version Control Storage (Git):** Stores content-addressable objects, commits, trees, and branch references (`refs/heads/*`).
 
 ### The Consistency Axiom
 $$\text{Transaction}_{\text{SQLite}} \neq \text{Transaction}_{\text{Git}}$$
 
-Because SQLite and Git cannot participate in a native distributed Two-Phase Commit (2PC), Axonel implements an **intent-driven, Git-authoritative state machine**. 
+Because SQLite and Git cannot participate in a native distributed Two-Phase Commit (2PC), Sentinel implements an **intent-driven, Git-authoritative state machine**. 
 
 The fundamental safety invariant is:
 $$\text{State}(\text{mission}) = \text{Integrated} \implies \text{Commit}(\text{mission}) \in \text{Ancestry}(\text{TargetBranch})$$
 
-Under no circumstance will Axonel report `integrated` if the candidate commit is not reachable from the target branch in the physical repository on disk.
+Under no circumstance will Sentinel report `integrated` if the candidate commit is not reachable from the target branch in the physical repository on disk.
 
 ---
 
@@ -76,7 +76,7 @@ stateDiagram-v2
 
 ## 3. Crash Recovery Truth Table
 
-When the Axonel process terminates unexpectedly (SIGKILL, hardware power loss, container eviction), the system runs `Reconciler::reconcile_startup()` upon restart.
+When the Sentinel process terminates unexpectedly (SIGKILL, hardware power loss, container eviction), the system runs `Reconciler::reconcile_startup()` upon restart.
 
 | Crash Point | State in SQLite | State on Git Disk | Reconciler Action | Resolved State |
 |---|---|---|---|---|
@@ -117,7 +117,7 @@ To protect against concurrent external Git operations (e.g. human developer push
      $$\text{current\_head} == \text{expected\_head} \lor \text{is\_ancestor}(\text{verified\_commit}, \text{target\_branch})$$
    - If target HEAD moved, integration fails with `HTTP 409 Conflict: Target branch has changed since verification. Re-verification required.`
 2. **Fast-Forward Preference:**
-   - Axonel attempts `git merge --ff-only` first to avoid unnecessary merge commits when the branch has not diverged.
+   - Sentinel attempts `git merge --ff-only` first to avoid unnecessary merge commits when the branch has not diverged.
 
 ---
 

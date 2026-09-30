@@ -41,7 +41,7 @@ export const MemoryView: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-surface-border">
         <div>
           <div className="flex items-center gap-2">
-            <Database className="w-4 h-4 text-axonel-lime" />
+            <Database className="w-4 h-4 text-sentinel-lime" />
             <h1 className="text-base sm:text-lg font-bold text-gray-100 tracking-tight font-sans">
               Durable Memory Store
             </h1>
@@ -81,7 +81,7 @@ export const MemoryView: React.FC = () => {
               onClick={() => setScopeFilter(sc)}
               className={`px-2.5 py-1 rounded text-xs font-sans transition-colors select-none ${
                 scopeFilter === sc
-                  ? 'bg-surface-base text-axonel-lime border border-surface-border-bold font-semibold'
+                  ? 'bg-surface-base text-sentinel-lime border border-surface-border-bold font-semibold'
                   : 'text-gray-400 hover:text-gray-200 hover:bg-surface-hover/50 border border-transparent'
               }`}
             >

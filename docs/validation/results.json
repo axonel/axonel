@@ -1,6 +1,6 @@
 [
   {
-    "repository": "axonel-real-eval-rust",
+    "repository": "sentinel-real-eval-rust",
     "base_commit": "3d2f23a1e9ce5676cc35908255a0ecb5c9e8a8ab",
     "objective": "Fix the failing test_quoted_values_stripped in tests/integration_test.rs by stripping enclosing double quotes from values in src/parser.rs.",
     "language": "rust",
@@ -21,13 +21,13 @@
     "test_type": "baseline_comparison"
   },
   {
-    "repository": "axonel-real-eval-rust",
+    "repository": "sentinel-real-eval-rust",
     "base_commit": "3d2f23a1e9ce5676cc35908255a0ecb5c9e8a8ab",
     "objective": "Fix the failing test_quoted_values_stripped in tests/integration_test.rs by stripping enclosing double quotes from values in src/parser.rs.",
     "language": "rust",
     "provider": "gemini_cli",
     "model": "gemini-2.5-pro",
-    "baseline": "axonel",
+    "baseline": "sentinel",
     "duration_secs": 363,
     "attempts": 1,
     "recoveries": 2,
@@ -41,13 +41,13 @@
     "test_type": "baseline_comparison"
   },
   {
-    "repository": "axonel-real-eval-rust",
+    "repository": "sentinel-real-eval-rust",
     "base_commit": "5238aee3fda3b56c98d29f2935f7c1745d499d61",
     "objective": "Multi-stage parser refactoring:\n1. Extend ConfigParser to support quoted values by stripping enclosing matching double-quotes from string values.\n2. In src/error.rs, add a new error variant `InvalidSyntax(String)`.\n3. In src/parser.rs, return `ConfigError::InvalidSyntax` when a line contains an unescaped '=' inside a quoted string.\n4. Ensure all unit and integration tests pass cleanly with 'cargo test'.",
     "language": "rust",
     "provider": "gemini_cli",
     "model": "gemini-2.5-pro",
-    "baseline": "axonel",
+    "baseline": "sentinel",
     "duration_secs": 361,
     "attempts": 1,
     "recoveries": 2,
@@ -61,13 +61,13 @@
     "test_type": "long_horizon"
   },
   {
-    "repository": "axonel-real-eval-rust",
+    "repository": "sentinel-real-eval-rust",
     "base_commit": "dfb5666d5754c6302fc8db977cb01637db3f11e6",
     "objective": "Fix the failing test_quoted_values_stripped test in tests/integration_test.rs by stripping enclosing double quotes from values in src/parser.rs.",
     "language": "rust",
     "provider": "gemini_cli",
     "model": "gemini-2.5-pro",
-    "baseline": "axonel",
+    "baseline": "sentinel",
     "duration_secs": 300,
     "attempts": 1,
     "recoveries": 1,
@@ -85,7 +85,7 @@
     "language": "rust",
     "provider": "gemini_cli",
     "model": "gemini-2.5-pro",
-    "baseline": "axonel",
+    "baseline": "sentinel",
     "duration_secs": 62,
     "attempts": 1,
     "recoveries": 0,
@@ -97,13 +97,13 @@
     "test_type": "end_to_end_acceptance"
   },
   {
-    "repository": "axonel-real-eval-ts",
+    "repository": "sentinel-real-eval-ts",
     "base_commit": "ddf3e19f5019d8a0cb9287ffb670ff29c76bda99",
     "objective": "Fix the failing test in tests/parser.test.mjs by stripping enclosing double quotes from values in src/parser.js. Ensure npm test passes cleanly and commit your changes with git.",
     "language": "typescript",
     "provider": "gemini_cli",
     "model": "gemini-2.5-pro",
-    "baseline": "axonel",
+    "baseline": "sentinel",
     "duration_secs": 302,
     "attempts": 1,
     "recoveries": 2,
@@ -117,13 +117,13 @@
     "test_type": "multi_language_validation"
   },
   {
-    "repository": "axonel-real-eval-py",
+    "repository": "sentinel-real-eval-py",
     "base_commit": "0fba2d62c2d64e3d873986dd4bcfc99894896fbf",
-    "objective": "Fix the failing test test_quoted_values_stripped in tests/test_parser.py by stripping enclosing double quotes from values in config_parser/parser.py. Ensure /tmp/axonel_eval_venv/bin/pytest tests/test_parser.py passes cleanly and commit your changes with git.",
+    "objective": "Fix the failing test test_quoted_values_stripped in tests/test_parser.py by stripping enclosing double quotes from values in config_parser/parser.py. Ensure /tmp/sentinel_eval_venv/bin/pytest tests/test_parser.py passes cleanly and commit your changes with git.",
     "language": "python",
     "provider": "gemini_cli",
     "model": "gemini-2.5-pro",
-    "baseline": "axonel",
+    "baseline": "sentinel",
     "duration_secs": 302,
     "attempts": 1,
     "recoveries": 2,

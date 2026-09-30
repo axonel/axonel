@@ -1,4 +1,4 @@
-name: Axonel CI
+name: Sentinel CI
 
 on:
   push:
@@ -26,12 +26,15 @@ jobs:
       - name: Check formatting (cargo fmt)
         run: cargo fmt --all -- --check
 
+      - name: Check product branding
+        run: bash scripts/check-branding.sh
+
       - name: Lint workspace (cargo clippy)
         run: cargo clippy --workspace --all-targets -- -D warnings
 
-      - name: Build Axonel server, CLI, and fake-agent binaries
+      - name: Build Sentinel server, CLI, and fake-agent binaries
         run: |
-          cargo build -p plexis-server --bin plexis-server --bin axonel
+          cargo build -p plexis-server --bin plexis-server --bin sentinel
           cargo build -p plexis-fake-agent
 
       - name: Run Rust workspace unit & integration tests
