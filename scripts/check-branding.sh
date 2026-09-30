@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Allow the axonel organization and domain while rejecting the old product identity.
 set -euo pipefail
 
 old_product_name='Axo''nel'
