@@ -68,7 +68,7 @@ export const NewWorkflowModal: React.FC<NewWorkflowModalProps> = ({
       onClose={onClose}
       title={
         <div className="flex items-center gap-2">
-          <Layers className="w-4 h-4 text-axonel-lime" />
+          <Layers className="w-4 h-4 text-sentinel-lime" />
           <span>Create Autonomous Workflow</span>
         </div>
       }
@@ -106,7 +106,7 @@ export const NewWorkflowModal: React.FC<NewWorkflowModalProps> = ({
 
         {activeWorkspaceName && (
           <div className="p-2.5 bg-surface-base border border-surface-border rounded flex items-center gap-2 text-xs text-gray-300">
-            <Layers className="w-3.5 h-3.5 shrink-0 text-axonel-lime" />
+            <Layers className="w-3.5 h-3.5 shrink-0 text-sentinel-lime" />
             <span>
               Workspace: <strong className="text-gray-100 font-mono">{activeWorkspaceName}</strong>
             </span>
@@ -138,7 +138,7 @@ export const NewWorkflowModal: React.FC<NewWorkflowModalProps> = ({
           mono
         >
           <option value="internal">Internal Multi-Agent Provider Loop (Default)</option>
-          <option value="fake_agent">External Process Host [axonel-fake-agent]</option>
+          <option value="fake_agent">External Process Host [sentinel-fake-agent]</option>
           <option value="gemini_cli">External Process Host [Google Gemini CLI]</option>
           <option value="claude_code" disabled>Claude Code CLI (Adapter Stub)</option>
           <option value="codex" disabled>Codex CLI (Adapter Stub)</option>
@@ -150,11 +150,11 @@ export const NewWorkflowModal: React.FC<NewWorkflowModalProps> = ({
               type="checkbox"
               checked={autoPlan}
               onChange={(e) => setAutoPlan(e.target.checked)}
-              className="mt-0.5 rounded bg-surface-base border-surface-border text-axonel-lime focus:ring-axonel-lime"
+              className="mt-0.5 rounded bg-surface-base border-surface-border text-sentinel-lime focus:ring-sentinel-lime"
             />
             <div className="text-xs">
               <span className="font-semibold text-gray-200 flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5 text-axonel-lime" />
+                <Sparkles className="w-3.5 h-3.5 text-sentinel-lime" />
                 <span>Autonomous DAG Planning</span>
               </span>
               <span className="text-[11px] text-gray-400 block mt-0.5">
@@ -168,7 +168,7 @@ export const NewWorkflowModal: React.FC<NewWorkflowModalProps> = ({
               type="checkbox"
               checked={autoStart}
               onChange={(e) => setAutoStart(e.target.checked)}
-              className="mt-0.5 rounded bg-surface-base border-surface-border text-axonel-lime focus:ring-axonel-lime"
+              className="mt-0.5 rounded bg-surface-base border-surface-border text-sentinel-lime focus:ring-sentinel-lime"
             />
             <div className="text-xs">
               <span className="font-semibold text-gray-200 flex items-center gap-1.5">

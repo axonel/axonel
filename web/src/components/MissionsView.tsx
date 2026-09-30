@@ -396,7 +396,7 @@ export const MissionsView: React.FC<MissionsViewProps> = ({
         break;
       case 'replanning':
         currentState = `Cycle ${m.cycle_index + 1} replanning active`;
-        whatHappened = `Cycle ${m.cycle_index} failed verification or encountered a task error. Candidate changes were safely isolated, and Axonel initiated autonomous replanning.`;
+        whatHappened = `Cycle ${m.cycle_index} failed verification or encountered a task error. Candidate changes were safely isolated, and Sentinel initiated autonomous replanning.`;
         nextAction = 'No human action required. Agent is formulating new strategy.';
         break;
       case 'running':
@@ -459,7 +459,7 @@ export const MissionsView: React.FC<MissionsViewProps> = ({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-surface-border">
         <div>
           <div className="flex items-center gap-2.5">
-            <Target className="w-5 h-5 text-axonel-lime" />
+            <Target className="w-5 h-5 text-sentinel-lime" />
             <h1 className="text-lg sm:text-xl font-bold text-gray-100 font-sans tracking-tight">
               Mission Control
             </h1>
@@ -540,7 +540,7 @@ export const MissionsView: React.FC<MissionsViewProps> = ({
                   onClick={() => loadMissionDetails(m)}
                   className={`p-3.5 rounded border cursor-pointer transition-all ${
                     isSelected
-                      ? 'bg-surface-card border-axonel-lime/60 shadow-xs ring-1 ring-axonel-lime/20'
+                      ? 'bg-surface-card border-sentinel-lime/60 shadow-xs ring-1 ring-sentinel-lime/20'
                       : 'bg-surface-card/70 border-surface-border hover:border-surface-border-bold hover:bg-surface-hover/40'
                   }`}
                 >
@@ -621,7 +621,7 @@ export const MissionsView: React.FC<MissionsViewProps> = ({
                         <span className="text-surface-border-bold">•</span>
                         <button
                           onClick={() => onSelectWorkflow(selectedMission.active_workflow_id!)}
-                          className="text-axonel-lime hover:underline flex items-center gap-1 font-sans"
+                          className="text-sentinel-lime hover:underline flex items-center gap-1 font-sans"
                         >
                           <span>Workflow {selectedMission.active_workflow_id}</span>
                         </button>
@@ -809,7 +809,7 @@ export const MissionsView: React.FC<MissionsViewProps> = ({
                       <span className="text-[10px] uppercase font-semibold tracking-wider text-gray-500 font-sans block mb-1">
                         Next Action
                       </span>
-                      <p className="text-xs font-medium text-axonel-lime font-sans leading-relaxed">
+                      <p className="text-xs font-medium text-sentinel-lime font-sans leading-relaxed">
                         {narrative.nextAction}
                       </p>
                     </div>
@@ -823,7 +823,7 @@ export const MissionsView: React.FC<MissionsViewProps> = ({
               {selectedMission.state === 'awaiting_acceptance' && (
                 <div className="p-4 sm:p-5 bg-amber-950/25 border border-amber-500/40 rounded space-y-3 shadow-md">
                   <div className="flex items-start gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-axonel-lime shrink-0 mt-0.5" />
+                    <CheckCircle2 className="w-5 h-5 text-sentinel-lime shrink-0 mt-0.5" />
                     <div className="space-y-1">
                       <div className="flex items-center gap-2 flex-wrap">
                         <span className="text-sm font-bold text-amber-200 font-sans">
@@ -896,7 +896,7 @@ export const MissionsView: React.FC<MissionsViewProps> = ({
                       Autonomous Replanning in Progress (Cycle {selectedMission.cycle_index + 1})
                     </h4>
                     <p className="text-xs text-gray-300 font-sans leading-relaxed">
-                      Previous execution cycle did not satisfy all stopping conditions or encountered an execution fault. Candidate changes were safely rolled back, and Axonel is autonomously formulating an updated task plan with adjusted parameters.
+                      Previous execution cycle did not satisfy all stopping conditions or encountered an execution fault. Candidate changes were safely rolled back, and Sentinel is autonomously formulating an updated task plan with adjusted parameters.
                     </p>
                   </div>
                 </div>
@@ -1152,7 +1152,7 @@ export const MissionsView: React.FC<MissionsViewProps> = ({
                     </div>
                     <div className="w-full bg-surface-base h-1.5 rounded-xs overflow-hidden border border-surface-border">
                       <div
-                        className="bg-axonel-lime h-full"
+                        className="bg-sentinel-lime h-full"
                         style={{
                           width: `${Math.min(
                             100,
@@ -1264,7 +1264,7 @@ export const MissionsView: React.FC<MissionsViewProps> = ({
                         className="p-2.5 bg-surface-base border border-surface-border rounded flex items-center justify-between text-xs"
                       >
                         <div className="flex items-center gap-3">
-                          <span className="font-mono text-axonel-lime font-bold text-[11px]">
+                          <span className="font-mono text-sentinel-lime font-bold text-[11px]">
                             Cycle {ckpt.cycle_index}
                           </span>
                           <span className="text-gray-400 font-mono text-[10px]">
@@ -1305,7 +1305,7 @@ export const MissionsView: React.FC<MissionsViewProps> = ({
                         className="p-2.5 bg-surface-base border border-surface-border rounded flex items-center justify-between text-xs"
                       >
                         <div className="flex items-center gap-2.5">
-                          <span className="font-mono text-axonel-lime text-[11px]">
+                          <span className="font-mono text-sentinel-lime text-[11px]">
                             Cycle {c.cycle_index}
                           </span>
                           <span className="text-gray-200 text-xs font-sans">{c.summary}</span>
@@ -1355,7 +1355,7 @@ export const MissionsView: React.FC<MissionsViewProps> = ({
         onClose={() => setShowNewModal(false)}
         title={
           <div className="flex items-center gap-2">
-            <Target className="w-4 h-4 text-axonel-lime" />
+            <Target className="w-4 h-4 text-sentinel-lime" />
             <span>Launch Autonomous Mission</span>
           </div>
         }
@@ -1441,7 +1441,7 @@ export const MissionsView: React.FC<MissionsViewProps> = ({
                 type="checkbox"
                 checked={newRequireTests}
                 onChange={(e) => setNewRequireTests(e.target.checked)}
-                className="rounded bg-surface-base border-surface-border text-axonel-lime focus:ring-axonel-lime"
+                className="rounded bg-surface-base border-surface-border text-sentinel-lime focus:ring-sentinel-lime"
               />
               <span>Automated test suite passes (`cargo test = 0`)</span>
             </label>
@@ -1450,7 +1450,7 @@ export const MissionsView: React.FC<MissionsViewProps> = ({
                 type="checkbox"
                 checked={newRequireCleanTree}
                 onChange={(e) => setNewRequireCleanTree(e.target.checked)}
-                className="rounded bg-surface-base border-surface-border text-axonel-lime focus:ring-axonel-lime"
+                className="rounded bg-surface-base border-surface-border text-sentinel-lime focus:ring-sentinel-lime"
               />
               <span>Working tree is completely clean</span>
             </label>
@@ -1459,7 +1459,7 @@ export const MissionsView: React.FC<MissionsViewProps> = ({
                 type="checkbox"
                 checked={newRequireCommit}
                 onChange={(e) => setNewRequireCommit(e.target.checked)}
-                className="rounded bg-surface-base border-surface-border text-axonel-lime focus:ring-axonel-lime"
+                className="rounded bg-surface-base border-surface-border text-sentinel-lime focus:ring-sentinel-lime"
               />
               <span>Valid Git commit SHA exists at repository HEAD</span>
             </label>
@@ -1471,7 +1471,7 @@ export const MissionsView: React.FC<MissionsViewProps> = ({
                 type="checkbox"
                 checked={newAutoStart}
                 onChange={(e) => setNewAutoStart(e.target.checked)}
-                className="rounded bg-surface-base border-surface-border text-axonel-lime focus:ring-axonel-lime"
+                className="rounded bg-surface-base border-surface-border text-sentinel-lime focus:ring-sentinel-lime"
               />
               <span>Auto-start mission immediately upon creation</span>
             </label>
@@ -1505,7 +1505,7 @@ export const MissionsView: React.FC<MissionsViewProps> = ({
           onClose={() => setShowReviewModal(false)}
           title={
             <div className="flex items-center gap-2">
-              <FileText className="w-4 h-4 text-axonel-lime" />
+              <FileText className="w-4 h-4 text-sentinel-lime" />
               <span>Mission Deliverable Review</span>
               <Badge
                 variant={getStateBadgeVariant(reviewPackage.status)}
@@ -1798,7 +1798,7 @@ export const MissionsView: React.FC<MissionsViewProps> = ({
                 type="checkbox"
                 checked={replanOnReject}
                 onChange={(e) => setReplanOnReject(e.target.checked)}
-                className="rounded bg-surface-base border-surface-border text-axonel-lime focus:ring-axonel-lime"
+                className="rounded bg-surface-base border-surface-border text-sentinel-lime focus:ring-sentinel-lime"
               />
               <span>Continue mission via Replanning with feedback</span>
             </label>

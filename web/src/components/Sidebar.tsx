@@ -99,17 +99,17 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <div
             className="flex items-center gap-2.5 cursor-pointer group"
             onClick={() => handleNavClick('dashboard')}
-            title="Axonel Control Plane"
+            title="Sentinel Control Plane"
           >
             <img
               src="/logo.jpeg"
-              alt="Axonel"
-              className="w-7 h-7 rounded object-cover border border-axonel-lime/50 shadow-xs group-hover:border-axonel-lime transition-colors"
+              alt="Sentinel"
+              className="w-7 h-7 rounded object-cover border border-sentinel-lime/50 shadow-xs group-hover:border-sentinel-lime transition-colors"
             />
             <div className="leading-tight">
               <div className="flex items-center gap-1.5">
                 <span className="font-bold text-gray-100 tracking-tight text-sm font-sans">
-                  axonel
+                  sentinel
                 </span>
                 <span className="text-[9px] font-mono uppercase tracking-widest px-1 py-0.2 rounded bg-surface-card border border-surface-border text-gray-400">
                   v0.1.1
@@ -145,7 +145,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   : 'text-gray-400 hover:text-gray-200 hover:bg-surface-hover/60 border border-transparent'
               }`}
             >
-              <span className={activeTab === 'dashboard' ? 'text-axonel-lime' : 'text-gray-400'}>
+              <span className={activeTab === 'dashboard' ? 'text-sentinel-lime' : 'text-gray-400'}>
                 <Activity className="w-4 h-4" />
               </span>
               <span className="font-sans">Overview</span>
@@ -171,7 +171,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     }`}
                   >
                     <div className="flex items-center gap-2.5">
-                      <span className={isActive ? 'text-axonel-lime' : 'text-gray-400'}>
+                      <span className={isActive ? 'text-sentinel-lime' : 'text-gray-400'}>
                         {item.icon}
                       </span>
                       <span className="font-sans">{item.label}</span>
@@ -205,7 +205,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                         : 'text-gray-400 hover:text-gray-200 hover:bg-surface-hover/60 border border-transparent'
                     }`}
                   >
-                    <span className={isActive ? 'text-axonel-lime' : 'text-gray-400'}>
+                    <span className={isActive ? 'text-sentinel-lime' : 'text-gray-400'}>
                       {item.icon}
                     </span>
                     <span className="font-sans">{item.label}</span>
@@ -225,7 +225,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             title="Switch project workspace"
           >
             <div className="flex items-center gap-2 min-w-0">
-              <Folder className="w-3.5 h-3.5 text-gray-400 group-hover:text-axonel-lime shrink-0" />
+              <Folder className="w-3.5 h-3.5 text-gray-400 group-hover:text-sentinel-lime shrink-0" />
               <div className="text-left min-w-0">
                 <div className="font-semibold text-[11px] text-gray-200 truncate">
                   {activeWorkspace?.name || 'Default Workspace'}

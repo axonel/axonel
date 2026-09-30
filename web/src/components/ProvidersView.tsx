@@ -63,7 +63,7 @@ export const ProvidersView: React.FC = () => {
       return 'text-gray-400 font-mono';
     }
     if (backend.is_available) {
-      return 'text-axonel-lime font-semibold';
+      return 'text-sentinel-lime font-semibold';
     }
     if (backend.executable_path && backend.auth_status?.status === 'unauthenticated') {
       return 'text-amber-400 font-semibold';
@@ -77,7 +77,7 @@ export const ProvidersView: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-surface-border">
         <div>
           <div className="flex items-center gap-2">
-            <Server className="w-4 h-4 text-axonel-lime" />
+            <Server className="w-4 h-4 text-sentinel-lime" />
             <h1 className="text-base sm:text-lg font-bold text-gray-100 tracking-tight font-sans">
               LLM & Agent Host Infrastructure
             </h1>
@@ -207,7 +207,7 @@ export const ProvidersView: React.FC = () => {
       {/* Local Agent Host Backends */}
       <div className="space-y-3 pt-3 border-t border-surface-border">
         <div className="flex items-center gap-2">
-          <Cpu className="w-4 h-4 text-axonel-lime" />
+          <Cpu className="w-4 h-4 text-sentinel-lime" />
           <h2 className="text-xs font-semibold text-gray-300 uppercase tracking-wider font-sans">
             Local Agent Host Backends (Process Supervision)
           </h2>
@@ -232,7 +232,7 @@ export const ProvidersView: React.FC = () => {
                 <div className="space-y-2.5">
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex items-center gap-2">
-                      <Cpu className={`w-4 h-4 ${backend.is_available ? 'text-axonel-lime' : 'text-gray-500'}`} />
+                      <Cpu className={`w-4 h-4 ${backend.is_available ? 'text-sentinel-lime' : 'text-gray-500'}`} />
                       <div>
                         <h3 className="font-semibold text-gray-100 text-xs sm:text-sm font-sans">{backend.display_name}</h3>
                         <span className="text-[10px] font-mono text-gray-500">{backend.id}</span>

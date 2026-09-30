@@ -121,7 +121,7 @@ export const LiveTimelineView: React.FC<LiveTimelineViewProps> = ({ onSelectWork
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-surface-border">
         <div>
           <div className="flex items-center gap-2">
-            <Radio className="w-4 h-4 text-axonel-lime animate-pulse" />
+            <Radio className="w-4 h-4 text-sentinel-lime animate-pulse" />
             <h1 className="text-base sm:text-lg font-bold text-gray-100 tracking-tight font-mono uppercase">
               Live Audit & Execution Timeline
             </h1>
@@ -224,7 +224,7 @@ export const LiveTimelineView: React.FC<LiveTimelineViewProps> = ({ onSelectWork
                           e.stopPropagation();
                           onSelectWorkflow(evt.workflow_id!);
                         }}
-                        className="text-[11px] text-axonel-lime hover:underline flex items-center gap-1 cursor-pointer"
+                        className="text-[11px] text-sentinel-lime hover:underline flex items-center gap-1 cursor-pointer"
                       >
                         <Layers className="w-3 h-3" />
                         <span>wf:{evt.workflow_id.slice(0, 6)}</span>
