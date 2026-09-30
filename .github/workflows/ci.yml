@@ -25,7 +25,7 @@ jobs:
 
       - name: Check formatting (cargo fmt)
         run: cargo fmt --all -- --check
-
+\n      - name: Check product branding\n        run: bash scripts/check-branding.sh\n
       - name: Lint workspace (cargo clippy)
         run: cargo clippy --workspace --all-targets -- -D warnings
 
