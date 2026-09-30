@@ -347,7 +347,7 @@ mod tests {
         let accounts_path = gemini_dir.join("google_accounts.json");
         std::fs::write(
             &accounts_path,
-            r#"{"active": "engineer@axonel.local", "old": []}"#,
+            r#"{"active": "engineer@sentinel.local", "old": []}"#,
         )
         .expect("write accounts");
 
@@ -357,7 +357,7 @@ mod tests {
         match status {
             GeminiAuthStatus::Authenticated { method, account } => {
                 assert_eq!(method, "oauth_personal");
-                assert_eq!(account, Some("engineer@axonel.local".to_string()));
+                assert_eq!(account, Some("engineer@sentinel.local".to_string()));
             }
             _ => panic!("Expected Authenticated status, got {:?}", status),
         }

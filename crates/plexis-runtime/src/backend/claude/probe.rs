@@ -336,7 +336,7 @@ mod tests {
         let config_path = temp_dir.path().join(".claude.json");
         std::fs::write(
             &config_path,
-            r#"{"oauthAccount": {"emailAddress": "engineer@axonel.local"}}"#,
+            r#"{"oauthAccount": {"emailAddress": "engineer@sentinel.local"}}"#,
         )
         .expect("write config");
 
@@ -346,7 +346,7 @@ mod tests {
         match status {
             ClaudeAuthStatus::Authenticated { method, account } => {
                 assert_eq!(method, "oauth_personal");
-                assert_eq!(account, Some("engineer@axonel.local".to_string()));
+                assert_eq!(account, Some("engineer@sentinel.local".to_string()));
             }
             _ => panic!("Expected Authenticated status, got {:?}", status),
         }

@@ -36,7 +36,7 @@ fn setup_git_repo(dir: &std::path::Path) {
         .current_dir(dir)
         .output();
     let _ = StdCommand::new("git")
-        .args(["config", "user.email", "host-tester@axonel.local"])
+        .args(["config", "user.email", "host-tester@sentinel.local"])
         .current_dir(dir)
         .output();
     let _ = StdCommand::new("git")

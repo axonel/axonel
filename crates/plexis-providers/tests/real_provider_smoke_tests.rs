@@ -83,7 +83,7 @@ async fn handle_openai_chat(
                             "type": "function",
                             "function": {
                                 "name": "calculate_hash",
-                                "arguments": "{\"data\":\"hello-axonel\",\"algorithm\":\"sha256\"}"
+                                "arguments": "{\"data\":\"hello-sentinel\",\"algorithm\":\"sha256\"}"
                             }
                         }]
                     },
@@ -280,7 +280,7 @@ async fn test_openai_adapter_smoke_suite() {
     // 1. Basic completion
     let req = CompletionRequest::new(
         "gpt-4o",
-        vec![ChatMessage::user("Say hello to Axonel platform")],
+        vec![ChatMessage::user("Say hello to Sentinel platform")],
     );
     let res = provider.complete(&req).await.expect("basic completion");
     assert_eq!(res.finish_reason, FinishReason::Stop);
@@ -306,7 +306,7 @@ async fn test_openai_adapter_smoke_suite() {
     );
     let tool_req = CompletionRequest::new(
         "gpt-4o",
-        vec![ChatMessage::user("Compute hash of hello-axonel")],
+        vec![ChatMessage::user("Compute hash of hello-sentinel")],
     )
     .with_tools(vec![tool_def]);
 
@@ -319,7 +319,7 @@ async fn test_openai_adapter_smoke_suite() {
     assert_eq!(tool_calls.len(), 1);
     assert_eq!(tool_calls[0].name, "calculate_hash");
     let parsed_args: serde_json::Value = serde_json::from_str(&tool_calls[0].arguments).unwrap();
-    assert_eq!(parsed_args["data"], "hello-axonel");
+    assert_eq!(parsed_args["data"], "hello-sentinel");
     assert_eq!(parsed_args["algorithm"], "sha256");
 
     // 3. Authentication failure
