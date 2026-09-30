@@ -1,6 +1,6 @@
-# Axonel Validation & Verification Receipts
+# Sentinel Validation & Verification Receipts
 
-Axonel adheres to strict empirical verification standards. Every architectural claim, security boundary, and reliability guarantee in Axonel is backed by automated test suites, reproducible benchmarks, and physical artifacts.
+Sentinel adheres to strict empirical verification standards. Every architectural claim, security boundary, and reliability guarantee in Sentinel is backed by automated test suites, reproducible benchmarks, and physical artifacts.
 
 ---
 
@@ -21,11 +21,11 @@ Axonel adheres to strict empirical verification standards. Every architectural c
 
 ---
 
-## 2. Empirical Benchmark: Raw Agent vs. Axonel Supervisor (M18)
+## 2. Empirical Benchmark: Raw Agent vs. Sentinel Supervisor (M18)
 
-We evaluated direct headless execution of Google Gemini CLI against Axonel's supervised execution across 3 standard coding workloads (12 total runs):
+We evaluated direct headless execution of Google Gemini CLI against Sentinel's supervised execution across 3 standard coding workloads (12 total runs):
 
-| Metric | Raw Gemini CLI (Baseline A) | Axonel Supervised (Baseline B) |
+| Metric | Raw Gemini CLI (Baseline A) | Sentinel Supervised (Baseline B) |
 | :--- | :--- | :--- |
 | **Test Pass Rate** | 6/6 (100%) | 6/6 (100%) |
 | **Primary Working Tree State** | **100% Dirty** (untracked files, build artifacts) | **100% Clean** (isolated worktrees) |
@@ -37,34 +37,34 @@ We evaluated direct headless execution of Google Gemini CLI against Axonel's sup
 
 1. **Concurrency Gate (`concurrency_gate`):** Fix uncoordinated race condition in atomic compare-and-swap logic.
    - Raw CLI: Left uncommitted lockfiles and target build artifacts. Required 4 developer actions.
-   - Axonel: Isolated in worktree; Cycle 0 diagnosed, Cycle 1 patched and verified on disk. Integrated with 0 developer actions.
+   - Sentinel: Isolated in worktree; Cycle 0 diagnosed, Cycle 1 patched and verified on disk. Integrated with 0 developer actions.
 2. **API Gateway (`api_gateway`):** Fix HTTP route authentication bypass.
    - Raw CLI: Patched file in place, leaving working tree dirty. Required 4 developer actions.
-   - Axonel: Isolated in worktree; tests passed on disk. 0 developer actions.
+   - Sentinel: Isolated in worktree; tests passed on disk. 0 developer actions.
 3. **Query Parser (`query_parser`):** Fix AST traversal off-by-one error.
    - Raw CLI: Patched in place, dirty repository. 4 developer actions.
-   - Axonel: Isolated in worktree; tests passed on disk. 0 developer actions.
+   - Sentinel: Isolated in worktree; tests passed on disk. 0 developer actions.
 
 ---
 
 ## 3. Adversarial & Crash Recovery Receipts (M20)
 
-During adversarial fault-injection audits, Axonel was subjected to deliberate crash and conflict scenarios:
+During adversarial fault-injection audits, Sentinel was subjected to deliberate crash and conflict scenarios:
 
 1. **Mid-Flight Termination (`SIGKILL`):**
    - The supervisor daemon was killed via `SIGKILL` while a mission was in the `Integrating` state.
-   - Upon restart, Axonel performed authoritative Git ancestry recovery (`git merge-base --is-ancestor`) and reconciled state with zero data corruption.
+   - Upon restart, Sentinel performed authoritative Git ancestry recovery (`git merge-base --is-ancestor`) and reconciled state with zero data corruption.
 2. **Merge Conflict Abort:**
    - A conflicting commit was pushed to the target branch while an agent was executing in its worktree.
-   - Axonel detected the conflict during integration, rejected the merge with HTTP 409 Conflict, and atomically rolled back the mission state to `Accepted` without dirtying the repository.
+   - Sentinel detected the conflict during integration, rejected the merge with HTTP 409 Conflict, and atomically rolled back the mission state to `Accepted` without dirtying the repository.
 3. **Dirty Primary Tree Defense:**
-   - Axonel refused to integrate candidate commits when the primary working tree contained unstaged changes, preventing developer data loss.
+   - Sentinel refused to integrate candidate commits when the primary working tree contained unstaged changes, preventing developer data loss.
 
 ---
 
 ## 4. 20-Task Benchmark Corpus & Multi-Language Telemetry
 
-To ensure evaluation across diverse tech stacks, Axonel tracks a **20-task benchmark corpus** spanning Rust, TypeScript, and Python:
+To ensure evaluation across diverse tech stacks, Sentinel tracks a **20-task benchmark corpus** spanning Rust, TypeScript, and Python:
 - The corpus specification is maintained in [`docs/validation/dataset.json`](validation/dataset.json).
 - Executed empirical trials and machine-readable telemetry are recorded in [`docs/validation/results.json`](validation/results.json).
 - Benchmark runner scripts:
@@ -75,7 +75,7 @@ To ensure evaluation across diverse tech stacks, Axonel tracks a **20-task bench
 
 ## 5. Claims Audit & Truthfulness Ledger
 
-Axonel explicitly audits all public claims into standardized categories:
+Sentinel explicitly audits all public claims into standardized categories:
 
 | Dimension | Claim Statement | Status | Evidence / Invariant |
 | :--- | :--- | :--- | :--- |

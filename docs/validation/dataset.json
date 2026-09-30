@@ -1,7 +1,7 @@
 {
   "$schema": "https://axonel.dev/schemas/v1/validation-dataset.json",
   "version": "1.0",
-  "name": "Axonel Real-World Engineering Benchmark Dataset",
+  "name": "Sentinel Real-World Engineering Benchmark Dataset",
   "description": "20 medium-horizon engineering benchmark tasks designed as an evaluation corpus across Rust, TypeScript, and Python. Actual executed empirical trials and observed telemetry are tracked in docs/validation/results.json.",
   "tasks": [
     {

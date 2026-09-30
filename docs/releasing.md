@@ -1,4 +1,4 @@
-# Axonel Release Engineering & Packaging Guide
+# Sentinel Release Engineering & Packaging Guide
 
 This document outlines the canonical release criteria, packaging procedures, checksum verification, and version-bumping steps for project maintainers.
 
@@ -24,18 +24,18 @@ Before tagging or publishing any release, verify that all release gates are sati
 
 ## 2. Building Release Binaries
 
-Axonel compiles into a standalone production binary:
+Sentinel compiles into a standalone production binary:
 
 ```bash
 # 1. Build the production release binary
-cargo build --release -p plexis-server --bin axonel
+cargo build --release -p plexis-server --bin sentinel
 
 # 2. Verify binary version and help output
-./target/release/axonel --version
-./target/release/axonel --help
+./target/release/sentinel --version
+./target/release/sentinel --help
 
 # 3. Strip debug symbols for distribution
-strip target/release/axonel
+strip target/release/sentinel
 ```
 
 ---
@@ -47,11 +47,11 @@ Create the release tarball and compute SHA-256 checksums:
 ```bash
 VERSION="0.1.1"
 TARGET="x86_64-unknown-linux-gnu"
-ARCHIVE_NAME="axonel-v${VERSION}-${TARGET}.tar.gz"
+ARCHIVE_NAME="sentinel-v${VERSION}-${TARGET}.tar.gz"
 
 # Create staging directory
 mkdir -p dist/bin
-cp target/release/axonel dist/bin/
+cp target/release/sentinel dist/bin/
 cp README.md LICENSE SECURITY.md dist/
 
 # Create archive

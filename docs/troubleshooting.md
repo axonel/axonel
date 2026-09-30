@@ -1,6 +1,6 @@
 # Troubleshooting Guide
 
-This guide covers common issues, error messages, and operational resolutions when running Axonel.
+This guide covers common issues, error messages, and operational resolutions when running Sentinel.
 
 ---
 
@@ -8,19 +8,19 @@ This guide covers common issues, error messages, and operational resolutions whe
 
 ### "Refusing to bind to non-loopback address without auth token"
 
-**Cause:** You configured Axonel to bind to `0.0.0.0` or an external IP address, but did not supply an authentication token. By default, Axonel enforces loopback-only access (`127.0.0.1`) to prevent exposing your local filesystem and agent execution engine to the local network.
+**Cause:** You configured Sentinel to bind to `0.0.0.0` or an external IP address, but did not supply an authentication token. By default, Sentinel enforces loopback-only access (`127.0.0.1`) to prevent exposing your local filesystem and agent execution engine to the local network.
 
 **Resolution:**
 - If you only need local access, omit the host flag or bind to `127.0.0.1`:
   ```bash
-  axonel serve --host 127.0.0.1 --port 3000
+  sentinel serve --host 127.0.0.1 --port 3000
   ```
 - If you genuinely require external network access (e.g., inside a Docker container or remote dev server), provide a secure bearer token:
   ```bash
-  axonel serve --host 0.0.0.0 --port 3000 --auth-token "your-secure-token"
+  sentinel serve --host 0.0.0.0 --port 3000 --auth-token "your-secure-token"
   # or via environment variable:
-  export AXONEL_AUTH_TOKEN="your-secure-token"
-  axonel serve --host 0.0.0.0 --port 3000
+  export SENTINEL_AUTH_TOKEN="your-secure-token"
+  sentinel serve --host 0.0.0.0 --port 3000
   ```
 
 ---
@@ -32,7 +32,7 @@ This guide covers common issues, error messages, and operational resolutions whe
 **Resolution:**
 Specify an alternate port using `--port`:
 ```bash
-axonel serve --port 4000
+sentinel serve --port 4000
 ```
 
 ---
@@ -41,7 +41,7 @@ axonel serve --port 4000
 
 ### "Primary working tree has uncommitted changes"
 
-**Cause:** You attempted to integrate an accepted mission, but your active working directory contains unstaged or uncommitted changes. To protect your work from being clobbered or causing merge conflicts, Axonel refuses to mutate the working tree.
+**Cause:** You attempted to integrate an accepted mission, but your active working directory contains unstaged or uncommitted changes. To protect your work from being clobbered or causing merge conflicts, Sentinel refuses to mutate the working tree.
 
 **Resolution:**
 1. Stash or commit your local working changes:
@@ -52,7 +52,7 @@ axonel serve --port 4000
    ```
 2. Retry the integration:
    ```bash
-   axonel mission integrate <mission-id>
+   sentinel mission integrate <mission-id>
    ```
 3. If you stashed changes, reapply them:
    ```bash
@@ -82,7 +82,7 @@ git worktree prune
 
 ### "gemini: command not found"
 
-**Cause:** Axonel was instructed to use the Gemini CLI adapter, but the `gemini` binary is not found in your system `$PATH`.
+**Cause:** Sentinel was instructed to use the Gemini CLI adapter, but the `gemini` binary is not found in your system `$PATH`.
 
 **Resolution:**
 1. Install the official Gemini CLI following Google's installation guide.
@@ -91,10 +91,10 @@ git worktree prune
    which gemini
    gemini --version
    ```
-3. For testing without installing Gemini CLI, use Axonel's offline fake agent:
+3. For testing without installing Gemini CLI, use Sentinel's offline fake agent:
    ```bash
    cargo build -p plexis-fake-agent --bin fake_agent
-   axonel mission create ... --agent-bin "./target/debug/fake_agent"
+   sentinel mission create ... --agent-bin "./target/debug/fake_agent"
    ```
 
 ---
@@ -113,12 +113,12 @@ export GEMINI_API_KEY="AIzaSy..."
 
 ### "Agent execution timed out after N seconds"
 
-**Cause:** The agent exceeded the configured monotonic wall-clock timeout (`max_execution_time_secs`). Axonel terminated the process group to prevent infinite loops.
+**Cause:** The agent exceeded the configured monotonic wall-clock timeout (`max_execution_time_secs`). Sentinel terminated the process group to prevent infinite loops.
 
 **Resolution:**
 If your task requires long-running compilations or extensive exploration, increase the timeout when creating the mission:
 ```bash
-axonel mission create \
+sentinel mission create \
   --prompt "Refactor parser module" \
   --timeout 600 \
   ...
@@ -133,13 +133,13 @@ axonel mission create \
 **Cause:** The agent finished editing files, but the independent physical verifier executed the stopping conditions (e.g. `cargo test`, `npm test`) and encountered test failures or compiler errors.
 
 **Behavior:**
-- Axonel **does not** mark the mission as ready for review.
-- If remaining cycles are available in the mission budget, Axonel feeds the compiler/test error output back to the agent for self-repair.
+- Sentinel **does not** mark the mission as ready for review.
+- If remaining cycles are available in the mission budget, Sentinel feeds the compiler/test error output back to the agent for self-repair.
 - If the budget is exhausted, the mission transitions to `Failed`.
 
 **Resolution:**
 1. Inspect the verification output in the Web UI or via:
    ```bash
-   axonel mission get <mission-id>
+   sentinel mission get <mission-id>
    ```
 2. You can create a follow-up mission with more specific prompt guidance or relax over-restrictive stopping conditions.
