@@ -5,6 +5,7 @@ on:
     branches: [ rename/sentinel ]
 
 permissions:
+  # Temporary migration-only formatter; removed after formatting commit.
   contents: write
 
 jobs:
