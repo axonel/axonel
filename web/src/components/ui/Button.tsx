@@ -29,7 +29,7 @@ export const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   const baseStyles =
-    'inline-flex items-center justify-center font-medium transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-axonel-lime disabled:opacity-40 disabled:pointer-events-none select-none';
+    'inline-flex items-center justify-center font-medium transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-sentinel-lime disabled:opacity-40 disabled:pointer-events-none select-none';
 
   const sizeStyles: Record<ButtonSize, string> = {
     xs: 'text-[11px] px-2 py-0.5 gap-1 rounded-sm font-mono',
@@ -39,7 +39,7 @@ export const Button: React.FC<ButtonProps> = ({
 
   const variantStyles: Record<ButtonVariant, string> = {
     primary:
-      'bg-axonel-lime hover:bg-axonel-lime-hover text-black font-semibold border border-axonel-lime shadow-none',
+      'bg-sentinel-lime hover:bg-sentinel-lime-hover text-black font-semibold border border-sentinel-lime shadow-none',
     secondary:
       'bg-surface-card hover:bg-surface-hover text-gray-200 border border-surface-border hover:border-surface-border-bold',
     outline:
@@ -51,7 +51,7 @@ export const Button: React.FC<ButtonProps> = ({
     'danger-ghost':
       'bg-transparent hover:bg-red-950/40 text-red-400 hover:text-red-300 border border-transparent',
     'lime-outline':
-      'bg-axonel-lime-muted hover:bg-axonel-lime/20 text-axonel-lime border border-axonel-lime-border',
+      'bg-sentinel-lime-muted hover:bg-sentinel-lime/20 text-sentinel-lime border border-sentinel-lime-border',
   };
 
   return (

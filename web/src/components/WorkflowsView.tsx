@@ -55,7 +55,7 @@ export const WorkflowsView: React.FC<WorkflowsViewProps> = ({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-surface-border">
         <div>
           <div className="flex items-center gap-2">
-            <Layers className="w-4 h-4 text-axonel-lime" />
+            <Layers className="w-4 h-4 text-sentinel-lime" />
             <h1 className="text-base sm:text-lg font-bold text-gray-100 tracking-tight font-mono uppercase">
               Workflow Orchestration
             </h1>
@@ -93,7 +93,7 @@ export const WorkflowsView: React.FC<WorkflowsViewProps> = ({
               onClick={() => setFilterState(st)}
               className={`px-2.5 py-1 rounded text-[11px] font-mono transition-colors select-none ${
                 filterState === st
-                  ? 'bg-surface-base text-axonel-lime border border-surface-border-bold font-semibold'
+                  ? 'bg-surface-base text-sentinel-lime border border-surface-border-bold font-semibold'
                   : 'text-gray-400 hover:text-gray-200 hover:bg-surface-hover/60 border border-transparent'
               }`}
             >
@@ -143,7 +143,7 @@ export const WorkflowsView: React.FC<WorkflowsViewProps> = ({
                   <span>Created: {new Date(w.created_at).toLocaleString()}</span>
                 </div>
               </div>
-              <div className="flex items-center gap-1.5 text-gray-400 group-hover:text-axonel-lime transition-colors shrink-0">
+              <div className="flex items-center gap-1.5 text-gray-400 group-hover:text-sentinel-lime transition-colors shrink-0">
                 <span className="text-xs font-mono font-medium">Inspect</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </div>

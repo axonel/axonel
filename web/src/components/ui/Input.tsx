@@ -46,9 +46,9 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             id={inputId}
             ref={ref}
             className={`w-full bg-surface-base border ${
-              error ? 'border-red-500/80 focus:border-red-500' : 'border-surface-border focus:border-axonel-lime'
+              error ? 'border-red-500/80 focus:border-red-500' : 'border-surface-border focus:border-sentinel-lime'
             } rounded px-3 py-1.5 text-xs sm:text-sm text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-1 ${
-              error ? 'focus:ring-red-500' : 'focus:ring-axonel-lime'
+              error ? 'focus:ring-red-500' : 'focus:ring-sentinel-lime'
             } transition-colors ${mono ? 'font-mono' : ''} ${leftIcon ? 'pl-8' : ''} ${
               rightIcon ? 'pr-8' : ''
             } disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
@@ -97,9 +97,9 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
           id={inputId}
           ref={ref}
           className={`w-full bg-surface-base border ${
-            error ? 'border-red-500/80 focus:border-red-500' : 'border-surface-border focus:border-axonel-lime'
+            error ? 'border-red-500/80 focus:border-red-500' : 'border-surface-border focus:border-sentinel-lime'
           } rounded px-3 py-2 text-xs sm:text-sm text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-1 ${
-            error ? 'focus:ring-red-500' : 'focus:ring-axonel-lime'
+            error ? 'focus:ring-red-500' : 'focus:ring-sentinel-lime'
           } transition-colors ${mono ? 'font-mono' : ''} disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
           {...props}
         />
@@ -139,9 +139,9 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
           id={inputId}
           ref={ref}
           className={`w-full bg-surface-base border ${
-            error ? 'border-red-500/80 focus:border-red-500' : 'border-surface-border focus:border-axonel-lime'
+            error ? 'border-red-500/80 focus:border-red-500' : 'border-surface-border focus:border-sentinel-lime'
           } rounded px-3 py-1.5 text-xs sm:text-sm text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-1 ${
-            error ? 'focus:ring-red-500' : 'focus:ring-axonel-lime'
+            error ? 'focus:ring-red-500' : 'focus:ring-sentinel-lime'
           } transition-colors ${mono ? 'font-mono' : ''} disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
           {...props}
         >

@@ -17,7 +17,7 @@ export default {
           border: '#21252d',
           'border-bold': '#2c323d',
         },
-        axonel: {
+        sentinel: {
           lime: '#ccff00',
           'lime-hover': '#b8e600',
           'lime-muted': 'rgba(204, 255, 0, 0.1)',
