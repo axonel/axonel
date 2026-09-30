@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# Allow the axonel organization and domain while rejecting the old product identity.
 set -euo pipefail
 
 old_product_name='Axo''nel'
@@ -16,6 +15,7 @@ fi
 
 matches="$(
   git grep -n -I -i -e "$old_product_name" -- . \
+    ':(exclude)scripts/check-branding.sh' \
     | grep -vE 'github\.com/axonel/|raw\.githubusercontent\.com/axonel/|img\.shields\.io/github/stars/axonel/|axonel/sentinel|axonel\.dev|security@axonel\.dev' \
     || true
 )"
